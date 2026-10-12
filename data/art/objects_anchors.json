@@ -1,0 +1,114 @@
+{
+ "store_counter_r0": {
+  "size": [
+   80,
+   61
+  ],
+  "ground_anchor_px": [
+   40,
+   40.5
+  ],
+  "footprint_units": [
+   60,
+   18
+  ]
+ },
+ "store_counter_r1": {
+  "size": [
+   80,
+   61
+  ],
+  "ground_anchor_px": [
+   40,
+   40.5
+  ],
+  "footprint_units": [
+   18,
+   60
+  ]
+ },
+ "store_shelf_r0": {
+  "size": [
+   76,
+   77
+  ],
+  "ground_anchor_px": [
+   38,
+   57.5
+  ],
+  "footprint_units": [
+   60,
+   14
+  ]
+ },
+ "store_shelf_r1": {
+  "size": [
+   76,
+   77
+  ],
+  "ground_anchor_px": [
+   38,
+   57.5
+  ],
+  "footprint_units": [
+   14,
+   60
+  ]
+ },
+ "planter_r0": {
+  "size": [
+   58,
+   42
+  ],
+  "ground_anchor_px": [
+   29,
+   27.0
+  ],
+  "footprint_units": [
+   28,
+   28
+  ]
+ },
+ "planter_r1": {
+  "size": [
+   58,
+   42
+  ],
+  "ground_anchor_px": [
+   29,
+   27.0
+  ],
+  "footprint_units": [
+   28,
+   28
+  ]
+ },
+ "mattress_r0": {
+  "size": [
+   74,
+   42
+  ],
+  "ground_anchor_px": [
+   37,
+   23.0
+  ],
+  "footprint_units": [
+   44,
+   28
+  ]
+ },
+ "mattress_r1": {
+  "size": [
+   74,
+   42
+  ],
+  "ground_anchor_px": [
+   37,
+   23.0
+  ],
+  "footprint_units": [
+   28,
+   44
+  ]
+ }
+}

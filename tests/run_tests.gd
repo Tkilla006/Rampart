@@ -23,6 +23,8 @@ func _run() -> void:
 	for t in [
 		"checks", "officer_sample_build", "composure_and_stress", "habits", "creation_rules",
 		"game_state", "save_load", "event_library", "scenes", "iso", "street_map", "back_seat_playthrough",
+		"tac_map_movement", "tac_line_of_sight", "tac_cover_and_hit_chance", "tac_reaction_fire",
+		"tac_commands_and_arrest", "tac_less_lethal", "tac_bleeding", "tac_force_review", "tac_factory_and_fuzz",
 	]:
 		_current = t
 		gs.new_game()
@@ -287,3 +289,314 @@ func test_back_seat_playthrough(gs, lib) -> void:
 	box._finish()
 	expect(finished[0] and not box.is_open(), "dialogue closes")
 	box.queue_free()
+
+
+# ---------------------------------------------------------------- tactical (X-COM layer)
+
+func _squad(n: int = 2) -> Array:
+	var out: Array = []
+	for i in n:
+		var o := Officer.sample_combat_veteran()
+		out.append(TacUnit.from_officer(o, "officer_%d" % i, "Officer %d" % (i + 1), {"loadout": "taser"}))
+	return out
+
+
+func _open_mission(w: int = 12, h: int = 12) -> TacMission:
+	var m := TacMission.new(1234)
+	m.map = TacMap.new(w, h, "sidewalk")
+	return m
+
+
+func test_tac_map_movement(_gs, _lib) -> void:
+	var map := TacMap.new(8, 8)
+	expect_eq(map.step_cost(Vector2i(2, 2), Vector2i(3, 2)), 4, "straight step costs 4 TU")
+	expect_eq(map.step_cost(Vector2i(2, 2), Vector2i(3, 3)), 6, "diagonal step costs 6 TU")
+	map.set_wall(Vector2i(3, 2), "w", "brick")
+	expect_eq(map.step_cost(Vector2i(2, 2), Vector2i(3, 2)), -1, "a wall blocks the step")
+	expect_eq(map.step_cost(Vector2i(2, 2), Vector2i(3, 3)), -1, "no cutting a wall corner diagonally")
+	map.wall_w[Vector2i(3, 2)].kind = "door"
+	expect_eq(map.step_cost(Vector2i(2, 2), Vector2i(3, 2)), 8, "a closed door costs 4 more to open")
+	expect(map.open_door(Vector2i(2, 2), Vector2i(3, 2)), "door opens")
+	expect_eq(map.step_cost(Vector2i(2, 2), Vector2i(3, 2)), 4, "an open door is free")
+	map.set_floor(Vector2i(5, 5), "rubble_heavy")
+	expect_eq(map.step_cost(Vector2i(4, 5), Vector2i(5, 5)), 8, "heavy rubble costs extra")
+	map.place_object("chainlink_fence", [Vector2i(6, 6)])
+	expect_eq(map.step_cost(Vector2i(6, 5), Vector2i(6, 6)), 12, "climbing a fence costs extra")
+	map.place_object("dumpster", [Vector2i(1, 6)])
+	expect_eq(map.step_cost(Vector2i(1, 5), Vector2i(1, 6)), -1, "a dumpster blocks movement")
+	var reach := Pathfinder.reachable(map, Vector2i(0, 0), 12, {})
+	expect_eq(int(reach.cost[Vector2i(3, 0)]), 12, "three straight steps for 12 TU")
+	expect(not reach.cost.has(Vector2i(4, 0)), "a fourth step is out of budget")
+	var path := Pathfinder.find_path(map, Vector2i(0, 0), Vector2i(7, 7), {})
+	expect(path.size() > 0 and path[-1] == Vector2i(7, 7), "A* finds a path across the map")
+	expect(Pathfinder.path_cost(map, Vector2i(0, 0), path) > 0, "path has a TU cost")
+
+
+func test_tac_line_of_sight(_gs, _lib) -> void:
+	var map := TacMap.new(10, 10)
+	expect(map.has_line_of_sight(Vector2i(1, 5), Vector2i(8, 5)), "clear street")
+	for y in 10:
+		map.set_wall(Vector2i(5, y), "w", "brick")
+	expect(not map.has_line_of_sight(Vector2i(1, 5), Vector2i(8, 5)), "a brick wall blocks sight")
+	map.wall_w[Vector2i(5, 5)].kind = "window"
+	expect(map.has_line_of_sight(Vector2i(1, 5), Vector2i(8, 5)), "you can see through a window")
+	expect(not map.wall_stops_rounds(map.wall_w[Vector2i(5, 5)]), "glass does not stop rounds")
+	expect(map.wall_stops_rounds(map.wall_w[Vector2i(5, 4)]), "brick stops rounds")
+	map.set_wall(Vector2i(5, 3), "w", "drywall")
+	expect(not map.wall_stops_rounds(map.wall_w[Vector2i(5, 3)]), "drywall is concealment, not cover")
+	map.place_object("dumpster", [Vector2i(3, 2)])
+	expect(not map.has_line_of_sight(Vector2i(1, 2), Vector2i(4, 2)), "a dumpster blocks sight")
+	var steps := map.trace(Vector2i(0, 0), Vector2i(3, 0))
+	expect_eq(steps.size(), 3, "a straight trace crosses three cells")
+
+
+func test_tac_cover_and_hit_chance(_gs, _lib) -> void:
+	var m := _open_mission(16, 16)
+	m.map.place_car(Vector2i(6, 4), "NW")
+	var squad := _squad(1)
+	var o: TacUnit = squad[0]
+	m.add_unit(o, Vector2i(6, 12))
+	o.facing = 0
+	var s := TacUnit.make_npc(TacUnit.Side.SUSPECT, "Suspect", "suspect_hoodie", m.rng)
+	m.add_unit(s, Vector2i(6, 3))
+	expect_eq(m.map.cover_against(s.pos, o.pos), TacMap.Cover.FULL, "behind the engine block is full cover")
+	expect_eq(m.map.cover_against(s.pos, Vector2i(2, 3)), TacMap.Cover.NONE, "flanked from the side: no cover")
+	m.map.objects.clear()
+	# Perception 6, Firearms 3 = 60; aimed +20; range 9 tiles: -15. No cover, full Composure.
+	expect_eq(m.hit_chance(o, "glock22", "aimed", s), 60 + 20 - 15, "hit chance follows the design formula")
+	o.stance = TacUnit.Stance.KNEELING
+	expect_eq(m.hit_chance(o, "glock22", "aimed", s), 60 + 20 - 15 + TacMission.KNEEL_BONUS, "kneeling steadies the shot")
+	o.stance = TacUnit.Stance.STANDING
+	expect_eq(m.hit_chance(o, "glock22", "snap", s, true), 60 - 15 - TacMission.REACTION_PENALTY, "reaction shots take -10")
+	m.map.night = true
+	o.belt.erase("flashlight")
+	expect_eq(m.hit_chance(o, "glock22", "snap", s), 60 - 15 - TacMission.DARK_PENALTY, "darkness without light -20")
+	expect_eq(o.action_tu(50), int(ceil(o.tu_max * 0.5)), "TU costs are a share of maximum TU")
+
+
+func test_tac_reaction_fire(_gs, _lib) -> void:
+	var m := _open_mission(20, 20)
+	var o: TacUnit = _squad(1)[0]
+	o.right_hand = "glock22"
+	o.reactions = 95
+	m.add_unit(o, Vector2i(10, 15))
+	o.facing = 0
+	var civ := TacUnit.make_npc(TacUnit.Side.CIVILIAN, "Civilian", "civilian_clerk", m.rng)
+	civ.reactions = 1
+	m.add_unit(civ, Vector2i(10, 8))
+	m.start()
+	var p: Array[Vector2i] = [Vector2i(10, 9)]
+	m.move_unit(civ, p)
+	expect_eq(m.rounds_fired, 0, "officers never react to an unarmed civilian")
+	var s := TacUnit.make_npc(TacUnit.Side.SUSPECT, "Gunman", "suspect_tracksuit", m.rng)
+	s.reactions = 1
+	s.disposition = TacUnit.Disposition.DEADLY
+	s.give_weapon("suspect_pistol")
+	m.add_unit(s, Vector2i(12, 8))
+	p = [Vector2i(12, 9)]
+	m.move_unit(s, p)
+	expect(m.rounds_fired >= 1, "an armed, deadly suspect moving in view draws reaction fire")
+	expect(o.record.reaction_shots >= 1, "reaction shot recorded")
+	var events := m.take_events()
+	expect(events.any(func(e): return e.type == "reaction"), "reaction event emitted")
+
+
+func test_tac_commands_and_arrest(_gs, _lib) -> void:
+	var m := _open_mission()
+	var o: TacUnit = _squad(1)[0]
+	m.add_unit(o, Vector2i(4, 5))
+	o.facing = 2
+	var s := TacUnit.make_npc(TacUnit.Side.SUSPECT, "Subject", "suspect_white_tee", m.rng)
+	s.disposition = TacUnit.Disposition.PASSIVE
+	s.morale = 60
+	s.give_weapon("knife", false)
+	m.add_unit(s, Vector2i(5, 5))
+	m.basis = "probable_cause"
+	m.start()
+	var before := o.tu
+	expect(m.command(o, s), "command issued")
+	expect_eq(o.tu, before, "the first short command each turn is free")
+	var tries := 0
+	while s.status == TacUnit.Status.ACTIVE and tries < 10:
+		o.tu = o.tu_max
+		m.command(o, s)
+		tries += 1
+	expect(tries > 0 or s.status != TacUnit.Status.ACTIVE, "repeated commands break a passive subject's resolve")
+	expect_eq(m.phase, TacMission.Phase.OVER, "with no threat left the scene is secured")
+	expect_eq(s.status, TacUnit.Status.CUFFED, "back in Contact, the surrendered subject is cuffed")
+	# Cuffing directly, before the scene ends: a second subject keeps the scene open.
+	var m2 := _open_mission()
+	var o2: TacUnit = _squad(1)[0]
+	m2.add_unit(o2, Vector2i(4, 5))
+	var a := TacUnit.make_npc(TacUnit.Side.SUSPECT, "A", "suspect_white_tee", m2.rng)
+	a.status = TacUnit.Status.INCAPACITATED
+	a.incapacitated_turns = 1
+	m2.add_unit(a, Vector2i(5, 5))
+	var b := TacUnit.make_npc(TacUnit.Side.SUSPECT, "B", "suspect_hoodie", m2.rng)
+	b.disposition = TacUnit.Disposition.ACTIVE
+	m2.add_unit(b, Vector2i(10, 10))
+	m2.basis = "probable_cause"
+	m2.start()
+	var cuffed := false
+	for i in 10:
+		o2.tu = o2.tu_max
+		m2.handcuff(o2, a)
+		if a.status == TacUnit.Status.CUFFED:
+			cuffed = true
+			break
+	expect(cuffed, "an incapacitated subject can be cuffed")
+	expect_eq(o2.uses.get("handcuffs"), 1, "one pair of cuffs used")
+	expect(m2.phase != TacMission.Phase.OVER, "the scene stays open while someone is still loose")
+	var r := m.debrief(true, "test")
+	expect(int(r.arrested) == 1 and int(r.score) > 0, "custody scores points")
+
+
+func test_tac_less_lethal(_gs, _lib) -> void:
+	var incapacitated := 0
+	var blinded := 0
+	for seed_value in range(1, 41):
+		var m := TacMission.new(seed_value)
+		m.map = TacMap.new(10, 10)
+		var o: TacUnit = _squad(1)[0]
+		m.add_unit(o, Vector2i(2, 5))
+		o.facing = 2
+		var s := TacUnit.make_npc(TacUnit.Side.SUSPECT, "Runner", "suspect_white_tee", m.rng)
+		s.disposition = TacUnit.Disposition.ACTIVE
+		m.add_unit(s, Vector2i(4, 5))
+		o.right_hand = "taser_x26"
+		m.fire(o, s, "snap")
+		# A lone subject dropped by the Taser ends the scene and is cuffed.
+		if s.status in [TacUnit.Status.INCAPACITATED, TacUnit.Status.CUFFED]:
+			incapacitated += 1
+		o.tu = o.tu_max
+		var s2 := TacUnit.make_npc(TacUnit.Side.SUSPECT, "Other", "suspect_white_tee", m.rng)
+		m.add_unit(s2, Vector2i(2, 6))
+		o.right_hand = "oc_spray"
+		m.fire(o, s2, "snap")
+		if s2.blinded_turns > 0:
+			blinded += 1
+	expect(incapacitated > 10 and incapacitated < 40, "the Taser works often but not always (%d/40)" % incapacitated)
+	expect(blinded > 10, "OC spray blinds (%d/40)" % blinded)
+	var m2 := TacMission.new(5)
+	m2.map = TacMap.new(10, 10)
+	var o2: TacUnit = _squad(1)[0]
+	m2.add_unit(o2, Vector2i(2, 5))
+	expect_eq(int(o2.ammo.get("taser_x26", 0)), 1, "one Taser cartridge")
+	var force_items := m2.force_log.size()
+	expect_eq(force_items, 0, "no force logged yet")
+
+
+func test_tac_bleeding(_gs, _lib) -> void:
+	var m := _open_mission()
+	var o: TacUnit = _squad(1)[0]
+	m.add_unit(o, Vector2i(1, 1))
+	var v := TacUnit.make_npc(TacUnit.Side.CIVILIAN, "Victim", "civilian_elder", m.rng)
+	v.health = 2
+	v.fatal_wounds = 2
+	v.status = TacUnit.Status.UNCONSCIOUS
+	m.add_unit(v, Vector2i(5, 5))
+	var s := TacUnit.make_npc(TacUnit.Side.SUSPECT, "Suspect", "suspect_hoodie", m.rng)
+	s.disposition = TacUnit.Disposition.PASSIVE
+	m.add_unit(s, Vector2i(9, 9))
+	m.start()
+	m._end_of_round()
+	expect_eq(v.status, TacUnit.Status.DYING, "bleeding wounds drain health until the victim is dying")
+	for i in 3:
+		m._end_of_round()
+	expect_eq(v.status, TacUnit.Status.DEAD, "unaided, the dying bleed out in three turns")
+	o.health = 0
+	m._go_down(o)
+	for i in 3:
+		m._end_of_round()
+	expect_eq(o.status, TacUnit.Status.UNCONSCIOUS, "standard mode: a fatal hit on an officer becomes a critical wound")
+	var w := TacUnit.make_npc(TacUnit.Side.CIVILIAN, "Wounded", "civilian_nurse", m.rng)
+	w.health = 10
+	w.fatal_wounds = 1
+	m.add_unit(w, Vector2i(1, 2))
+	var aided := false
+	for i in 10:
+		o.status = TacUnit.Status.ACTIVE
+		o.tu = o.tu_max
+		m.first_aid(o, w)
+		if w.fatal_wounds == 0:
+			aided = true
+			break
+	expect(aided, "first aid stops the bleeding")
+
+
+func test_tac_force_review(_gs, _lib) -> void:
+	var r := TacMission.review_force_event({"force": 6, "actual": 4, "perceived": 4, "warned": 1, "target_status": "active"})
+	expect_eq(r.outcome, "In policy", "a firearm against a deadly threat is in policy")
+	r = TacMission.review_force_event({"force": 6, "actual": 1, "perceived": 1, "warned": 1, "target_status": "active"})
+	expect_eq(r.outcome, "Out of policy", "a firearm against passive resistance is out of policy")
+	r = TacMission.review_force_event({"force": 4, "actual": 1, "perceived": 1, "warned": 1, "target_status": "active"})
+	expect_eq(r.outcome, "Administrative disapproval", "a Taser on passive resistance is one step too far")
+	r = TacMission.review_force_event({"force": 4, "actual": 2, "perceived": 2, "warned": 0, "target_status": "active"})
+	expect_eq(r.outcome, "In policy, tactical debrief", "force without a warning first gets a debrief")
+	r = TacMission.review_force_event({"force": 6, "actual": 2, "perceived": 4, "warned": 1, "target_status": "active", "target_holding": "phone"})
+	expect_eq(r.outcome, "In policy, tactical debrief", "a phone misread as a gun: legal, still the wrong call")
+	r = TacMission.review_force_event({"force": 5, "actual": 0, "perceived": 0, "warned": 1, "target_status": "surrendered"})
+	expect_eq(r.outcome, "Out of policy", "force on a subject who already surrendered")
+
+
+func test_tac_factory_and_fuzz(_gs, _lib) -> void:
+	var types: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/strategic/call_types.json")).types
+	var ended := 0
+	var total := 0
+	for type_id in types:
+		var t: Dictionary = types[type_id]
+		for ti in t.truth.size():
+			for seed_value in [11, 29]:
+				total += 1
+				var call := {"type": type_id, "label": t.label, "map": t.map, "basis": t.basis, "truth": t.truth[ti],
+					"watch": "morning" if seed_value == 29 else "pm"}
+				var m := MissionFactory.build(call, _squad(2), seed_value)
+				expect(m.officers().size() == 2, "%s: two officers placed" % type_id)
+				expect(m.suspects().size() == t.truth[ti].suspects.size(), "%s: suspects placed" % type_id)
+				var cells := {}
+				for u in m.units:
+					expect(not cells.has(u.pos), "%s: no two units share a cell" % type_id)
+					cells[u.pos] = true
+					expect(m.map.in_bounds(u.pos) and not m.map.object_blocks_move(u.pos), "%s: units stand on open ground" % type_id)
+				m.start()
+				_play_randomly(m, 25)
+				if m.phase == TacMission.Phase.OVER:
+					ended += 1
+	expect(ended > total / 3, "random play resolves most scenes (%d of %d)" % [ended, total])
+
+
+## A crude player: close in, command, cuff, shoot only at visible deadly threats, aid the wounded.
+func _play_randomly(m: TacMission, max_turns: int) -> void:
+	for t in max_turns:
+		if m.phase == TacMission.Phase.OVER:
+			return
+		for o in m.officers():
+			if not o.can_act() or m.phase == TacMission.Phase.OVER:
+				continue
+			var target: TacUnit = null
+			for s in m.suspects():
+				if s.status in [TacUnit.Status.ACTIVE, TacUnit.Status.SURRENDERED, TacUnit.Status.INCAPACITATED, TacUnit.Status.UNCONSCIOUS]:
+					if target == null or s.pos.distance_to(o.pos) < target.pos.distance_to(o.pos):
+						target = s
+			if target == null:
+				break
+			if target.is_active() and target.is_armed() and target.disposition == TacUnit.Disposition.DEADLY and m.can_see(o, target):
+				if o.weapon() != "glock22" and "glock22" in o.belt:
+					m.equip(o, "glock22")
+				m.fire(o, target, "snap")
+				continue
+			if target.pos.distance_to(o.pos) >= 1.5:
+				var path := Pathfinder.find_path(m.map, o.pos, target.pos, m.occupied(o))
+				if path.size() > 1:
+					path.resize(path.size() - 1)
+					m.move_unit(o, path)
+			if not o.can_act():
+				continue
+			if target.is_active():
+				m.command(o, target)
+			if target.pos.distance_to(o.pos) < 1.5:
+				m.handcuff(o, target)
+		m.take_events()
+		if m.phase != TacMission.Phase.OVER:
+			m.end_officer_turn()
+		m.take_events()

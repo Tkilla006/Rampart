@@ -1,0 +1,74 @@
+{
+ "officer": {
+  "sheet": "officer_tac.png",
+  "down": "officer_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "suspect_hoodie": {
+  "sheet": "suspect_hoodie_tac.png",
+  "down": "suspect_hoodie_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "suspect_white_tee": {
+  "sheet": "suspect_white_tee_tac.png",
+  "down": "suspect_white_tee_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "suspect_flannel": {
+  "sheet": "suspect_flannel_tac.png",
+  "down": "suspect_flannel_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "suspect_tracksuit": {
+  "sheet": "suspect_tracksuit_tac.png",
+  "down": "suspect_tracksuit_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "civilian_vendor": {
+  "sheet": "civilian_vendor_tac.png",
+  "down": "civilian_vendor_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "civilian_nurse": {
+  "sheet": "civilian_nurse_tac.png",
+  "down": "civilian_nurse_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "civilian_elder": {
+  "sheet": "civilian_elder_tac.png",
+  "down": "civilian_elder_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ },
+ "civilian_clerk": {
+  "sheet": "civilian_clerk_tac.png",
+  "down": "civilian_clerk_down.png",
+  "feet_px": [
+   16,
+   46
+  ]
+ }
+}

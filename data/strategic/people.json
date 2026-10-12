@@ -1,0 +1,75 @@
+{
+ "_comment": "Rampart officers available to the player (design section 11). Attributes and skills not given in the design are defaults chosen to fit each profile. partner: section 7 partner AI values (0-5).",
+ "officers": {
+  "ortega": {
+   "name": "Dolores \"Dee\" Ortega", "rank": "Police Officer III", "role": "fto", "look": "officer",
+   "attributes": {"fitness": 5, "nerve": 7, "perception": 6, "intellect": 7, "presence": 6, "empathy": 5},
+   "skills": {"report_writing": 5, "law_and_policy": 4, "interrogation": 4, "firearms": 3, "defensive_tactics": 3, "de_escalation": 3, "command_presence": 3, "search": 3, "radio_and_dispatch": 3, "first_aid": 2, "driving": 3, "interview": 3, "streetwise": 3, "evidence": 3},
+   "languages": {"spanish": 4}, "habits": [], "loadout": "taser",
+   "partner": {"aggression": 2, "discipline": 5, "talk": 4, "loyalty": 3, "skill": 4}
+  },
+  "whitfield": {
+   "name": "Marcus Whitfield", "rank": "Police Officer III", "role": "fto", "look": "officer",
+   "attributes": {"fitness": 7, "nerve": 7, "perception": 7, "intellect": 5, "presence": 6, "empathy": 3},
+   "skills": {"firearms": 5, "defensive_tactics": 4, "super_incident_response": 4, "athletics": 3, "command_presence": 3, "search": 3, "first_aid": 2, "driving": 4, "law_and_policy": 2, "report_writing": 2, "radio_and_dispatch": 2, "streetwise": 3},
+   "languages": {}, "habits": [["engage_the_threat", 2]], "loadout": "shotgun",
+   "partner": {"aggression": 5, "discipline": 2, "talk": 1, "loyalty": 4, "skill": 5}
+  },
+  "arakawa": {
+   "name": "Ken Arakawa", "rank": "Police Officer III", "role": "fto", "look": "officer",
+   "attributes": {"fitness": 3, "nerve": 6, "perception": 6, "intellect": 6, "presence": 5, "empathy": 7},
+   "skills": {"de_escalation": 5, "interview": 4, "streetwise": 4, "firearms": 2, "defensive_tactics": 1, "command_presence": 3, "first_aid": 2, "law_and_policy": 3, "report_writing": 3, "radio_and_dispatch": 3, "driving": 2},
+   "languages": {"japanese": 5}, "habits": [], "loadout": "patrol",
+   "partner": {"aggression": 1, "discipline": 3, "talk": 5, "loyalty": 2, "skill": 3}
+  },
+  "brooks": {
+   "name": "Tiana Brooks", "rank": "Police Officer I", "role": "classmate", "look": "officer",
+   "attributes": {"fitness": 5, "nerve": 6, "perception": 6, "intellect": 7, "presence": 5, "empathy": 5},
+   "skills": {"firearms": 2, "law_and_policy": 2, "report_writing": 2, "streetwise": 2, "defensive_tactics": 1, "first_aid": 1, "search": 1, "radio_and_dispatch": 1, "command_presence": 1, "interview": 1, "de_escalation": 1, "driving": 1},
+   "languages": {}, "habits": [["book_answer", 1]], "loadout": "taser",
+   "partner": {"aggression": 2, "discipline": 4, "talk": 3, "loyalty": 2, "skill": 4}
+  },
+  "dunleavy": {
+   "name": "Wyatt Dunleavy", "rank": "Police Officer I", "role": "classmate", "look": "officer",
+   "attributes": {"fitness": 8, "nerve": 5, "perception": 4, "intellect": 3, "presence": 6, "empathy": 4},
+   "skills": {"defensive_tactics": 3, "athletics": 2, "firearms": 1, "first_aid": 1, "search": 1, "radio_and_dispatch": 1, "command_presence": 2, "interview": 1, "de_escalation": 1, "driving": 1, "law_and_policy": 1, "report_writing": 1},
+   "languages": {}, "habits": [["hands_on", 2]], "loadout": "patrol", "boosted": true,
+   "partner": {"aggression": 4, "discipline": 2, "talk": 2, "loyalty": 4, "skill": 3}
+  },
+  "petrosyan": {
+   "name": "Ani Petrosyan", "rank": "Police Officer I", "role": "classmate", "look": "officer",
+   "attributes": {"fitness": 5, "nerve": 5, "perception": 5, "intellect": 7, "presence": 5, "empathy": 5},
+   "skills": {"law_and_policy": 3, "report_writing": 2, "firearms": 1, "defensive_tactics": 1, "first_aid": 1, "search": 2, "radio_and_dispatch": 2, "command_presence": 1, "interview": 1, "de_escalation": 1, "driving": 1},
+   "languages": {"armenian": 5}, "habits": [["book_answer", 2]], "loadout": "taser",
+   "partner": {"aggression": 1, "discipline": 5, "talk": 3, "loyalty": 1, "skill": 3}
+  },
+  "park": {
+   "name": "Joe Park", "rank": "Police Officer I", "role": "classmate", "look": "officer",
+   "attributes": {"fitness": 4, "nerve": 4, "perception": 8, "intellect": 6, "presence": 4, "empathy": 5},
+   "skills": {"power_assessment": 3, "ledger_knowledge": 3, "evidence": 2, "firearms": 1, "defensive_tactics": 1, "first_aid": 1, "search": 1, "radio_and_dispatch": 1, "command_presence": 1, "interview": 2, "de_escalation": 1, "driving": 1, "law_and_policy": 1, "report_writing": 1},
+   "languages": {"korean": 5}, "habits": [["find_the_camera", 1]], "loadout": "patrol",
+   "partner": {"aggression": 1, "discipline": 3, "talk": 3, "loyalty": 3, "skill": 3}
+  },
+  "bailey": {
+   "name": "Terrence \"T-Bone\" Bailey", "rank": "Police Officer II", "role": "squad", "look": "officer",
+   "attributes": {"fitness": 7, "nerve": 7, "perception": 5, "intellect": 4, "presence": 6, "empathy": 5},
+   "skills": {"defensive_tactics": 3, "athletics": 3, "firearms": 2, "streetwise": 3, "command_presence": 2, "first_aid": 1, "search": 2, "radio_and_dispatch": 1, "interview": 2, "de_escalation": 2, "driving": 3, "law_and_policy": 1, "report_writing": 1},
+   "languages": {}, "habits": [["run_to_the_wounded", 2]], "loadout": "patrol",
+   "partner": {"aggression": 4, "discipline": 1, "talk": 2, "loyalty": 5, "skill": 3}
+  },
+  "duquette": {
+   "name": "Danny \"Ducks\" Duquette", "rank": "Police Officer II", "role": "squad", "look": "officer",
+   "attributes": {"fitness": 5, "nerve": 6, "perception": 5, "intellect": 5, "presence": 6, "empathy": 5},
+   "skills": {"firearms": 3, "defensive_tactics": 2, "first_aid": 2, "search": 2, "radio_and_dispatch": 2, "command_presence": 2, "interview": 2, "de_escalation": 2, "driving": 2, "law_and_policy": 2, "report_writing": 2, "streetwise": 2},
+   "languages": {}, "habits": [], "loadout": "beanbag", "hungover": true,
+   "partner": {"aggression": 2, "discipline": 3, "talk": 3, "loyalty": 3, "skill": 4}
+  },
+  "hartley": {
+   "name": "Walt Hartley", "rank": "Police Officer II", "role": "squad", "look": "officer",
+   "attributes": {"fitness": 3, "nerve": 6, "perception": 7, "intellect": 6, "presence": 5, "empathy": 5},
+   "skills": {"firearms": 3, "streetwise": 4, "first_aid": 2, "search": 3, "radio_and_dispatch": 3, "command_presence": 3, "interview": 3, "de_escalation": 3, "driving": 3, "law_and_policy": 3, "report_writing": 3, "defensive_tactics": 1},
+   "languages": {}, "habits": [["cover_first", 1]], "loadout": "patrol",
+   "partner": {"aggression": 1, "discipline": 4, "talk": 4, "loyalty": 3, "skill": 4}
+  }
+ }
+}

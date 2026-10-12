@@ -1,0 +1,54 @@
+{
+ "_comment": "Character creation (design section 3). Bonuses add +1 or +2 to fitting attributes. Skill packages add to the academy baseline. Values the design does not spell out are defaults chosen to fit each entry.",
+ "academy_baseline": {"firearms": 1, "less_lethal": 1, "defensive_tactics": 1, "driving": 1, "first_aid": 1, "law_and_policy": 1, "report_writing": 1, "search": 1, "radio_and_dispatch": 1, "command_presence": 1, "interview": 1, "de_escalation": 1},
+ "origins": {
+  "la_native": {"label": "LA native (Boyle Heights)", "bonus": {"perception": 1}, "skills": {"streetwise": 2}, "languages": {"spanish": 5}, "community": {"pico_union": 1, "macarthur_park": 1}},
+  "small_town": {"label": "Small-town transplant", "bonus": {"fitness": 1}, "skills": {}, "languages": {}, "community": {}},
+  "big_city": {"label": "Big-city transplant", "bonus": {"nerve": 1}, "skills": {"streetwise": 1}, "languages": {}, "community": {}},
+  "first_generation": {"label": "First-generation American (Korean family)", "bonus": {"empathy": 1}, "skills": {}, "languages": {"korean": 5}, "community": {"lafayette_park": 2}},
+  "defector_child": {"label": "Child of Eastern-bloc defectors", "bonus": {"intellect": 1}, "skills": {}, "languages": {"russian": 5}, "community": {}, "federal": -1},
+  "cascade_displaced": {"label": "Cascade-displaced", "bonus": {"nerve": 2}, "skills": {"super_incident_response": 1}, "languages": {}, "community": {}}
+ },
+ "backgrounds": {
+  "combat_veteran": {"label": "Military: combat veteran", "military": true, "bonus": {"fitness": 1, "nerve": 1}, "skills": {"firearms": 2, "defensive_tactics": 1, "athletics": 2, "first_aid": 1, "command_presence": 1}, "habits": [["engage_the_threat", 1], ["dominate", 1], ["military_language", 1]], "never_surprised": true, "pair_one_action": true},
+  "medic": {"label": "Military: medic", "military": true, "bonus": {"nerve": 1, "empathy": 1}, "skills": {"first_aid": 3, "firearms": 1}, "habits": [["run_to_the_wounded", 1]], "calm_with_gore": true},
+  "mp": {"label": "Military: MP", "military": true, "bonus": {"fitness": 1, "presence": 1}, "skills": {"defensive_tactics": 2, "search": 1, "law_and_policy": 1, "command_presence": 1}, "habits": [["dominate", 1]], "detainee_control": true},
+  "non_combat": {"label": "Military: non-combat", "military": true, "bonus": {"fitness": 1, "presence": 1}, "skills": {"command_presence": 1, "athletics": 1}, "habits": [["cover_first", 1]], "discipline": true},
+  "college": {"label": "College graduate", "military": false, "bonus": {"intellect": 2}, "skills": {"report_writing": 2, "law_and_policy": 1, "interview": 1}, "habits": [["book_answer", 1]], "read_the_situation": true},
+  "emt": {"label": "EMT or firefighter", "military": false, "physical": true, "bonus": {"fitness": 1, "nerve": 1}, "skills": {"first_aid": 3, "super_incident_response": 1}, "habits": [["run_to_the_wounded", 1]], "calm_with_gore": true},
+  "corrections": {"label": "Corrections or jail deputy", "military": false, "physical": true, "bonus": {"fitness": 1, "presence": 1}, "skills": {"defensive_tactics": 2, "search": 1, "streetwise": 1}, "habits": [["control_the_cell", 1]], "weapon_retention": true},
+  "security": {"label": "Private security or bouncer", "military": false, "physical": true, "bonus": {"fitness": 2}, "skills": {"defensive_tactics": 2, "de_escalation": 1}, "habits": [["hands_on", 1]]},
+  "cape_industry": {"label": "Cape industry (cape network stringer)", "military": false, "bonus": {"perception": 1, "intellect": 1}, "skills": {"ledger_knowledge": 3, "power_assessment": 2}, "habits": [["find_the_camera", 1]]},
+  "trades": {"label": "Trades or blue-collar", "military": false, "physical": true, "bonus": {"fitness": 2}, "skills": {"athletics": 1, "driving": 1}, "habits": []},
+  "cadet": {"label": "Cadet program", "military": false, "bonus": {"intellect": 1, "presence": 1}, "skills": {"law_and_policy": 1, "radio_and_dispatch": 2}, "habits": [["book_answer", 1]], "clean_radio": true}
+ },
+ "academy_standing": {
+  "top": {"label": "Top of class", "fto_score": 2},
+  "middle": {"label": "Middle of class", "fto_score": 1},
+  "barely": {"label": "Barely passed", "fto_score": 0}
+ },
+ "academy_strength": {
+  "range": {"label": "Range", "skills": {"firearms": 1}},
+  "pt": {"label": "Physical training", "skills": {"athletics": 1}},
+  "report_writing": {"label": "Report writing", "skills": {"report_writing": 1}},
+  "spanish": {"label": "Spanish", "languages": {"spanish": 3}},
+  "defensive_tactics": {"label": "Defensive tactics", "skills": {"defensive_tactics": 1}}
+ },
+ "traits": {
+  "steady_hands": "Steady Hands: half the stress penalty on Firearms",
+  "silver_tongue": "Silver Tongue: +10 to commands and calming",
+  "night_owl": "Night Owl: no night vision penalty",
+  "iron_stomach": "Iron Stomach: casualties cost no morale",
+  "bilingual_bonus": "Bilingual Bonus: a second language at rank 3",
+  "gym_rat": "Gym Rat: +6 time units"
+ },
+ "flaws": {
+  "temper": "Temper: -10 to calming, provocation hurts morale",
+  "debt": "Debt: money pressure",
+  "bad_knee": "Bad Knee: -6 time units",
+  "family_obligation": "Family Obligation: time pressure off duty",
+  "bottle_problem": "Bottle Problem: -3 maximum Composure",
+  "big_mouth": "Big Mouth: -10 command presence on surrender orders",
+  "cant_lie": "Can't Lie: no bluffing"
+ }
+}

@@ -1,0 +1,170 @@
+{
+ "maroon_NW": {
+  "file": "sedan_maroon_NW.png",
+  "ground_center_px": [
+   80.0,
+   57.5
+  ]
+ },
+ "maroon_NE": {
+  "file": "sedan_maroon_NE.png",
+  "ground_center_px": [
+   82.0,
+   57.5
+  ]
+ },
+ "maroon_SE": {
+  "file": "sedan_maroon_SE.png",
+  "ground_center_px": [
+   82.0,
+   60.5
+  ]
+ },
+ "maroon_SW": {
+  "file": "sedan_maroon_SW.png",
+  "ground_center_px": [
+   80.0,
+   60.5
+  ]
+ },
+ "silver_NW": {
+  "file": "sedan_silver_NW.png",
+  "ground_center_px": [
+   80.0,
+   57.5
+  ]
+ },
+ "silver_NE": {
+  "file": "sedan_silver_NE.png",
+  "ground_center_px": [
+   82.0,
+   57.5
+  ]
+ },
+ "silver_SE": {
+  "file": "sedan_silver_SE.png",
+  "ground_center_px": [
+   82.0,
+   60.5
+  ]
+ },
+ "silver_SW": {
+  "file": "sedan_silver_SW.png",
+  "ground_center_px": [
+   80.0,
+   60.5
+  ]
+ },
+ "blue_NW": {
+  "file": "sedan_blue_NW.png",
+  "ground_center_px": [
+   80.0,
+   57.5
+  ]
+ },
+ "blue_NE": {
+  "file": "sedan_blue_NE.png",
+  "ground_center_px": [
+   82.0,
+   57.5
+  ]
+ },
+ "blue_SE": {
+  "file": "sedan_blue_SE.png",
+  "ground_center_px": [
+   82.0,
+   60.5
+  ]
+ },
+ "blue_SW": {
+  "file": "sedan_blue_SW.png",
+  "ground_center_px": [
+   80.0,
+   60.5
+  ]
+ },
+ "white_NW": {
+  "file": "sedan_white_NW.png",
+  "ground_center_px": [
+   80.0,
+   57.5
+  ]
+ },
+ "white_NE": {
+  "file": "sedan_white_NE.png",
+  "ground_center_px": [
+   82.0,
+   57.5
+  ]
+ },
+ "white_SE": {
+  "file": "sedan_white_SE.png",
+  "ground_center_px": [
+   82.0,
+   60.5
+  ]
+ },
+ "white_SW": {
+  "file": "sedan_white_SW.png",
+  "ground_center_px": [
+   80.0,
+   60.5
+  ]
+ },
+ "green_NW": {
+  "file": "sedan_green_NW.png",
+  "ground_center_px": [
+   80.0,
+   57.5
+  ]
+ },
+ "green_NE": {
+  "file": "sedan_green_NE.png",
+  "ground_center_px": [
+   82.0,
+   57.5
+  ]
+ },
+ "green_SE": {
+  "file": "sedan_green_SE.png",
+  "ground_center_px": [
+   82.0,
+   60.5
+  ]
+ },
+ "green_SW": {
+  "file": "sedan_green_SW.png",
+  "ground_center_px": [
+   80.0,
+   60.5
+  ]
+ },
+ "tan_NW": {
+  "file": "sedan_tan_NW.png",
+  "ground_center_px": [
+   80.0,
+   57.5
+  ]
+ },
+ "tan_NE": {
+  "file": "sedan_tan_NE.png",
+  "ground_center_px": [
+   82.0,
+   57.5
+  ]
+ },
+ "tan_SE": {
+  "file": "sedan_tan_SE.png",
+  "ground_center_px": [
+   82.0,
+   60.5
+  ]
+ },
+ "tan_SW": {
+  "file": "sedan_tan_SW.png",
+  "ground_center_px": [
+   80.0,
+   60.5
+  ]
+ }
+}

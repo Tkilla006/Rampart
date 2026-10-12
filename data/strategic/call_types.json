@@ -1,0 +1,96 @@
+{
+ "_comment": "Calls for service (design section 8). weight: base frequency. watches: frequency multipliers. map: tactical map template. suspects/civilians: who is on scene. truth: what the call really is, with odds (dispatch information is often wrong). basis: the legal basis officers arrive with (design 6.2). escalates_to: what the call becomes if it sits in the pending queue.",
+ "types": {
+  "415": {
+   "label": "415 Disturbance", "priority": 2, "weight": 26, "watches": {"day": 0.7, "pm": 1.2, "morning": 1.1},
+   "map": "courtyard", "basis": "consensual", "escalates_to": "245", "escalate_minutes": 50, "expire_minutes": 120,
+   "truth": [
+    {"odds": 60, "suspects": [{"look": "suspect_white_tee", "disposition": "passive", "state": "intoxicated", "weapon": null, "hidden": null}], "civilians": 2},
+    {"odds": 25, "suspects": [{"look": "suspect_flannel", "disposition": "active", "state": "panicked", "weapon": null, "hidden": "knife"}], "civilians": 2},
+    {"odds": 15, "suspects": [{"look": "suspect_hoodie", "disposition": "assaultive", "state": "intoxicated", "weapon": "knife", "hidden": null}], "civilians": 1, "wounded": 1, "true_label": "245 Stabbing"}
+   ]
+  },
+  "245": {
+   "label": "245 Assault with a deadly weapon", "priority": 3, "weight": 10, "watches": {"day": 0.6, "pm": 1.2, "morning": 1.3},
+   "map": "street", "basis": "probable_cause", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 40,
+   "truth": [
+    {"odds": 55, "suspects": [{"look": "suspect_hoodie", "disposition": "assaultive", "state": "gang_loyal", "weapon": "knife", "hidden": null}], "civilians": 3, "wounded": 1},
+    {"odds": 30, "suspects": [{"look": "suspect_tracksuit", "disposition": "deadly", "state": "gang_loyal", "weapon": "suspect_pistol", "hidden": null}], "civilians": 3, "wounded": 1},
+    {"odds": 15, "suspects": [{"look": "suspect_flannel", "disposition": "active", "state": "panicked", "weapon": "bat", "hidden": null}], "civilians": 2}
+   ]
+  },
+  "211": {
+   "label": "211 Robbery in progress", "priority": 3, "weight": 9, "watches": {"day": 1.0, "pm": 1.2, "morning": 0.8},
+   "map": "store", "basis": "probable_cause", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 25,
+   "truth": [
+    {"odds": 50, "suspects": [{"look": "suspect_hoodie", "disposition": "deadly", "state": "afraid_of_prison", "weapon": "suspect_pistol", "hidden": null}], "civilians": 3},
+    {"odds": 30, "suspects": [{"look": "suspect_hoodie", "disposition": "deadly", "state": "afraid_of_prison", "weapon": "suspect_revolver", "hidden": null}, {"look": "suspect_tracksuit", "disposition": "active", "state": "afraid_of_prison", "weapon": null, "hidden": "knife"}], "civilians": 3},
+    {"odds": 20, "suspects": [{"look": "suspect_white_tee", "disposition": "active", "state": "panicked", "weapon": null, "hidden": "phone"}], "civilians": 2, "true_label": "Shoplifter, no weapon"}
+   ]
+  },
+  "459": {
+   "label": "459 Burglary", "priority": 2, "weight": 9, "watches": {"day": 1.2, "pm": 0.8, "morning": 1.2},
+   "map": "alley", "basis": "reasonable_suspicion", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 60,
+   "truth": [
+    {"odds": 70, "suspects": [{"look": "suspect_flannel", "disposition": "active", "state": "afraid_of_prison", "weapon": null, "hidden": "stolen_property"}], "civilians": 1},
+    {"odds": 30, "suspects": [{"look": "suspect_hoodie", "disposition": "assaultive", "state": "high", "weapon": null, "hidden": "knife"}], "civilians": 1}
+   ]
+  },
+  "5150": {
+   "label": "5150 Person in crisis", "priority": 2, "weight": 9, "watches": {"day": 1.0, "pm": 1.0, "morning": 1.0},
+   "map": "street", "basis": "reasonable_suspicion", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 90,
+   "truth": [
+    {"odds": 65, "suspects": [{"look": "suspect_white_tee", "disposition": "passive", "state": "mental_health_crisis", "weapon": null, "hidden": null}], "civilians": 3},
+    {"odds": 35, "suspects": [{"look": "suspect_white_tee", "disposition": "active", "state": "mental_health_crisis", "weapon": "knife", "hidden": null}], "civilians": 3}
+   ]
+  },
+  "10851": {
+   "label": "10851 Stolen vehicle", "priority": 1, "weight": 8, "watches": {"day": 0.8, "pm": 1.0, "morning": 1.3},
+   "map": "street", "basis": "probable_cause", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 45,
+   "truth": [
+    {"odds": 75, "suspects": [{"look": "suspect_tracksuit", "disposition": "active", "state": "afraid_of_prison", "weapon": null, "hidden": "spark_baggie"}, {"look": "suspect_white_tee", "disposition": "passive", "state": "high", "weapon": null, "hidden": null}], "civilians": 2},
+    {"odds": 25, "suspects": [{"look": "suspect_tracksuit", "disposition": "deadly", "state": "gang_loyal", "weapon": null, "hidden": "suspect_pistol"}], "civilians": 2}
+   ]
+  },
+  "23152": {
+   "label": "23152 DUI driver", "priority": 1, "weight": 7, "watches": {"day": 0.3, "pm": 0.9, "morning": 1.8},
+   "map": "street", "basis": "reasonable_suspicion", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 30,
+   "truth": [
+    {"odds": 85, "suspects": [{"look": "suspect_flannel", "disposition": "passive", "state": "intoxicated", "weapon": null, "hidden": null}], "civilians": 1},
+    {"odds": 15, "suspects": [{"look": "suspect_flannel", "disposition": "assaultive", "state": "intoxicated", "weapon": null, "hidden": null}], "civilians": 1}
+   ]
+  },
+  "spark": {
+   "label": "Spark user, man acting violently", "priority": 3, "weight": 6, "watches": {"day": 0.6, "pm": 1.1, "morning": 1.4},
+   "map": "alley", "basis": "reasonable_suspicion", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 35,
+   "truth": [
+    {"odds": 70, "suspects": [{"look": "suspect_hoodie", "disposition": "assaultive", "state": "boosted", "weapon": null, "hidden": null}], "civilians": 2},
+    {"odds": 30, "suspects": [{"look": "suspect_hoodie", "disposition": "assaultive", "state": "boosted", "weapon": "knife", "hidden": null}], "civilians": 2}
+   ]
+  },
+  "man_with_gun": {
+   "label": "Man with a gun", "priority": 3, "weight": 7, "watches": {"day": 0.8, "pm": 1.1, "morning": 1.3},
+   "map": "courtyard", "basis": "reasonable_suspicion", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 30,
+   "truth": [
+    {"odds": 45, "suspects": [{"look": "suspect_tracksuit", "disposition": "deadly", "state": "gang_loyal", "weapon": "suspect_pistol", "hidden": null}], "civilians": 3},
+    {"odds": 35, "suspects": [{"look": "suspect_white_tee", "disposition": "active", "state": "panicked", "weapon": "phone", "hidden": null}], "civilians": 3, "true_label": "Man with a phone"},
+    {"odds": 20, "suspects": [{"look": "suspect_hoodie", "disposition": "active", "state": "afraid_of_prison", "weapon": null, "hidden": "suspect_revolver"}], "civilians": 3}
+   ]
+  },
+  "cape_debris": {
+   "label": "Ledger alert: cape fight debris", "priority": 3, "weight": 3, "watches": {"day": 1.0, "pm": 1.0, "morning": 0.7},
+   "map": "debris", "basis": "exigent", "escalates_to": null, "escalate_minutes": 0, "expire_minutes": 30,
+   "truth": [
+    {"odds": 100, "suspects": [{"look": "suspect_flannel", "disposition": "active", "state": "intoxicated", "weapon": null, "hidden": "stolen_property", "looter": true}], "civilians": 4, "wounded": 3}
+   ]
+  }
+ },
+ "districts": {
+  "macarthur_park": {"label": "MacArthur Park and Westlake", "weights": {"spark": 2.0, "211": 1.3, "415": 1.1, "5150": 1.4}},
+  "pico_union": {"label": "Pico-Union", "weights": {"245": 1.6, "man_with_gun": 1.5, "415": 1.3}},
+  "echo_park": {"label": "Echo Park and Angelino Heights", "weights": {"459": 1.8, "23152": 1.2, "415": 0.9}},
+  "historic_filipinotown": {"label": "Historic Filipinotown and Temple-Beaudry", "weights": {"459": 1.2, "5150": 1.2}},
+  "lafayette_park": {"label": "Lafayette Park and Rampart Village", "weights": {"211": 1.7, "10851": 1.3}},
+  "silver_lake": {"label": "Silver Lake (western edge)", "weights": {"459": 1.3, "23152": 1.4, "cape_debris": 1.5}}
+ }
+}

@@ -1,0 +1,104 @@
+{
+ "_comment": "Equipment for tactical play (design 6.4). force: the use-of-force ladder step (1 presence ... 6 firearm). tu: percent of the unit's maximum TU, as in X-COM. range bands are in tiles (one tile is about 1.5 m).",
+ "items": {
+  "glock22": {
+   "name": "Glock 22 (.40)", "kind": "firearm", "weight": 2, "force": 6, "review": "highest",
+   "damage": 28, "damage_type": "ballistic", "capacity": 15, "spare_mags": 2,
+   "malfunction": 0.01,
+   "modes": {
+    "snap": {"label": "Fire", "tu": 22, "aim": 0, "shots": 1},
+    "aimed": {"label": "Aimed shot", "tu": 45, "aim": 20, "shots": 1},
+    "pair": {"label": "Controlled pair", "tu": 35, "aim": 0, "shots": 2, "follow_up": -10}
+   },
+   "ranges": [[1, -10], [5, 0], [10, -15], [99, -30]]
+  },
+  "remington870": {
+   "name": "Remington 870 (buckshot)", "kind": "firearm", "weight": 5, "force": 6, "review": "high",
+   "damage": 42, "damage_type": "ballistic", "capacity": 5, "spare_mags": 1, "spread": true,
+   "malfunction": 0.01,
+   "modes": {
+    "snap": {"label": "Fire", "tu": 28, "aim": 0, "shots": 1},
+    "aimed": {"label": "Aimed shot", "tu": 50, "aim": 20, "shots": 1}
+   },
+   "ranges": [[1, 0], [6, 5], [12, -15], [99, -35]]
+  },
+  "beanbag870": {
+   "name": "Beanbag shotgun", "kind": "less_lethal", "weight": 5, "force": 4, "review": "medium",
+   "damage": 6, "stun": 34, "damage_type": "impact", "capacity": 5, "spare_mags": 1,
+   "min_safe_range": 2, "close_damage": 22, "knockdown": true,
+   "modes": {
+    "snap": {"label": "Fire beanbag", "tu": 28, "aim": 0, "shots": 1},
+    "aimed": {"label": "Aimed beanbag", "tu": 50, "aim": 20, "shots": 1}
+   },
+   "ranges": [[1, -10], [8, 0], [14, -15], [20, -30], [99, -90]]
+  },
+  "taser_x26": {
+   "name": "Taser X26", "kind": "less_lethal", "weight": 1, "force": 4, "review": "medium",
+   "damage": 1, "damage_type": "electric", "capacity": 1, "spare_mags": 0, "max_range": 5,
+   "probe_chance": 75, "incapacitate_turns": 1, "drive_stun": 14,
+   "modes": {
+    "snap": {"label": "Fire Taser", "tu": 25, "aim": 10, "shots": 1}
+   },
+   "ranges": [[1, 0], [3, 0], [5, -15], [99, -100]]
+  },
+  "oc_spray": {
+   "name": "OC spray", "kind": "less_lethal", "weight": 1, "force": 4, "review": "low",
+   "damage": 0, "damage_type": "chemical", "capacity": 3, "spare_mags": 0, "max_range": 2,
+   "blind_turns": 2, "splash": 1,
+   "modes": {
+    "snap": {"label": "Spray OC", "tu": 20, "aim": 20, "shots": 1}
+   },
+   "ranges": [[2, 0], [99, -100]]
+  },
+  "baton": {
+   "name": "Baton", "kind": "melee", "weight": 1, "force": 5, "review": "medium",
+   "damage": 6, "stun": 16, "damage_type": "impact",
+   "modes": {
+    "strike": {"label": "Baton strike", "tu": 22, "aim": 0, "shots": 1}
+   }
+  },
+  "handcuffs": {"name": "Handcuffs (two pairs)", "kind": "restraint", "weight": 1, "uses": 2},
+  "flashlight": {"name": "Flashlight", "kind": "light", "weight": 1, "light_range": 8},
+  "radio": {"name": "Radio", "kind": "radio", "weight": 1},
+  "vest": {"name": "Body armor (vest)", "kind": "armor", "weight": 4, "armor": {"ballistic": 14, "impact": 4, "edged": 6}},
+  "first_aid_kit": {"name": "First aid kit and tourniquet", "kind": "medical", "weight": 2, "uses": 3},
+  "suspect_pistol": {
+   "name": "Pistol (9mm)", "kind": "firearm", "weight": 2, "force": 6,
+   "damage": 26, "damage_type": "ballistic", "capacity": 10, "spare_mags": 0, "malfunction": 0.04,
+   "modes": {
+    "snap": {"label": "Fire", "tu": 25, "aim": 0, "shots": 1},
+    "aimed": {"label": "Aimed shot", "tu": 50, "aim": 15, "shots": 1}
+   },
+   "ranges": [[1, -10], [5, 0], [10, -20], [99, -35]]
+  },
+  "suspect_revolver": {
+   "name": "Revolver (.38)", "kind": "firearm", "weight": 2, "force": 6,
+   "damage": 24, "damage_type": "ballistic", "capacity": 6, "spare_mags": 0, "malfunction": 0.02,
+   "modes": {
+    "snap": {"label": "Fire", "tu": 28, "aim": 0, "shots": 1},
+    "aimed": {"label": "Aimed shot", "tu": 52, "aim": 15, "shots": 1}
+   },
+   "ranges": [[1, -10], [5, 0], [10, -20], [99, -35]]
+  },
+  "knife": {
+   "name": "Kitchen knife", "kind": "melee", "weight": 1, "force": 6,
+   "damage": 20, "damage_type": "edged",
+   "modes": {"strike": {"label": "Stab", "tu": 20, "aim": 10, "shots": 1}}
+  },
+  "bat": {
+   "name": "Baseball bat", "kind": "melee", "weight": 2, "force": 5,
+   "damage": 16, "stun": 10, "damage_type": "impact",
+   "modes": {"strike": {"label": "Swing", "tu": 26, "aim": 0, "shots": 1}}
+  },
+  "phone": {"name": "Cell phone", "kind": "harmless", "weight": 0, "looks_like_weapon": true},
+  "wallet": {"name": "Wallet", "kind": "harmless", "weight": 0, "looks_like_weapon": true},
+  "spark_baggie": {"name": "Baggie of Spark", "kind": "contraband", "weight": 0},
+  "stolen_property": {"name": "Stolen property", "kind": "contraband", "weight": 1}
+ },
+ "officer_loadouts": {
+  "patrol": {"right_hand": "glock22", "belt": ["baton", "oc_spray", "handcuffs", "flashlight", "radio"], "armor": "vest"},
+  "taser": {"right_hand": "glock22", "belt": ["taser_x26", "baton", "oc_spray", "handcuffs", "flashlight", "radio"], "armor": "vest"},
+  "shotgun": {"right_hand": "remington870", "belt": ["glock22", "oc_spray", "handcuffs", "flashlight", "radio"], "armor": "vest"},
+  "beanbag": {"right_hand": "beanbag870", "belt": ["glock22", "oc_spray", "handcuffs", "flashlight", "radio"], "armor": "vest"}
+ }
+}

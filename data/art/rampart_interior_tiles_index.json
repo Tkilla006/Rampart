@@ -1,0 +1,22 @@
+{
+ "linoleum": [
+  0,
+  0
+ ],
+ "wood_floor": [
+  1,
+  0
+ ],
+ "carpet": [
+  2,
+  0
+ ],
+ "concrete_floor": [
+  3,
+  0
+ ],
+ "courtyard_tile": [
+  4,
+  0
+ ]
+}
