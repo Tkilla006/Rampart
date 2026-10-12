@@ -215,6 +215,7 @@ func to_dict() -> Dictionary:
 		"date": date.duplicate(),
 		"minutes": minutes,
 		"watch": watch,
+		"campaign": get_node("/root/Campaign").to_dict() if has_node("/root/Campaign") else {},
 	}
 
 
@@ -230,6 +231,8 @@ func from_dict(d: Dictionary) -> void:
 	date = {"year": int(dd.year), "month": int(dd.month), "day": int(dd.day)}
 	minutes = int(d.get("minutes", minutes))
 	watch = d.get("watch", watch)
+	if has_node("/root/Campaign") and not d.get("campaign", {}).is_empty():
+		get_node("/root/Campaign").from_dict(d.campaign)
 
 
 func save_game(path: String = SAVE_PATH) -> Error:

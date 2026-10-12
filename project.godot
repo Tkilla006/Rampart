@@ -12,13 +12,15 @@ config_version=5
 
 config/name="Rampart"
 config/description="An 18+ pixel-art CRPG: a rookie LAPD officer in 2010, cleaning up after superhumans."
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [autoload]
 
 GameState="*res://scripts/autoload/game_state.gd"
 EventLibrary="*res://scripts/autoload/event_library.gd"
+Campaign="*res://scripts/autoload/campaign.gd"
+Flow="*res://scripts/autoload/flow.gd"
 
 [display]
 

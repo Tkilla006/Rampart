@@ -1,5 +1,5 @@
 extends Node2D
-## Vertical slice: the first car check on a Westlake corner (event ST-06, The Back Seat).
+## Prologue: the first car check on a Westlake corner (event ST-06, The Back Seat).
 ## Walk the block, check the Crown Vic, and the choice you make there is written to GameState.
 
 ## Real seconds per game minute while the world is running.
@@ -72,6 +72,12 @@ func _on_dialogue_finished(event_id: String) -> void:
 	hud.show_help(true)
 	if GameState.is_event_completed(event_id):
 		hud.radio("2A43: Show us in service.")
+		# On to patrol: the division map, if a probation is under way; otherwise back to the title.
+		await get_tree().create_timer(2.5).timeout
+		if Campaign.active:
+			Flow.cityscape()
+		else:
+			Flow.main_menu()
 
 
 func _set_paused(value: bool) -> void:

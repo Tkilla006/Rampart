@@ -873,7 +873,8 @@ func frisk(u: TacUnit, target: TacUnit) -> bool:
 		u.ground_items.append(item)
 	else:
 		say("The pat-down finds nothing.")
-	if basis == "consensual" and target.disposition <= TacUnit.Disposition.PASSIVE and not target.status in [TacUnit.Status.CUFFED]:
+	var suspicion: bool = target.record.get("known_hidden", false) or target.record.get("parole", false) or target.record.get("warrant", false)
+	if basis == "consensual" and not suspicion and target.disposition <= TacUnit.Disposition.PASSIVE and not target.status in [TacUnit.Status.CUFFED]:
 		force_log.append({"actor": u.id, "target": target.id, "item": "frisk", "force": 3, "actual": target.disposition, "perceived": target.disposition, "warned": 0, "no_basis": true, "target_status": target.status_name()})
 	return true
 
@@ -909,6 +910,57 @@ func first_aid(u: TacUnit, target: TacUnit) -> bool:
 		target.fatal_wounds = maxi(0, target.fatal_wounds - 1)
 		say("%s works on %s; the bleeding slows." % [_label(u), _label(target)])
 	_emit({"type": "status", "unit": target.id})
+	return true
+
+
+## Ask a witness what happened (design 6.1): a good statement points out hidden weapons,
+## which gives reasonable suspicion for a pat-down.
+func ask_witness(u: TacUnit, witness: TacUnit) -> bool:
+	if not u.can_act() or witness.side != TacUnit.Side.CIVILIAN or witness.is_down():
+		return false
+	if Vector2(witness.pos - u.pos).length() > CALM_RANGE or not u.spend(8):
+		return false
+	var c := u.officer.skill_chance("interview") if u.officer else 40
+	if not Check.make(c, rng).success:
+		say("%s: \"I didn't see anything.\"" % _label(witness))
+		return true
+	for s in suspects():
+		if s.is_threat() and s.hidden_item != "" and ItemDB.is_threat(s.hidden_item):
+			s.record["known_hidden"] = true
+			if basis == "consensual":
+				basis = "reasonable_suspicion"
+			say("%s: \"The %s has a %s on him.\"" % [_label(witness), s.name.to_lower(), ItemDB.get_item(s.hidden_item).name.to_lower()])
+			return true
+	var label: String = call.get("truth", {}).get("true_label", "")
+	say("%s: \"%s\"" % [_label(witness), "It's not what they told you. " + label if label != "" else "He's been like this all day."])
+	return true
+
+
+## Run a name through dispatch (design 6.1): a warrant hit is instant probable cause.
+func run_name(u: TacUnit, target: TacUnit) -> bool:
+	if not u.can_act() or target.side != TacUnit.Side.SUSPECT or not u.spend(RADIO_TU):
+		return false
+	if target.record.get("ran", false):
+		say("Already ran %s." % _label(target))
+		return true
+	target.record["ran"] = true
+	var c := u.officer.skill_chance("radio_and_dispatch") if u.officer else 50
+	if not Check.make(c, rng).success:
+		say("Dispatch: say again, 2A43? The return is garbled.")
+		target.record["ran"] = false
+		return true
+	if rng.randf() < 0.3:
+		target.record["warrant"] = true
+		target.record["attacked"] = true
+		basis = "probable_cause"
+		say("Dispatch: %s comes back with a felony warrant." % _label(target))
+	elif rng.randf() < 0.3:
+		say("Dispatch: %s is on parole, search conditions." % _label(target))
+		target.record["parole"] = true
+		if basis == "consensual":
+			basis = "reasonable_suspicion"
+	else:
+		say("Dispatch: no wants, no warrants on %s." % _label(target))
 	return true
 
 

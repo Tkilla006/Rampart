@@ -8,6 +8,7 @@ const KNOWN_UNSET_FLAGS := {
 	"saw_camera": "DC-04 reads it as coming from another FTO's passing mention; no event sets it yet",
 }
 
+var campaign: Node
 var failures := 0
 var passes := 0
 var _current := ""
@@ -20,11 +21,13 @@ func _ready() -> void:
 func _run() -> void:
 	var gs: Node = get_node("/root/GameState")
 	var lib: Node = get_node("/root/EventLibrary")
+	campaign = get_node("/root/Campaign")
 	for t in [
 		"checks", "officer_sample_build", "composure_and_stress", "habits", "creation_rules",
 		"game_state", "save_load", "event_library", "scenes", "iso", "street_map", "back_seat_playthrough",
 		"tac_map_movement", "tac_line_of_sight", "tac_cover_and_hit_chance", "tac_reaction_fire",
 		"tac_commands_and_arrest", "tac_less_lethal", "tac_bleeding", "tac_force_review", "tac_factory_and_fuzz",
+		"creation_and_fto", "campaign_calls", "campaign_mission_result", "campaign_month_and_save",
 	]:
 		_current = t
 		gs.new_game()
@@ -600,3 +603,121 @@ func _play_randomly(m: TacMission, max_turns: int) -> void:
 		if m.phase != TacMission.Phase.OVER:
 			m.end_officer_turn()
 		m.take_events()
+
+
+# ---------------------------------------------------------------- strategic (Geoscape layer)
+
+func _new_campaign(fto: String = "ortega") -> void:
+	GameState.new_game(Officer.sample_combat_veteran())
+	campaign.new_campaign({"name": "Test", "rank": "Police Officer I", "role": "player", "background": "combat_veteran",
+		"traits": [], "loadout": "taser"}, fto)
+
+
+func test_creation_and_fto(_gs, _lib) -> void:
+	var c: Dictionary = campaign.creation
+	var CreationScript = load("res://scripts/strategic/creation.gd")
+	expect_eq(CreationScript.assign_fto(c.backgrounds.combat_veteran, "top"), "whitfield", "military backgrounds go to Whitfield")
+	expect_eq(CreationScript.assign_fto(c.backgrounds.college, "top"), "ortega", "top of class goes to Ortega")
+	expect_eq(CreationScript.assign_fto(c.backgrounds.college, "barely"), "arakawa", "barely passed goes to Arakawa")
+	# The design's sample build: Boyle Heights native, combat veteran.
+	var skills: Dictionary = c.academy_baseline.duplicate()
+	for src in [c.backgrounds.combat_veteran.skills, c.origins.la_native.skills]:
+		for k in src:
+			skills[k] = int(skills.get(k, 0)) + int(src[k])
+	expect_eq(int(skills.firearms), 3, "sample build Firearms 3")
+	expect_eq(int(skills.defensive_tactics), 2, "sample build Defensive Tactics 2")
+	expect_eq(int(skills.athletics), 2, "sample build Athletics 2")
+	expect_eq(int(skills.streetwise), 2, "sample build Streetwise 2")
+	expect_eq(int(c.origins.la_native.languages.spanish), 5, "sample build Spanish 5")
+	for key in campaign.people:
+		var r: Dictionary = campaign.people[key]
+		var spent := {}
+		for a in Officer.ATTRIBUTES:
+			expect(int(r.attributes[a]) >= 1 and int(r.attributes[a]) <= 10, "%s %s in range" % [key, a])
+		expect(ItemDB.loadout_ids().has(r.loadout), "%s has a known loadout" % key)
+
+
+func test_campaign_calls(_gs, _lib) -> void:
+	_new_campaign()
+	expect(campaign.active, "probation under way")
+	expect(campaign.is_on_duty(), "Monday 1430 is on duty (PM watch)")
+	expect_eq(campaign.crew, ["player", "ortega"], "you ride with your FTO")
+	var c: Dictionary = campaign.spawn_call("415", "pico_union")
+	expect_eq(c.status, "pending", "a new call is pending")
+	expect(Geometry2D.is_point_in_polygon(c.pos, PackedVector2Array(campaign.DISTRICT_SHAPES.pico_union.map(func(p): return Vector2(p[0], p[1])))), "the call sits inside its district")
+	for i in 55:
+		campaign.advance_minute()
+	expect_eq(c.type, "245", "a 415 left waiting 50 minutes escalates into a 245")
+	for i in 45:
+		campaign.advance_minute()
+	expect_eq(c.status, "taken_by_other", "a call left too long goes to another unit")
+	expect(int(GameState.community.pico_union) < 0, "and the neighborhood notices")
+	var d: Dictionary = campaign.spawn_call("211", "lafayette_park")
+	expect(campaign.respond(int(d.id), 3), "respond Code 3")
+	expect_eq(campaign.car.state, "en_route", "the car is en route")
+	var arrived := [false]
+	campaign.car_arrived.connect(func(_c): arrived[0] = true, CONNECT_ONE_SHOT)
+	for i in 30:
+		campaign.advance_minute()
+		if arrived[0]:
+			break
+	expect(arrived[0], "the car arrives on scene")
+	expect_eq(d.status, "on_scene", "call on scene")
+	var types := {}
+	for i in 300:
+		types[campaign.spawn_call().type] = true
+	expect(types.size() >= 7, "the call generator produces a spread of call types (%d)" % types.size())
+	# Off duty: Friday, no calls come in.
+	GameState.date = {"year": 2010, "month": 3, "day": 5}
+	GameState.minutes = 12 * 60
+	expect(not campaign.is_on_duty(), "Friday noon is off duty")
+	campaign.skip_to_next_shift()
+	expect(campaign.is_on_duty(), "skip to the next shift")
+	expect_eq(campaign.weekday(), 1, "the next shift is Monday")
+
+
+func test_campaign_mission_result(_gs, _lib) -> void:
+	_new_campaign("whitfield")
+	var c: Dictionary = campaign.spawn_call("5150", "macarthur_park")
+	var m: TacMission = campaign.begin_mission(int(c.id))
+	expect_eq(m.officers().size(), 2, "the crew of 2A43 responds")
+	expect_eq(m.backup_pending.size(), 2, "backup units are standing by")
+	expect(campaign.take_pending_mission() == m, "the pending mission is handed to the battlescape")
+	var got := [{}]
+	m.ended.connect(func(r): got[0] = r)
+	m.start()
+	_play_randomly(m, 30)
+	if m.phase != TacMission.Phase.OVER:
+		m.withdraw()
+	var result: Dictionary = got[0]
+	expect(not result.is_empty(), "the mission reports a result")
+	var command_before: int = GameState.reputation.command
+	var notes: Array = campaign.apply_result(result)
+	expect(notes.size() > 0, "the debrief produces notes")
+	expect_eq(campaign.car.state, "busy", "after a call the car is tied up with reports")
+	expect(campaign.get_call(int(c.id)).status in ["cleared", "lost"], "the call is closed")
+	expect(campaign.history.size() == 1, "the log records the call")
+	expect(GameState.reputation.command != command_before or int(result.score) / 30 == 0, "command reputation moves with the score")
+
+
+func test_campaign_month_and_save(_gs, _lib) -> void:
+	_new_campaign()
+	var reports := []
+	campaign.month_report.connect(func(r): reports.append(r))
+	GameState.date = {"year": 2010, "month": 3, "day": 31}
+	GameState.minutes = 23 * 60 + 59
+	campaign.advance_minute()
+	expect_eq(reports.size(), 1, "a monthly review at the turn of the month")
+	expect(reports[0].has("grade") and reports[0].has("budget"), "the review grades the month and sets the budget")
+	campaign.spawn_call("459", "echo_park")
+	campaign.roster.ortega.injured_days = 3
+	var path := "user://test_campaign.json"
+	expect_eq(GameState.save_game(path), OK, "save with the campaign")
+	_new_campaign("arakawa")
+	expect_eq(GameState.load_game(path), OK, "load")
+	expect_eq(campaign.crew, ["player", "ortega"], "crew restored")
+	expect_eq(int(campaign.roster.ortega.injured_days), 3, "injuries restored")
+	expect(campaign.calls.any(func(c): return c.type == "459" and c.pos is Vector2), "calls restored with positions")
+	expect_eq(GameState.date.month, 4, "date restored")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+	campaign.active = false

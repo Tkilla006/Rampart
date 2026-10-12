@@ -26,7 +26,7 @@ func _shot(name: String) -> void:
 
 
 func _run() -> void:
-	var main: Node = load("res://scenes/main.tscn").instantiate()
+	var main: Node = load("res://scenes/prologue.tscn").instantiate()
 	root.add_child(main)
 	await _frames(40)
 	await _shot("01_street")
