@@ -1,0 +1,2727 @@
+{
+ "source": "design/17-scripted-events.md",
+ "categories": {
+  "ST": "Prologue, station and training",
+  "MS": "Main story",
+  "DC": "Department cast",
+  "PL": "Personal life",
+  "CW": "Calendar and world",
+  "SC": "Signature calls",
+  "SW": "Side casework"
+ },
+ "count": 155,
+ "events": [
+  {
+   "id": "ST-01",
+   "category": "ST",
+   "title": "Graduation Day",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "game start, fixed.",
+   "what_happens": "the academy graduation at Elysian Park. Your family sits in the stands in a form set by your origin; your four classmates are in line beside you. A licensed hero flies over uninvited and the cameras turn to him instead of you.",
+   "branches": "who you stand with for the class photo; whether you walk over to Corey Banks, the washout watching from the fence.",
+   "consequences": "starting approval with each classmate; corey_snubbed or corey_kind.",
+   "reads_flags": [],
+   "sets_flags": [
+    "corey_kind",
+    "corey_snubbed"
+   ],
+   "references": []
+  },
+  {
+   "id": "ST-02",
+   "category": "ST",
+   "title": "Reporting to Rampart",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first day, fixed.",
+   "what_happens": "Peg checks you in at the front desk, you find your locker next to Ducks's, and you see Hartley's retirement countdown calendar.",
+   "branches": "respectful, nervous or cocky with Peg; ask why the division left Temple Street.",
+   "consequences": "Peg's starting attitude; asking about Temple Street sets asked_temple_st and makes Peg remember you (needed for MS-17).",
+   "reads_flags": [],
+   "sets_flags": [
+    "asked_temple_st"
+   ],
+   "references": [
+    "MS-17"
+   ]
+  },
+  {
+   "id": "ST-03",
+   "category": "ST",
+   "title": "Meeting Your FTO",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first day; your FTO comes from academy record plus background.",
+   "what_happens": "Ortega says nothing and watches how you check the car; Whitfield is adjusting a small camera in his sun visor; Arakawa has a betting slip on the dashboard and covers it with a clipboard.",
+   "branches": "answer the FTO's first question (\"Why are you here?\") honestly or with what you think they want.",
+   "consequences": "FTO approval baseline; noticing the slip (Perception) sets saw_arakawa_slip.",
+   "reads_flags": [],
+   "sets_flags": [
+    "saw_arakawa_slip"
+   ],
+   "references": []
+  },
+  {
+   "id": "ST-04",
+   "category": "ST",
+   "title": "First Roll Call",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first shift, fixed.",
+   "what_happens": "Sgt. Moreland reads crime trends, a cape alert (Solstice appearing in Hollywood) and a BOLO for a gray Civic. Ducks has written \"BOOT\" next to your name on the board.",
+   "branches": "laugh, fire back, or ignore it.",
+   "consequences": "squad reputation; the gray Civic appears during the shift, and players who listened get a free stop.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-05",
+   "category": "ST",
+   "title": "The Kit Room",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first shift, fixed.",
+   "what_happens": "Lenny asks what you need and watches whether you inspect what he hands you.",
+   "branches": "check the Taser cartridges and shotgun properly, sign without looking, or flatter him.",
+   "consequences": "gear quality tier for Act 1; Lenny approval.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-06",
+   "category": "ST",
+   "title": "The Back Seat",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first car check, fixed.",
+   "what_happens": "under the rear seat is a baggie of Spark left by the previous shift, Calloway's crew.",
+   "branches": "book it as found property, tell your FTO, toss it, or pocket it; or skip the check entirely.",
+   "consequences": "booking it sets calloway_noticed_you; pocketing sets the secret pocketed_spark; skipping the check sets skipped_car_check, which later lets a suspect's contraband turn up in your car (SC-12 variant).",
+   "reads_flags": [],
+   "sets_flags": [
+    "calloway_noticed_you",
+    "pocketed_spark",
+    "skipped_car_check"
+   ],
+   "references": [
+    "SC-12"
+   ]
+  },
+  {
+   "id": "ST-07",
+   "category": "ST",
+   "title": "The First Call",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first shift, fixed.",
+   "what_happens": "a 415 noise complaint in Westlake turns out to be a TV left on in the apartment of an elderly woman who has been dead for days. The smell; the neighbor who never knocked.",
+   "branches": "let your FTO lead, take the lead yourself, or handle the neighbor's guilt. Iron Stomach or a Nerve check decides whether you vomit in the hallway.",
+   "consequences": "first minor trauma point; the death report tutorial; first_body.",
+   "reads_flags": [],
+   "sets_flags": [
+    "first_body"
+   ],
+   "references": []
+  },
+  {
+   "id": "ST-08",
+   "category": "ST",
+   "title": "First Code 7",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first shift, fixed.",
+   "what_happens": "a taco truck on Alvarado. Your FTO explains their philosophy of the job; from the curb you can see the fences of the Hole three blocks south.",
+   "branches": "ask about the Hole, ask about the FTO, or eat in silence.",
+   "consequences": "the Hole appears on your map; Code 7 spot unlocked; FTO approval.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-09",
+   "category": "ST",
+   "title": "The First Report",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "end of first watch, fixed.",
+   "what_happens": "the report-writing tutorial on the dead woman. Your FTO returns it covered in red ink.",
+   "branches": "rewrite it carefully, argue, or copy your FTO's phrasing exactly.",
+   "consequences": "Report Writing practice; copying sets a mild parrot tag that defense attorneys can exploit later.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-10",
+   "category": "ST",
+   "title": "First Foot Pursuit",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first two weeks, first suspect who runs.",
+   "what_happens": "a 10851 suspect bails from a stolen car into Pico-Union backyards.",
+   "branches": "chase alone into a dark yard, set a perimeter, or call the airship.",
+   "consequences": "injury risk; the FTO's lecture either way (\"Chasing alone into a yard is how cops die\"); FTO evaluation.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-11",
+   "category": "ST",
+   "title": "The Wrong Shotgun",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "weeks 3 to 6, conditional on Ducks's hazing being active.",
+   "what_happens": "Ducks has swapped the tape labels on the lethal and beanbag shotguns as a joke.",
+   "branches": "catch it at the kit room (Perception or ST-05 diligence), miss it, or report it.",
+   "consequences": "if missed and the beanbag is needed, a near-fatal mistake on a call, and a critical incident; Ducks's shame feeds DC-20; reporting it costs squad approval and earns Moreland's respect.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "DC-20",
+    "ST-05"
+   ]
+  },
+  {
+   "id": "ST-12",
+   "category": "ST",
+   "title": "First Use-of-Force Review",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first time you go hands-on or use a Taser.",
+   "what_happens": "a sergeant reviews the incident while Whitlow hovers nearby.",
+   "branches": "give a straight account, minimize, or ask for Whitlow first.",
+   "consequences": "Credibility; Whitlow relationship; the incident enters your file.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-13",
+   "category": "ST",
+   "title": "Mid-Training Evaluation",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "week 12, fixed.",
+   "what_happens": "your FTO and Moreland review your performance.",
+   "branches": "accept criticism, push back, or appeal to Benning.",
+   "consequences": "skill points; a poor result extends training by four weeks; a strong result gives you more call choice early.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-14",
+   "category": "ST",
+   "title": "The Shooting Review",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "your first officer-involved shooting.",
+   "what_happens": "you're separated from your partner, your gun is taken for evidence, Whitlow arrives, Force Investigation Division interviews you, and you're booked with Dr. Moss and sent home for 72 hours.",
+   "branches": "talk before the interview, wait for your rep, or call home.",
+   "consequences": "major trauma; Credibility from consistency with your later report; ois_count +1; mandatory PL-20 session.",
+   "reads_flags": [],
+   "sets_flags": [
+    "ois_count"
+   ],
+   "references": [
+    "PL-20"
+   ]
+  },
+  {
+   "id": "ST-15",
+   "category": "ST",
+   "title": "The Ride-Along",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, fixed.",
+   "what_happens": "Lt. Benning assigns a ride-along: Rachel Kim from the accountability cape network.",
+   "branches": "cooperate, stonewall, or show her something real.",
+   "consequences": "Media reputation; first meeting with Rachel (romance stage Acquaintance); Benning watches how you handle press.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-16",
+   "category": "ST",
+   "title": "Cutting the Cord",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "end of field training, fixed.",
+   "what_happens": "your last shift with your FTO. They say what they really think of you; the variant depends on approval and what you know about their secret.",
+   "branches": "thank them, confront them, or say nothing.",
+   "consequences": "the FTO's final rating; new partner assignment for final probation; FTO relationship locks in for Act 3.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "ST-17",
+   "category": "ST",
+   "title": "Probation Ends",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "18 months, fixed.",
+   "what_happens": "the day you become Police Officer II, or the day you don't.",
+   "branches": "determined by your ending route.",
+   "consequences": "final career state feeding the ending (MS-31).",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-31"
+   ]
+  },
+  {
+   "id": "MS-01",
+   "category": "MS",
+   "title": "The Burn Mark",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, weeks 2 to 6, fixed.",
+   "what_happens": "a Spark overdose at the edge of the Hole. The victim, a teenager named Beto, has blistered palms in a spiral pattern no drug produces.",
+   "branches": "note the burns in your report, mention them to your FTO, photograph them, or ignore them; a First Aid check decides whether he lives to reach County.",
+   "consequences": "clue burn_mark; if Beto lives, he vanishes from the hospital two days later (feeds MS-05).",
+   "reads_flags": [],
+   "sets_flags": [
+    "burn_mark"
+   ],
+   "references": [
+    "MS-05"
+   ]
+  },
+  {
+   "id": "MS-02",
+   "category": "MS",
+   "title": "Trucks on Bonnie Brae",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, overnight watch, fixed date one night before MS-08's rehearsal fight (a small Act 1 skirmish).",
+   "what_happens": "three Restora Group trucks parked on a residential street with crews asleep in the cabs. The next afternoon a minor cape fight wrecks that block.",
+   "branches": "field interview the crew, run the plates, or drive past.",
+   "consequences": "clue restora_trucks; a field interview card puts your name in Restora's files, and Castellan knows it by MS-09.",
+   "reads_flags": [],
+   "sets_flags": [
+    "restora_trucks"
+   ],
+   "references": [
+    "MS-08",
+    "MS-09"
+   ]
+  },
+  {
+   "id": "MS-03",
+   "category": "MS",
+   "title": "Not Their Call",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, a domestic call inside the Hole.",
+   "what_happens": "Calloway's gang crew arrives uninvited and takes over the scene, and a squatter is taken away in their car instead of to booking.",
+   "branches": "object, defer, ask your FTO, or note the car number.",
+   "consequences": "clue calloway_hole; Calloway's opinion of you (objecting lowers it, deferring raises it).",
+   "reads_flags": [],
+   "sets_flags": [
+    "calloway_hole"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-04",
+   "category": "MS",
+   "title": "Slow Roll",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, conditional on FTO Arakawa; other FTOs get a variant where a different unit is slow.",
+   "what_happens": "a debris call after a fight. Arakawa takes the long way and stops for coffee. When you arrive, federal agents have already cleared the scene.",
+   "branches": "notice the delay (Perception), say something, or let it go.",
+   "consequences": "clue slow_roll; speaking up lowers Arakawa's approval and raises yours with Ani if you tell her.",
+   "reads_flags": [],
+   "sets_flags": [
+    "slow_roll"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-05",
+   "category": "MS",
+   "title": "The Report Nobody Works",
+   "timing": "missable",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, after MS-01, or a random mother from the Hole if Beto died.",
+   "what_happens": "Beto's mother comes to the front desk to report him missing; the desk officer calls him a runaway.",
+   "branches": "take a full report, take a minimal one, refer her to Father Tomás, or call County yourself.",
+   "consequences": "clue missing_beto; full report unlocks the missing-persons thread early in Act 2; Community reputation in MacArthur Park.",
+   "reads_flags": [],
+   "sets_flags": [
+    "missing_beto"
+   ],
+   "references": [
+    "MS-01"
+   ]
+  },
+  {
+   "id": "MS-06",
+   "category": "MS",
+   "title": "Early Odds",
+   "timing": "missable",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, optional, Kramer's pool board in the break room.",
+   "what_happens": "Kramer's pool already lists odds on a fight \"over Westlake\" a week before it happens.",
+   "branches": "ask Kramer, bet, photograph the board, or ignore it.",
+   "consequences": "clue early_odds; betting adds a debt to Kramer and a small secret.",
+   "reads_flags": [],
+   "sets_flags": [
+    "early_odds"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-07",
+   "category": "MS",
+   "title": "Héctor Ruiz",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, fixed, 415 at a Westlake building.",
+   "what_happens": "a confrontation between tenants and Restora's eviction crew. Héctor Ruiz, the organizer, is loud, funny and stubborn. Restora's papers are legal.",
+   "branches": "enforce the writ, mediate, quietly tell Héctor his rights, or take his flyer.",
+   "consequences": "met_hector and his opinion of you; Restora's opinion; this decides how much his death in MS-08 hurts.",
+   "reads_flags": [],
+   "sets_flags": [
+    "met_hector"
+   ],
+   "references": [
+    "MS-08"
+   ]
+  },
+  {
+   "id": "MS-08",
+   "category": "MS",
+   "title": "The 6th Street Fight",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 climax, fixed (around week 16), during your shift.",
+   "what_happens": "Solstice fights a \"villain\" called Breakwater above Westlake. Disaster footage: falling glass, a collapsing facade, screaming. You evacuate and triage under Critical Time. You can see Breakwater pull his punches, Castellan staffers arriving with a statement before the dust settles, and agents loading two uninjured people from the Hole into an unmarked van. Héctor dies under the facade.",
+   "branches": "who you save first (triage); what you notice (Perception and Power Assessment); whether you confront the agents; whether you reach Héctor before he dies.",
+   "consequences": "major trauma; memory cards for MS-09; clues pulled_punch, castellan_early, van_at_6th; hector_last_words if you reached him.",
+   "reads_flags": [],
+   "sets_flags": [
+    "castellan_early",
+    "hector_last_words",
+    "pulled_punch",
+    "van_at_6th"
+   ],
+   "references": [
+    "MS-09"
+   ]
+  },
+  {
+   "id": "MS-09",
+   "category": "MS",
+   "title": "The Statement",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "after MS-08, fixed.",
+   "what_happens": "a friendly Castellan representative brings coffee and a draft statement for the Ledger review that blames Breakwater for every death.",
+   "branches": "sign it, refuse, rewrite it in your own words, or write your report first and say nothing.",
+   "consequences": "Credibility; Castellan's attitude; your report sets the opening tone of Act 2 (section 9).",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-08"
+   ]
+  },
+  {
+   "id": "MS-10",
+   "category": "MS",
+   "title": "Unavoidable",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "one week after MS-08, fixed, at The Precinct or at home.",
+   "what_happens": "the Ledger board rules Héctor's death \"unavoidable\" on TV. His widow, Lucía Ruiz, is shown outside the hearing. The squad toasts Solstice.",
+   "branches": "drink with them, leave, or say what you saw.",
+   "consequences": "squad reputation; Act 2 begins.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-08"
+   ]
+  },
+  {
+   "id": "MS-11",
+   "category": "MS",
+   "title": "The Door In",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2 opening, conditional on your dominant playthrough style.",
+   "what_happens": "one of five entry scenes. Hot-call chaser: Calloway invites you for a beer after a shooting. Coaster: a squatter kid named Lalo starts talking to you at your favorite Code 7 spot. Community cop: Lucía Ruiz and the tenant group come to you through Garza. Numbers cop: a stop turns up a runner carrying casualty odds on fights that haven't happened. Investigator: Szabo pulls you aside.",
+   "branches": "accept the opening or turn it down; a declined door is replaced by the next style's within two weeks.",
+   "consequences": "first Act 2 thread unlocked; entry_style set.",
+   "reads_flags": [],
+   "sets_flags": [
+    "entry_style"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-12",
+   "category": "MS",
+   "title": "Szabo's Murder Book",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-11 investigator entry or when you share MS-08 clues with Szabo.",
+   "what_happens": "in a booth at a Thai Town diner, Szabo opens a binder labeled with Héctor's name and asks you to walk him through 6th Street.",
+   "branches": "tell everything, tell some, or refuse. Your memory cards and report are compared for consistency.",
+   "consequences": "investigation partner Szabo; Credibility check; szabo_partner.",
+   "reads_flags": [],
+   "sets_flags": [
+    "szabo_partner"
+   ],
+   "references": [
+    "MS-08",
+    "MS-11"
+   ]
+  },
+  {
+   "id": "MS-13",
+   "category": "MS",
+   "title": "The Paper Trail",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, any day off after MS-12 or a tip from Rachel or Joe.",
+   "what_happens": "at the county recorder's office, you find shell companies buying blocks a month before each fight, every one tracing back to Restora.",
+   "branches": "copy the records, photograph them, or ask a clerk who else has been looking.",
+   "consequences": "evidence restora_shells; the clerk mentions a man in a suit asking the same thing (Hollis); costs a day off and a missed personal event.",
+   "reads_flags": [],
+   "sets_flags": [
+    "restora_shells"
+   ],
+   "references": [
+    "MS-12"
+   ]
+  },
+  {
+   "id": "MS-14",
+   "category": "MS",
+   "title": "The Runner's Sheet",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, numbers-cop entry or a later traffic stop.",
+   "what_happens": "a runner for Sarkisian carries a sheet with odds on casualty counts for named dates.",
+   "branches": "book the sheet as evidence (it goes to Calloway's unit), keep a copy, flip the runner, or let him go for a favor.",
+   "consequences": "evidence odds_sheet; Sarkisian learns your name if booked; flipping him creates the informant Toro.",
+   "reads_flags": [],
+   "sets_flags": [
+    "odds_sheet"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-15",
+   "category": "MS",
+   "title": "Whitfield's Tapes",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, Whitfield approval high or you saw his camera (ST-03).",
+   "what_happens": "in Whitfield's garage, years of visor footage: the same \"villains\" losing to Solstice in the same poor blocks.",
+   "branches": "ask for copies, ask him to go public, or warn him to stop recording.",
+   "consequences": "evidence fight_pattern; sets up DC-05 and MS-22.",
+   "reads_flags": [],
+   "sets_flags": [
+    "fight_pattern"
+   ],
+   "references": [
+    "DC-05",
+    "MS-22",
+    "ST-03"
+   ]
+  },
+  {
+   "id": "MS-16",
+   "category": "MS",
+   "title": "The Kid in the Hole",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, coaster entry or after MS-05.",
+   "what_happens": "Lalo, about 12, tells you about the \"white van people\" who come after every fight and take kids who \"got sick.\" He knew Beto.",
+   "branches": "believe him, give him your number, call Children and Family Services, or bring him to Father Tomás.",
+   "consequences": "the missing-persons thread opens; Lalo becomes a protected NPC whose fate is decided in MS-29; calling CFS puts him in the system the agency watches.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-05",
+    "MS-29"
+   ]
+  },
+  {
+   "id": "MS-17",
+   "category": "MS",
+   "title": "Peg's Story",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, asked_temple_st or Peg approval high, and you ask the right question.",
+   "what_happens": "after her shift, Peg tells you about 1998: Temple Street, an off-the-books squad, the night the Hole was leveled, and a 16-year-old who died in their custody. Ortega was on that squad.",
+   "branches": "thank her, ask for names, or promise to keep it quiet.",
+   "consequences": "clue temple_1998; the past thread opens; Peg is now at risk if you're careless.",
+   "reads_flags": [
+    "asked_temple_st"
+   ],
+   "sets_flags": [
+    "temple_1998"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-18",
+   "category": "MS",
+   "title": "Hollis Buys Lunch",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, when two investigation threads are open.",
+   "what_happens": "Special Agent Hollis sits down at your Code 7 table, pays for everyone's food, and talks about your career, your family and your future. He knows things he shouldn't.",
+   "branches": "be polite, be hostile, ask about the van, or take his card.",
+   "consequences": "Federal handlers reputation starts; hollis_card; your partner's opinion of you shifts depending on how you handle it.",
+   "reads_flags": [],
+   "sets_flags": [
+    "hollis_card"
+   ],
+   "references": []
+  },
+  {
+   "id": "MS-19",
+   "category": "MS",
+   "title": "Ortega's Debt",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-17 or MS-18. If Ortega isn't your FTO, you see it from outside.",
+   "what_happens": "Hollis calls in Ortega's old debt: evidence from the 6th Street investigation must disappear from the property room.",
+   "branches": "help her, stop her, document it, or tell Szabo.",
+   "consequences": "Ortega's arc fork (DC-03); evidence loss or recovery; Hollis's attitude.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "DC-03",
+    "MS-17",
+    "MS-18"
+   ]
+  },
+  {
+   "id": "MS-20",
+   "category": "MS",
+   "title": "Wyatt's Fall",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, conditional on Wyatt's arc state.",
+   "what_happens": "one of three: Wyatt overdoses on boosters in his car, is turned by Calloway into a courier, or is caught by Internal Affairs.",
+   "branches": "save him (First Aid), report him, cover for him, or use him as a way into the crew.",
+   "consequences": "if you covered for him earlier, IA names you too; Wyatt alive or dead affects the classmates' endings.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-21",
+   "category": "MS",
+   "title": "Arakawa Exposed",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, conditional on saw_arakawa_slip, slow_roll or Kramer's pool collapse (DC-27).",
+   "what_happens": "Arakawa's debt to Sarkisian and his slow responses come out, through you, through Kramer or through Sarkisian himself.",
+   "branches": "expose him, warn him, or help him get out.",
+   "consequences": "Arakawa fired, flipped as a witness, or dead (Sarkisian's choice if he talks).",
+   "reads_flags": [
+    "saw_arakawa_slip",
+    "slow_roll"
+   ],
+   "sets_flags": [],
+   "references": [
+    "DC-27"
+   ]
+  },
+  {
+   "id": "MS-22",
+   "category": "MS",
+   "title": "Someone at Whitfield's House",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-15, conditional on footage being out of Whitfield's hands or him being noticed.",
+   "what_happens": "Whitfield calls you at 2 a.m.: there's a car outside his house and his wife is scared.",
+   "branches": "go (off duty, alone), call it in, or tell him to call 911.",
+   "consequences": "the footage is saved, stolen or destroyed; Whitfield's family safe or hurt; trauma if it turns violent.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-15"
+   ]
+  },
+  {
+   "id": "MS-23",
+   "category": "MS",
+   "title": "Ani's Report",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, Ani approval medium or higher.",
+   "what_happens": "Ani has written a complaint against Calloway's crew, or against an FTO, and asks you to sign as a witness.",
+   "branches": "sign, refuse, or ask her to wait.",
+   "consequences": "squad reputation drops sharply if you sign; Ani's trust and romance stage; Calloway's opinion.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-24",
+   "category": "MS",
+   "title": "The Threat at Home",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, when Federal or Calloway attention passes a threshold.",
+   "what_happens": "someone in your personal life is targeted: a manifested sibling gets a registration audit, your child's school gets a visitor, your partner's car is broken into, or Danny's garage gets raided.",
+   "branches": "tell them the truth, hide it, move them, or back off the case.",
+   "consequences": "relationship Strain; backing off pauses the investigation for two weeks.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-25",
+   "category": "MS",
+   "title": "The Pico-Union Fight",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2 climax, fixed, but you learn of it in advance if you hold two of odds_sheet, restora_shells, fight_pattern.",
+   "what_happens": "another staged fight is scheduled over Pico-Union.",
+   "branches": "stop it (evacuate the block early, which tips off the conspiracy), document it (be there with a camera and witnesses), or stay away.",
+   "consequences": "casualties, evidence, and which faction now knows you're a threat; Act 3 begins.",
+   "reads_flags": [
+    "fight_pattern",
+    "odds_sheet",
+    "restora_shells"
+   ],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-26",
+   "category": "MS",
+   "title": "The Hero's Front",
+   "timing": "conditional",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, when you move against Solstice.",
+   "what_happens": "Benning stonewalls; arresting a superhuman needs suppression gear and federal cooperation; Castellan floods the media.",
+   "branches": "go through command, go to Rachel, go to a federal prosecutor, or bait Solstice into a filmed confession.",
+   "consequences": "Solstice exposed, protected, or turned on his partners.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-27",
+   "category": "MS",
+   "title": "Blue Wall",
+   "timing": "conditional",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, Calloway's opinion low and he knows you know.",
+   "what_happens": "you call \"officer needs help\" and backup is slow. Then a fake call sends you into an ambush.",
+   "branches": "fight, hold, call Nine directly, or go to Whitlow.",
+   "consequences": "possible death (End of Watch); exposes the crew if you survive with evidence.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-28",
+   "category": "MS",
+   "title": "Hollis's Offer",
+   "timing": "fixed",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, fixed.",
+   "what_happens": "at Griffith Observatory at night, Hollis lays out the truth about the sorting events and offers you a place: a federal badge, protection for your family, silence.",
+   "branches": "accept, refuse, accept as a mole, or record him.",
+   "consequences": "the Recruit ending opens or closes; refusing raises the threat level on MS-24 targets.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-24"
+   ]
+  },
+  {
+   "id": "MS-29",
+   "category": "MS",
+   "title": "The Bulldozers",
+   "timing": "fixed",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, fixed date.",
+   "what_happens": "Restora's crews arrive to clear the Hole, with Calloway's crew as security. Lalo and the squatters have nowhere to go.",
+   "branches": "enforce the order, stall it, get the press there, or get the people out first.",
+   "consequences": "Lalo safe, taken, or lost; Community reputation; final Restora outcome.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-30",
+   "category": "MS",
+   "title": "The Facility",
+   "timing": "missable",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, optional, Recruit or Whistleblower route with temple_1998 and missing_beto.",
+   "what_happens": "records lead to a federal facility in the Mojave. Beto might be inside.",
+   "branches": "go in under Hollis's escort, go in with Szabo, or give the location to Rachel.",
+   "consequences": "the deepest layer exposed or swallowed; Beto's fate.",
+   "reads_flags": [
+    "missing_beto",
+    "temple_1998"
+   ],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-31",
+   "category": "MS",
+   "title": "Last Shift",
+   "timing": "fixed",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "end of probation, fixed.",
+   "what_happens": "the ending plays out as a final shift built from your route: Whistleblower, Company Man, Dirty, Recruit, Partial Justice, Burned Out or End of Watch.",
+   "branches": "small final choices within the route.",
+   "consequences": "career ending locked.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "MS-32",
+   "category": "MS",
+   "title": "Epilogue",
+   "timing": "conditional",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "after MS-31.",
+   "what_happens": "a series of short scenes assembled from relationship states, family safety, trauma, drinking and the fates of the cast.",
+   "branches": "none.",
+   "consequences": "the game ends.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-31"
+   ]
+  },
+  {
+   "id": "DC-01",
+   "category": "DC",
+   "title": "Ortega: The Quiet Test",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first week with Ortega.",
+   "what_happens": "she lets you make a bad decision on a car stop and only speaks afterward, in the car, in two sentences.",
+   "branches": "argue, ask what you should have done, or say nothing.",
+   "consequences": "Ortega approval; asking unlocks her habit retraining.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-02",
+   "category": "DC",
+   "title": "Ortega: Temple Street at 3 a.m",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "morning watch with Ortega, Act 1.",
+   "what_happens": "on a quiet night she drives past the old Temple Street station and parks without a word for a full minute.",
+   "branches": "ask, wait, or pretend not to notice.",
+   "consequences": "ortega_temple; waiting raises approval; asking too early closes her off for a month.",
+   "reads_flags": [],
+   "sets_flags": [
+    "ortega_temple"
+   ],
+   "references": []
+  },
+  {
+   "id": "DC-03",
+   "category": "DC",
+   "title": "Ortega: Confession or Cover",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-17 and MS-19.",
+   "what_happens": "you confront Ortega about 1998 in an empty roll call room.",
+   "branches": "threaten to report her, ask her to testify, or promise to protect her.",
+   "consequences": "Ortega becomes a witness, an enemy, or a casualty (Hollis cleans up liabilities); affects Partial Justice and Whistleblower endings.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-17",
+    "MS-19"
+   ]
+  },
+  {
+   "id": "DC-04",
+   "category": "DC",
+   "title": "Whitfield: The Visor Camera",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 with Whitfield, or saw_camera from another FTO's passing mention.",
+   "what_happens": "he explains why he records everything: a partner who died in 2003 and a report that lied about it.",
+   "branches": "ask him to keep recording you, ask him to stop, or ask for the 2003 footage.",
+   "consequences": "Whitfield trust; unlocks MS-15.",
+   "reads_flags": [
+    "saw_camera"
+   ],
+   "sets_flags": [],
+   "references": [
+    "MS-15"
+   ]
+  },
+  {
+   "id": "DC-05",
+   "category": "DC",
+   "title": "Whitfield: The Footage Decision",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-15.",
+   "what_happens": "Whitfield asks whether he should give everything to Rachel, to IA, or burn it and protect his family.",
+   "branches": "advise one; offer to carry it yourself.",
+   "consequences": "the footage's route; if you carry it, MS-22 targets you instead of him.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-15",
+    "MS-22"
+   ]
+  },
+  {
+   "id": "DC-06",
+   "category": "DC",
+   "title": "Arakawa: The Slip",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 with Arakawa, saw_arakawa_slip.",
+   "what_happens": "he jokes about a \"hobby\" and offers you a piece of a sure bet on Saturday's fight.",
+   "branches": "take it, refuse, or ask how it's sure.",
+   "consequences": "taking it ties you to Sarkisian's books; asking plants arakawa_sure_thing.",
+   "reads_flags": [
+    "saw_arakawa_slip"
+   ],
+   "sets_flags": [
+    "arakawa_sure_thing"
+   ],
+   "references": []
+  },
+  {
+   "id": "DC-07",
+   "category": "DC",
+   "title": "Arakawa: The Collector",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2 with Arakawa.",
+   "what_happens": "a polite man sits down at your Code 7 and tells Arakawa that Victor sends his regards.",
+   "branches": "intervene, ignore, or run the man's plates afterward.",
+   "consequences": "clue sarkisian_collector; Arakawa's humiliation and gratitude.",
+   "reads_flags": [],
+   "sets_flags": [
+    "sarkisian_collector"
+   ],
+   "references": []
+  },
+  {
+   "id": "DC-08",
+   "category": "DC",
+   "title": "Arakawa: The Ask",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, Arakawa's debt critical.",
+   "what_happens": "he asks you to lend him money or to sit on a call for twenty minutes.",
+   "branches": "lend, refuse, report, or offer to get him to Whitlow.",
+   "consequences": "feeds MS-21; a lent sum is gone either way.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-21"
+   ]
+  },
+  {
+   "id": "DC-09",
+   "category": "DC",
+   "title": "Tiana: The Name on the Call",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, Tiana partnered with you on a mutual-aid call.",
+   "what_happens": "the suspect in a Pico-Union robbery is Tiana's younger brother, Marcus. She freezes.",
+   "branches": "let her step away and handle it, cover for her, or arrest him by the book.",
+   "consequences": "Tiana's trust; Marcus's later arc (informant, prison, or turned around); tiana_brother.",
+   "reads_flags": [],
+   "sets_flags": [
+    "tiana_brother"
+   ],
+   "references": []
+  },
+  {
+   "id": "DC-10",
+   "category": "DC",
+   "title": "Wyatt: The Bottle in the Locker",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, locker room.",
+   "what_happens": "you see booster pills in Wyatt's locker; he says they're for his back.",
+   "branches": "believe him, confront him, report him, or tell Ruben or Sam.",
+   "consequences": "knows_wyatt; covering now implicates you in MS-20.",
+   "reads_flags": [],
+   "sets_flags": [
+    "knows_wyatt"
+   ],
+   "references": [
+    "MS-20"
+   ]
+  },
+  {
+   "id": "DC-11",
+   "category": "DC",
+   "title": "Ani: Her Father's Name",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, at The Precinct.",
+   "what_happens": "an old-timer recognizes the name Petrosyan from the Rampart scandal and says something cruel about Ani's father.",
+   "branches": "back her up, stay out of it, or laugh.",
+   "consequences": "Ani approval; squad reputation; her father becomes a source for the past thread if she trusts you.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-12",
+   "category": "DC",
+   "title": "Joe: The Leak",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, after any cape incident you worked.",
+   "what_happens": "footage from your scene appears on a cape network. Joe sold it.",
+   "branches": "cover for him, confront him, or report him; or ask him to leak something on purpose.",
+   "consequences": "Joe's network access (a route for evidence); IA risk for both of you.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-13",
+   "category": "DC",
+   "title": "The First Month",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "end of month one, fixed.",
+   "what_happens": "the class meets at The Precinct and compares FTO horror stories. A drinking game, a confession, a fight.",
+   "branches": "who you sit with, how much you drink, what you admit.",
+   "consequences": "classmate approval; Fatigue next shift; sets the class's tone for Act 2.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-14",
+   "category": "DC",
+   "title": "Lenny: The NDA",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, Lenny approval medium.",
+   "what_happens": "the insurer for the hero who threw a car into Lenny offers a settlement if he signs an NDA. He asks you what to do.",
+   "branches": "take the money, refuse, or get Elliot or a lawyer to look at it.",
+   "consequences": "Lenny's fate; if he refuses, he becomes a witness against the hero's insurer in Act 3.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-15",
+   "category": "DC",
+   "title": "Big Earl: The Diagnosis",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, Big Earl approval medium.",
+   "what_happens": "you find Earl coughing blood in the garage. Cancer; he hasn't told anyone.",
+   "branches": "keep his secret, tell Peg, or drive him to his appointments.",
+   "consequences": "Earl's trust; your time budget.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-16",
+   "category": "DC",
+   "title": "Big Earl: The Last Car",
+   "timing": "conditional",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, after DC-15.",
+   "what_happens": "Earl's last day; he gives you the best car in the fleet and the story of the war he never talks about.",
+   "branches": "listen, share your own (veteran backgrounds unlock a unique scene).",
+   "consequences": "a vehicle bonus; Composure restore; his funeral later becomes a Nine meeting option (DC-19).",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "DC-15",
+    "DC-19"
+   ]
+  },
+  {
+   "id": "DC-17",
+   "category": "DC",
+   "title": "Peg: Your Name in the Pile",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first citizen complaint against you.",
+   "what_happens": "Peg warns you before IA does.",
+   "branches": "thank her, ask her to lose it (she won't), or ask who filed it.",
+   "consequences": "Peg approval; an early warning on every later complaint.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-18",
+   "category": "DC",
+   "title": "Nine: Off the Radio",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Nine's trust medium.",
+   "what_happens": "after a bad call, Nine says something human over the radio, off protocol. Later she calls your phone.",
+   "branches": "talk, flirt, or keep it professional.",
+   "consequences": "romance stage Interest or a friendship; faster backup.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-19",
+   "category": "DC",
+   "title": "Nine: The Face",
+   "timing": "conditional",
+   "acts": [
+    2,
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 2 or 3, at a funeral, Hartley's retirement party, or The Precinct.",
+   "what_happens": "you finally meet Nine in person.",
+   "branches": "recognize her by voice (Perception), introduce yourself, or miss her entirely.",
+   "consequences": "romance can advance past Interest; missing her delays the meeting by a month.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-20",
+   "category": "DC",
+   "title": "Ducks: The Funniest Man",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, conditional; ST-11 consequences increase his shame.",
+   "what_happens": "Ducks's pranks get meaner, he's late twice, and he jokes about his wife leaving.",
+   "branches": "laugh it off, ask how he's really doing, or tell Whitlow.",
+   "consequences": "sets ducks_noticed, the only thing that opens a good outcome in DC-21.",
+   "reads_flags": [],
+   "sets_flags": [
+    "ducks_noticed"
+   ],
+   "references": [
+    "DC-21",
+    "ST-11"
+   ]
+  },
+  {
+   "id": "DC-21",
+   "category": "DC",
+   "title": "Ducks: The Garage",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": "suicide",
+   "trigger": "Act 2, Ducks's arc unresolved.",
+   "what_happens": "Ducks doesn't show up for roll call. If ducks_noticed, you know where he might be and get there in time.",
+   "branches": "talk him down, call for help, sit with him.",
+   "consequences": "Ducks lives and gets help, or dies; his death is a station-wide critical incident and a funeral scene.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-22",
+   "category": "DC",
+   "title": "T-Bone: The Fall Guy",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after a use-of-force incident involving T-Bone and you.",
+   "what_happens": "command needs someone to blame and T-Bone is the obvious choice. You're a witness.",
+   "branches": "testify for him, against him, or stay silent.",
+   "consequences": "T-Bone fired or saved; the neighborhood's trust in your district; Benning's opinion.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-23",
+   "category": "DC",
+   "title": "Hartley: Three Weeks to Go",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "when Hartley's calendar reaches three weeks, fixed.",
+   "what_happens": "Hartley takes a hot call he should have avoided because you or a classmate are in trouble.",
+   "branches": "the call's outcome depends on your speed and choices.",
+   "consequences": "Hartley retires, is wounded and retires broken, or dies; his retirement party is a Nine meeting option.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-24",
+   "category": "DC",
+   "title": "Reyes: The Drunk Hero",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, Reyes approval medium, riding with her on a traffic detail.",
+   "what_happens": "Reyes pulls over a weaving car. The driver is Halcyon's mentor, a mid-ranked hero, drunk. A Castellan lawyer is on the phone within minutes.",
+   "branches": "book him, let him go, or call his handler.",
+   "consequences": "Reyes's career and approval; media risk; the motors path opens if you back her.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-25",
+   "category": "DC",
+   "title": "Garza: The Truce",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, Community reputation medium in Pico-Union.",
+   "what_happens": "Garza is brokering a truce between two gangs before a cape-linked turf war. He needs you as a neutral face at a meeting in a church basement.",
+   "branches": "attend in uniform, attend off duty, or refuse.",
+   "consequences": "truce holds or fails (Pico-Union crime and tension); gang informants unlocked.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-26",
+   "category": "DC",
+   "title": "Calloway: The Recruitment",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "hot-call style or a high-profile arrest.",
+   "what_happens": "Calloway takes you out to a steakhouse and offers a place on his crew.",
+   "branches": "join, decline, or join to investigate.",
+   "consequences": "the Dirty ending opens; access to layer 1; calloway_crew.",
+   "reads_flags": [],
+   "sets_flags": [
+    "calloway_crew"
+   ],
+   "references": []
+  },
+  {
+   "id": "DC-27",
+   "category": "DC",
+   "title": "Kramer: The Pool Collapses",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-06 or a squad bet goes wrong.",
+   "what_happens": "IA asks about the station pool and Kramer panics.",
+   "branches": "help him dump the records, give them to Szabo, or tell IA.",
+   "consequences": "evidence on Arakawa and Sarkisian; Kramer's job.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-06"
+   ]
+  },
+  {
+   "id": "DC-28",
+   "category": "DC",
+   "title": "Whitlow: The Union Ask",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "after any incident where your testimony could hurt another cop.",
+   "what_happens": "Whitlow asks you to \"remember it the way it's written.\"",
+   "branches": "agree, refuse, or ask what he means.",
+   "consequences": "union support in your own reviews; Credibility.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-29",
+   "category": "DC",
+   "title": "Moreland: The Audit",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, consent-decree audit week.",
+   "what_happens": "federal monitors are reviewing stops and reports; Moreland is terrified and asks you to fix a classmate's paperwork.",
+   "branches": "fix it honestly, backdate it, or refuse.",
+   "consequences": "Moreland's approval; a backdated report is a time bomb for court.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-30",
+   "category": "DC",
+   "title": "Benning: The Transfer Offer",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after you start asking questions.",
+   "what_happens": "Benning offers you a cushy transfer to a quiet division.",
+   "branches": "accept (the story continues from outside; harder), decline, or ask who asked her.",
+   "consequences": "Command reputation; an early route to Company Man.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-31",
+   "category": "DC",
+   "title": "Szabo: The Homicide Door",
+   "timing": "conditional",
+   "acts": [
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 3, szabo_partner and a strong case.",
+   "what_happens": "Szabo tells you he can get you into detectives after probation, if you both survive.",
+   "branches": "accept, decline, or ask him to take the case public now.",
+   "consequences": "career path in the epilogue; Szabo's trust.",
+   "reads_flags": [
+    "szabo_partner"
+   ],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "DC-32",
+   "category": "DC",
+   "title": "Miranda Goes Missing",
+   "timing": "missable",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "random, Act 1 or 2.",
+   "what_happens": "the station cat is missing and the whole station, including the hardest cops, searches the lot.",
+   "branches": "find her (Perception) or let someone else.",
+   "consequences": "a light scene; squad approval; Composure restore.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-01",
+   "category": "PL",
+   "title": "Moving In",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "the first off-duty block, fixed; variant by housing.",
+   "what_happens": "Koreatown: Nate helps you carry boxes and hides his product badly. Valley studio: Hank watches from his porch and the Delgados send food upstairs. Parents' place: your old bedroom, unchanged.",
+   "branches": "how you introduce yourself as a cop.",
+   "consequences": "starting neighbor relationships.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-02",
+   "category": "PL",
+   "title": "The Scanner in the Kitchen",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, worrier parent, after any shooting in Rampart makes the news.",
+   "what_happens": "your parent has bought a police scanner and listened all night. They call six times during your shift.",
+   "branches": "answer on shift (FTO disapproval), call back after, or ask them to turn it off.",
+   "consequences": "parent Strain; answering costs FTO approval.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-03",
+   "category": "PL",
+   "title": "The Parent Gets Sick",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, fixed, timed to collide with a court date or big shift.",
+   "what_happens": "a parent is hospitalized. The variant depends on parent type: the cop parent's liver, the proud parent's stroke, the worrier's heart.",
+   "branches": "trade shifts (costs squad favors), miss court (Credibility), or miss the hospital.",
+   "consequences": "family relationship; money; possible regret flag missed_parent.",
+   "reads_flags": [],
+   "sets_flags": [
+    "missed_parent"
+   ],
+   "references": []
+  },
+  {
+   "id": "PL-04",
+   "category": "PL",
+   "title": "Your Sibling in the Holding Cell",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "trouble sibling, Act 1 or 2.",
+   "what_happens": "your sibling is brought into Rampart's holding tank on a drug charge. Everyone at the station knows.",
+   "branches": "stay away, visit, ask for a favor, or make the arrest stick.",
+   "consequences": "squad reputation; sibling relationship; a favor owed to Calloway if you ask him.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-05",
+   "category": "PL",
+   "title": "The Registration Letter",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "manifested sibling, Act 1; again in MS-24.",
+   "what_happens": "your sibling shows you a federal letter demanding they register for assessment after the 6th Street fight.",
+   "branches": "help them register, help them hide, or ask Hollis.",
+   "consequences": "the sibling becomes a target for the agency or protected by you; asking Hollis puts them on his list.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-24"
+   ]
+  },
+  {
+   "id": "PL-06",
+   "category": "PL",
+   "title": "The Good Sibling's Ultimatum",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "good sibling, after you miss three family events.",
+   "what_happens": "at their kid's birthday, your sibling says you're becoming someone they don't know.",
+   "branches": "apologize and mean it, get defensive, or leave early for a shift.",
+   "consequences": "the family drifts or holds; your Composure-restoring visits change.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-07",
+   "category": "PL",
+   "title": "Maya's School Play",
+   "timing": "fixed",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "child option, Act 1 or 2, fixed date that always conflicts with a court subpoena.",
+   "what_happens": "Maya is a tree in her school play.",
+   "branches": "go to court (Credibility kept, Maya hurt), go to the play (case dismissed or warrant for your failure to appear), or ask Elliot or a prosecutor to move the date.",
+   "consequences": "Maya's trust; court outcomes; Jess remembers.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-08",
+   "category": "PL",
+   "title": "Jess's Motion",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "child option, Act 2, if your record, drinking or missed pickups pass a threshold.",
+   "what_happens": "Jess files to reduce your custody.",
+   "branches": "fight it in family court (a second testimony minigame), agree to supervised weekends, or give up.",
+   "consequences": "time with Maya; one of the strongest Composure sources gained or lost.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-09",
+   "category": "PL",
+   "title": "Chris Waits Up",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "married start, first night you come home after a shooting is on the news.",
+   "what_happens": "Chris has been sitting at the kitchen table with the TV muted.",
+   "branches": "tell them what happened, edit it, or say \"It was fine.\"",
+   "consequences": "Trust and Strain; sets the marriage's pattern.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-10",
+   "category": "PL",
+   "title": "The Anniversary",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "married start, a fixed date in Act 2.",
+   "what_happens": "the anniversary dinner you planned collides with an overtime arrest.",
+   "branches": "hand off the arrest (squad cost), cancel, or show up three hours late.",
+   "consequences": "Strain; possible affair temptation flag for Chris or you.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-11",
+   "category": "PL",
+   "title": "Nate's Business",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Koreatown housing, Act 1.",
+   "what_happens": "Nate's pot business moves into the living room right before your sergeant drops by to return a jacket.",
+   "branches": "hide it, tell Nate to move out, or report him.",
+   "consequences": "roommate relationship; a career risk if found.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-12",
+   "category": "PL",
+   "title": "Mrs. Yoon's Upstairs Tenant",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Koreatown housing, Act 1 or 2.",
+   "what_happens": "Mrs. Yoon asks you to \"talk to\" the man upstairs. He's a North Korean defector who's terrified of someone.",
+   "branches": "visit as a neighbor, run him, or tell Mrs. Yoon no.",
+   "consequences": "early link to the Lafayette Park killing (SW-05).",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "SW-05"
+   ]
+  },
+  {
+   "id": "PL-13",
+   "category": "PL",
+   "title": "Hank's War",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Valley housing, combat veteran or trauma track high.",
+   "what_happens": "Hank finds you on the steps at 4 a.m. and tells you about Korea without being asked.",
+   "branches": "listen, share your own, or go inside.",
+   "consequences": "a strong trauma recovery source; Hank's health later becomes a loss if you neglect him.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-14",
+   "category": "PL",
+   "title": "Marco's Jump-In",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Valley housing or Delgado family met, Act 1 to 2.",
+   "what_happens": "Marco, 15, shows up with new tattoos and a split lip. His mother asks you to save him.",
+   "branches": "mentor him, scare him straight, pass him to Garza, or wait.",
+   "consequences": "Marco saved, arrested by you later, or killed in a gang shooting.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-15",
+   "category": "PL",
+   "title": "Danny's Garage",
+   "timing": "fixed",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1, fixed.",
+   "what_happens": "Danny's garage is burglarized and he calls you instead of 911. He hates that he did.",
+   "branches": "handle it as a friend, send it through channels, or find the thief yourself off duty.",
+   "consequences": "Danny's trust; a personal call precedent.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-16",
+   "category": "PL",
+   "title": "Danny's Arrest",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, fixed.",
+   "what_happens": "your squad arrests Danny for receiving stolen parts. Calloway's crew made the arrest, and Danny says it's a setup because of you.",
+   "branches": "help him, stay out of it, or investigate the crew.",
+   "consequences": "Danny's fate; evidence that Calloway is targeting your people.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-17",
+   "category": "PL",
+   "title": "Corey Banks Resurfaces",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, after MS-09.",
+   "what_happens": "Corey is now private security for Castellan. He buys you a drink and offers information, or warns you off.",
+   "branches": "trust him, use him, or report him.",
+   "consequences": "an inside source on Castellan or a leak against you, depending on ST-01.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-09",
+    "ST-01"
+   ]
+  },
+  {
+   "id": "PL-18",
+   "category": "PL",
+   "title": "The Old Crew's Wedding",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, fixed.",
+   "what_happens": "your old friends' wedding. Someone does coke in the bathroom and everyone looks at you.",
+   "branches": "ignore it, leave, or make a scene.",
+   "consequences": "the old crew stays or drifts away.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-19",
+   "category": "PL",
+   "title": "Nadia: Someone She Knows",
+   "timing": "conditional",
+   "acts": [
+    2,
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Nadia at Serious, Act 2 or 3.",
+   "what_happens": "you bring a gunshot victim into County, and it's Nadia's cousin. He dies while you're both in the room.",
+   "branches": "stay, give her space, or tell her what happened on the call.",
+   "consequences": "the relationship's late-game test; Trust or a break.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-20",
+   "category": "PL",
+   "title": "The Psychologist",
+   "timing": "missable",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "mandatory after ST-14; optional any time.",
+   "what_happens": "sessions with Dr. Lena Moss. She asks about sleep, drinking and the moment you can't stop seeing.",
+   "branches": "open up, give minimal answers, or lie.",
+   "consequences": "trauma triggers weakened; a note in your file; squad stigma if it's known.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "ST-14"
+   ]
+  },
+  {
+   "id": "PL-21",
+   "category": "PL",
+   "title": "Elliot: The Cross",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first time Elliot cross-examines you.",
+   "what_happens": "he takes your report apart, politely, then buys you a coffee afterward.",
+   "branches": "take it badly, laugh, or ask how he found the hole.",
+   "consequences": "romance Acquaintance; your Report Writing improves if you listen.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-22",
+   "category": "PL",
+   "title": "Rachel: The Story",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Rachel at Dating, Act 2.",
+   "what_happens": "Rachel's network is about to run a conspiracy story with your name as a source.",
+   "branches": "ask her to kill it, let it run, or give her more.",
+   "consequences": "Media reputation; Trust; the Whistleblower route accelerates or stalls.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-23",
+   "category": "PL",
+   "title": "Halcyon: The Staged Fight",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Halcyon at Dating, Act 2.",
+   "what_happens": "you realize Halcyon was paid to lose a fight in MS-25 or an earlier one.",
+   "branches": "confront, protect, or use Halcyon as a witness.",
+   "consequences": "Halcyon's arc: testimony, flight, or recruitment by Hollis.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-25"
+   ]
+  },
+  {
+   "id": "PL-24",
+   "category": "PL",
+   "title": "Sam: Last Call",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Sam relationship and drinking level high.",
+   "what_happens": "Sam refuses to serve you and tells you why.",
+   "branches": "get angry, take the cab home, or ask for help.",
+   "consequences": "the drinking track turns or deepens; Sam's late-game test.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-25",
+   "category": "PL",
+   "title": "Confession",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "faith-compatible character, after a critical incident.",
+   "what_happens": "Father Tomás hears your confession, including what you can't tell anyone else. He also knows the families of the missing.",
+   "branches": "confess fully, partly, or walk out.",
+   "consequences": "moral injury relief; a link to the missing thread.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "PL-26",
+   "category": "PL",
+   "title": "The Bottle",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "alcohol or pill dependence crosses the crisis threshold.",
+   "what_happens": "you show up to roll call impaired, or wake up with your gun not where you left it.",
+   "branches": "admit it to Whitlow or Moss, hide it, or get a sick day.",
+   "consequences": "treatment arc, a disciplinary arc, or a disaster on the next hot call.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-01",
+   "category": "CW",
+   "title": "Easter Sunday Quake",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "April 4, 2010 (the real Baja California earthquake felt across LA).",
+   "what_happens": "buildings sway in Rampart; old brick apartments in Pico-Union crack, and people flood the streets thinking a cape fight has started.",
+   "branches": "check on the elderly tenants, manage panicked crowds, or answer the gas-leak calls.",
+   "consequences": "Community reputation; one older building condemned, and Restora bids on it.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-02",
+   "category": "CW",
+   "title": "May Day",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "May 1, fixed.",
+   "what_happens": "the immigrant rights march through MacArthur Park, on the anniversary of the 2007 clash between police and marchers there. Command is nervous; residents remember.",
+   "branches": "crowd posture (gear up, stand back, or walk with the march), handling a provocateur.",
+   "consequences": "Tension and Trust in MacArthur Park for months.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-03",
+   "category": "CW",
+   "title": "Lakers Night",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "June 17, 2010 (Game 7 of the NBA Finals).",
+   "what_happens": "celebrations around the Downtown arena turn into vandalism and fires; Rampart units go on mutual aid.",
+   "branches": "make arrests, hold the line, or protect a vendor's truck.",
+   "consequences": "overtime pay; Fatigue; a use-of-force review if you go hands-on.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-04",
+   "category": "CW",
+   "title": "June Gloom Rain",
+   "timing": "missable",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "first rain of the year, random.",
+   "what_happens": "oil on the roads, crash after crash, a car in the Hollywood Freeway trench.",
+   "branches": "triage crash scenes in order.",
+   "consequences": "a long, grim shift; a traffic fatality report.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-05",
+   "category": "CW",
+   "title": "Fourth of July",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "July 4, fixed.",
+   "what_happens": "fireworks and celebratory gunfire all night. Veterans roll trauma checks repeatedly; shots-fired calls are nearly impossible to tell apart.",
+   "branches": "take every call, ask for a desk night (FTO judges you), or push through.",
+   "consequences": "the worst trigger night of the year; possible misperception episode.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-06",
+   "category": "CW",
+   "title": "The Erasure Anniversary",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "August, fixed.",
+   "what_happens": "the anniversary of Meridian's destruction of a Japanese city in 1945. Anti-super protests in Silver Lake; Japanese-American families hold vigils in Little Tokyo; cape networks run tributes.",
+   "branches": "protest detail posture.",
+   "consequences": "Tension; sets up SW-07.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "SW-07"
+   ]
+  },
+  {
+   "id": "CW-07",
+   "category": "CW",
+   "title": "Ledger Rankings Night",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "quarterly, fixed.",
+   "what_happens": "new Ledger rankings air on every TV in The Precinct. Solstice climbs; the squad bets.",
+   "branches": "bet, react, or leave.",
+   "consequences": "a recurring mood beat; in Act 2 you can compare ranking jumps to fight dates (fight_pattern support).",
+   "reads_flags": [],
+   "sets_flags": [
+    "fight_pattern"
+   ],
+   "references": []
+  },
+  {
+   "id": "CW-08",
+   "category": "CW",
+   "title": "The Heat Wave",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "late September (the record heat of September 27, 2010).",
+   "what_happens": "triple-digit heat; tempers, domestics, heatstroke, a child in a hot car (SC-02).",
+   "branches": "manage your own Fatigue; choose which calls to prioritize.",
+   "consequences": "the busiest shift block of the year.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "SC-02"
+   ]
+  },
+  {
+   "id": "CW-09",
+   "category": "CW",
+   "title": "Santa Ana Smoke",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "fall, fixed.",
+   "what_happens": "fires in the hills; ash on Rampart's cars; evacuees in shelters; a looter in an evacuated neighborhood.",
+   "branches": "mutual aid choices.",
+   "consequences": "overtime; respiratory penalty for a shift.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-10",
+   "category": "CW",
+   "title": "Solstice's Biopic Premiere",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, fixed, Hollywood.",
+   "what_happens": "mutual aid at the premiere. Solstice walks the carpet with Héctor's widow protesting across the street.",
+   "branches": "crowd control, protect the protesters, or get a moment with Solstice.",
+   "consequences": "Media; Castellan attention; a clue if you overhear a staffer.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-11",
+   "category": "CW",
+   "title": "Halloween",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "October 31, fixed.",
+   "what_happens": "half of Echo Park is dressed as heroes; a kid in a Breakwater costume gets beaten up by fans.",
+   "branches": "who you arrest.",
+   "consequences": "a light-to-dark tonal beat; Media.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-12",
+   "category": "CW",
+   "title": "Día de los Muertos",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "November 1 to 2, fixed.",
+   "what_happens": "altars across Pico-Union and Westlake, including one for Héctor and one for the missing from the Hole.",
+   "branches": "visit off duty, leave something, or keep walking.",
+   "consequences": "Community Trust; the families of the missing talk to you if you came.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-13",
+   "category": "CW",
+   "title": "Thanksgiving Shift",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Thanksgiving, fixed.",
+   "what_happens": "you're working; your family eats without you. The station potluck; a domestic call at a house set for twenty.",
+   "branches": "call home during Code 7 or not.",
+   "consequences": "family Strain; squad bonding.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-14",
+   "category": "CW",
+   "title": "Christmas Eve",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "December 24, fixed.",
+   "what_happens": "loneliness calls, a robbery at a toy store, an old man who calls 911 just to talk.",
+   "branches": "stay with him or clear the call.",
+   "consequences": "Composure restore or a missed hot call.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "CW-15",
+   "category": "CW",
+   "title": "New Year's Eve",
+   "timing": "fixed",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "December 31, fixed.",
+   "what_happens": "celebratory gunfire; a falling bullet wounds a child on a rooftop in Pico-Union.",
+   "branches": "find the shooter, give first aid, or calm the crowd.",
+   "consequences": "a critical incident; community anger toward the gang it blames.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-01",
+   "category": "SC",
+   "title": "The Overpass",
+   "timing": "missable",
+   "acts": [],
+   "content_warning": "suicide",
+   "trigger": "random, any act.",
+   "what_happens": "a man stands on the Hollywood Freeway overpass rail. A cape network van is already filming.",
+   "branches": "talk him down (De-escalation), wait for SWAT negotiators, or go hands-on.",
+   "consequences": "life saved or lost; trauma; Media.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-02",
+   "category": "SC",
+   "title": "The Hot Car",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": "child harm",
+   "trigger": "CW-08 heat wave.",
+   "what_happens": "a toddler locked in a car outside a Westlake swap meet.",
+   "branches": "break the window now, find the owner, or wait for fire. Time is everything.",
+   "consequences": "child lives or dies; arrest of the parent or not.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "CW-08"
+   ]
+  },
+  {
+   "id": "SC-03",
+   "category": "SC",
+   "title": "The Gentle Giant",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2.",
+   "what_happens": "a laundromat worker manifests Tier 2 strength mid-shift and can't stop breaking things; he's terrified. Agents are 20 minutes out.",
+   "branches": "calm him, Taser him, or get him out before the agents arrive.",
+   "consequences": "he registers, he's taken (another missing), or he runs; links to MS-16.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-16"
+   ]
+  },
+  {
+   "id": "SC-04",
+   "category": "SC",
+   "title": "Abuela's Gun",
+   "timing": "missable",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "random, Act 1 or 2.",
+   "what_happens": "an elderly woman holds a revolver on a burglar in her kitchen; the burglar is her grandson.",
+   "branches": "who you disarm first; whether you arrest him.",
+   "consequences": "family outcome; a revolver that shouldn't exist.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-05",
+   "category": "SC",
+   "title": "The Dead Man's Phone",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "any homicide scene.",
+   "what_happens": "the victim's phone keeps ringing. The screen says \"Mamá.\"",
+   "branches": "answer, let it ring, or hand it to the detectives.",
+   "consequences": "trauma; a later death notification (SC-15) if you answer.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "SC-15"
+   ]
+  },
+  {
+   "id": "SC-06",
+   "category": "SC",
+   "title": "The Taco Truck",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "your favorite Code 7 spot, Act 2.",
+   "what_happens": "an armed robbery at your truck while you're eating, out of uniform shirt.",
+   "branches": "draw, de-escalate, or let it go and follow.",
+   "consequences": "the owner's loyalty; crossfire risk.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-07",
+   "category": "SC",
+   "title": "Downed Hero",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2.",
+   "what_happens": "a low-ranked hero crashes through an apartment roof in Pico-Union. The family below is dead. He's hurt and begs you not to write it the way it happened.",
+   "branches": "help him, write it straight, or call his handler.",
+   "consequences": "a Ledger attribution case; Castellan or a rival PR firm comes calling.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-08",
+   "category": "SC",
+   "title": "The Lake",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, morning watch.",
+   "what_happens": "a body in Echo Park Lake among the lotus beds. It's a Restora surveyor.",
+   "branches": "scene management; who you call first.",
+   "consequences": "a clue to the conspiracy's internal tensions.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-09",
+   "category": "SC",
+   "title": "The Fake Cop",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Community reputation in Pico-Union medium.",
+   "what_happens": "residents tell you about a \"cop\" extorting undocumented families. He's an ex-security guard with a costume badge, and Calloway knows him.",
+   "branches": "sting, arrest, or follow the money.",
+   "consequences": "community trust; a link to Calloway.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-10",
+   "category": "SC",
+   "title": "The Hoarder",
+   "timing": "missable",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "random.",
+   "what_happens": "a welfare check on a hoarder's apartment turns into a fire.",
+   "branches": "go in, wait, or pull out the neighbors.",
+   "consequences": "smoke injury; a rescued or lost life.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-11",
+   "category": "SC",
+   "title": "The Quinceañera",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Saturday PM watch.",
+   "what_happens": "a quinceañera in a rented hall; a rival gang shows up; a fight breaks out in front of the birthday girl.",
+   "branches": "de-escalate, arrest, or wait for backup.",
+   "consequences": "Pico-Union Tension.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-12",
+   "category": "SC",
+   "title": "The Planted Bag",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "skipped_car_check, or Calloway hostility in Act 2.",
+   "what_happens": "a suspect you transported says the drugs found in your back seat aren't his. He's right.",
+   "branches": "book it anyway, admit the gap, or investigate who left it.",
+   "consequences": "Credibility in court; evidence of a setup.",
+   "reads_flags": [
+    "skipped_car_check"
+   ],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-13",
+   "category": "SC",
+   "title": "The Defector at the Desk",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2, Cold War beat.",
+   "what_happens": "a man walks into Rampart's lobby and asks Peg for asylum in broken English. He's a Soviet merchant sailor off a ship in San Pedro. Agents arrive within an hour.",
+   "branches": "speak his language (bloc-origin bonus), stall the agents, or hand him over.",
+   "consequences": "the agency's interest in you; a Cold War thread.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-14",
+   "category": "SC",
+   "title": "The Boosted Kid",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Spark activity high.",
+   "what_happens": "a Spark-boosted teenager lifts the front of a car and won't stop shouting; the Taser fails.",
+   "branches": "wait him out, use the beanbag, or shoot.",
+   "consequences": "one of the hardest use-of-force calls in the game.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-15",
+   "category": "SC",
+   "title": "The Notification",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "after any death you worked.",
+   "what_happens": "you knock on a door to tell a mother her son is dead.",
+   "branches": "how you say it; whether you stay.",
+   "consequences": "trauma; the family remembers you.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-16",
+   "category": "SC",
+   "title": "Officer Needs Help",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, fixed; the officer depends on who is alive and close to you.",
+   "what_happens": "a classmate or squadmate goes down in Pico-Union and the radio goes quiet.",
+   "branches": "how you arrive (Code 3 driving), triage, and whether you chase the shooter.",
+   "consequences": "a death or survival among the cast; a funeral scene.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-17",
+   "category": "SC",
+   "title": "The Barricaded Veteran",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2.",
+   "what_happens": "a proxy-war veteran barricades in his Pico-Union apartment during a flashback. Your background changes everything: a veteran PC can talk to him in his own language.",
+   "branches": "talk, wait for SWAT, or go in.",
+   "consequences": "he lives or dies; trauma for veteran PCs.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-18",
+   "category": "SC",
+   "title": "The Stalker",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "Halcyon relationship or Silver Lake district.",
+   "what_happens": "an obsessed fan has been living in a hero's garage in Silver Lake.",
+   "branches": "arrest, mental health hold, or warn.",
+   "consequences": "a hero's gratitude or a lawsuit.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-19",
+   "category": "SC",
+   "title": "The River",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "a vehicle pursuit, Act 2.",
+   "what_happens": "a pursuit ends in the concrete Los Angeles River channel with a car on its roof.",
+   "branches": "climb down or wait.",
+   "consequences": "the suspect lives or dies; a pursuit review.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-20",
+   "category": "SC",
+   "title": "The Lost Boy",
+   "timing": "missable",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "random, any act.",
+   "what_happens": "a six-year-old lost at MacArthur Park; his mother speaks only K'iche'.",
+   "branches": "find a translator, search, or call it in.",
+   "consequences": "a pure good call: reunion, Composure restore and Community Trust.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SC-21",
+   "category": "SC",
+   "title": "The Ghost Block",
+   "timing": "conditional",
+   "acts": [
+    2,
+    3
+   ],
+   "content_warning": null,
+   "trigger": "Act 2 or 3.",
+   "what_happens": "a night call inside the Hole's oldest ruins; someone has been living in a collapsed building since 1998. He remembers Temple Street.",
+   "branches": "bring him out, talk, or leave him.",
+   "consequences": "a witness to 1998.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-01",
+   "category": "SW",
+   "title": "Echo Park Burglar: Opening",
+   "timing": "conditional",
+   "acts": [
+    1
+   ],
+   "content_warning": null,
+   "trigger": "Act 1.",
+   "what_happens": "burglaries in newly renovated Victorians; nothing valuable taken, only family photos left behind by previous owners.",
+   "branches": "canvass, stake out, or ask Garza.",
+   "consequences": "the case opens.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-02",
+   "category": "SW",
+   "title": "Echo Park Burglar: The Old Tenant",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "case board linked.",
+   "what_happens": "the burglar is a woman evicted from the house years ago, collecting what's left of her family.",
+   "branches": "arrest, warn, or help her get the photos legally.",
+   "consequences": "Community reputation in Echo Park; a Restora-style eviction pattern.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-03",
+   "category": "SW",
+   "title": "Filipinotown Scam: Opening",
+   "timing": "conditional",
+   "acts": [
+    1,
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 1 or 2.",
+   "what_happens": "elders lose savings to callers posing as Ledger victim-compensation officials.",
+   "branches": "interview victims (Tagalog helps), trace calls.",
+   "consequences": "the case opens.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-04",
+   "category": "SW",
+   "title": "Filipinotown Scam: The Office",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "case board linked.",
+   "what_happens": "the scam runs out of an office that also handles real Castellan compensation claims.",
+   "branches": "raid it, use it, or hand it to Szabo.",
+   "consequences": "a money-thread clue; elders' savings recovered or not.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-05",
+   "category": "SW",
+   "title": "Lafayette Park Killing: Opening",
+   "timing": "fixed",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2, fixed, or earlier via PL-12.",
+   "what_happens": "a North Korean defector is found dead in Lafayette Park. Federal agents take over within hours.",
+   "branches": "push back, cooperate, or keep your notes.",
+   "consequences": "the case opens; Korean community trust.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "PL-12"
+   ]
+  },
+  {
+   "id": "SW-06",
+   "category": "SW",
+   "title": "Lafayette Park Killing: The Assassin",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "case board linked.",
+   "what_happens": "the killer is an Eastern-bloc agent, and the agency let it happen to protect an asset.",
+   "branches": "arrest the agent, trade the information to Hollis, or give it to Rachel.",
+   "consequences": "Federal reputation; Cold War fallout.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-07",
+   "category": "SW",
+   "title": "Silver Lake Protests: Opening",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "after CW-06.",
+   "what_happens": "anti-super activists and hero fans clash weekly; the LAPD stands between them.",
+   "branches": "posture and arrests.",
+   "consequences": "the case opens; Tension in Silver Lake.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "CW-06"
+   ]
+  },
+  {
+   "id": "SW-08",
+   "category": "SW",
+   "title": "Silver Lake Protests: The Provocateur",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "case board linked.",
+   "what_happens": "one of the most violent \"activists\" is paid by Castellan to make the movement look dangerous.",
+   "branches": "expose him, arrest him quietly, or use him.",
+   "consequences": "Media; a Castellan clue.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-09",
+   "category": "SW",
+   "title": "Pico-Union Arsonist: Opening",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2.",
+   "what_happens": "buildings on Restora's purchase list keep burning, at night, empty.",
+   "branches": "stake out, interview, or test burn evidence (Power Assessment).",
+   "consequences": "the case opens.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-10",
+   "category": "SW",
+   "title": "Pico-Union Arsonist: The Firestarter",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "case board linked.",
+   "what_happens": "the arsonist is Beto's older sister, a fire manifester, burning buildings so Restora can't profit and hiding from the agency.",
+   "branches": "arrest her, hide her, or bring her in as a witness.",
+   "consequences": "a witness against the agency or another one taken.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-11",
+   "category": "SW",
+   "title": "Runaway in the Hole: Opening",
+   "timing": "conditional",
+   "acts": [
+    2
+   ],
+   "content_warning": null,
+   "trigger": "Act 2.",
+   "what_happens": "a Pico-Union family begs you to find their daughter, who ran to the Hole.",
+   "branches": "search alone, ask Lalo, or ask Calloway.",
+   "consequences": "the case opens; the missing-persons thread advances.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": []
+  },
+  {
+   "id": "SW-12",
+   "category": "SW",
+   "title": "Runaway in the Hole: After the Fight",
+   "timing": "conditional",
+   "acts": [],
+   "content_warning": null,
+   "trigger": "case board linked, after a fight.",
+   "what_happens": "she was there the night of a fight and hasn't been seen since; a van was seen.",
+   "branches": "tell the family the truth, tell them she ran further, or keep looking.",
+   "consequences": "the family's trust; a direct lead into MS-30.",
+   "reads_flags": [],
+   "sets_flags": [],
+   "references": [
+    "MS-30"
+   ]
+  }
+ ]
+}

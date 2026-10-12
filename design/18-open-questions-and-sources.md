@@ -1,4 +1,4 @@
-# 17. Open questions and sources
+# 18. Open questions and sources
 
 These decisions are still open; the rest of the document assumes the defaults shown.
 

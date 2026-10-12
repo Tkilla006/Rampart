@@ -1,0 +1,162 @@
+{
+ "fire_hydrant": {
+  "size": [
+   16,
+   23
+  ],
+  "ground_anchor_px": [
+   7,
+   19.0
+  ]
+ },
+ "streetlight_r0": {
+  "size": [
+   65,
+   183
+  ],
+  "ground_anchor_px": [
+   7,
+   180.0
+  ]
+ },
+ "streetlight_r1": {
+  "size": [
+   65,
+   183
+  ],
+  "ground_anchor_px": [
+   58,
+   180.0
+  ]
+ },
+ "streetlight_r2": {
+  "size": [
+   65,
+   213
+  ],
+  "ground_anchor_px": [
+   58,
+   210.0
+  ]
+ },
+ "streetlight_r3": {
+  "size": [
+   65,
+   213
+  ],
+  "ground_anchor_px": [
+   7,
+   210.0
+  ]
+ },
+ "palm_tree": {
+  "size": [
+   94,
+   204
+  ],
+  "ground_anchor_px": [
+   42,
+   201.0
+  ]
+ },
+ "trash_can": {
+  "size": [
+   18,
+   29
+  ],
+  "ground_anchor_px": [
+   9,
+   25.0
+  ]
+ },
+ "dumpster_r0": {
+  "size": [
+   68,
+   64
+  ],
+  "ground_anchor_px": [
+   33,
+   47.0
+  ]
+ },
+ "dumpster_r1": {
+  "size": [
+   68,
+   60
+  ],
+  "ground_anchor_px": [
+   33,
+   43.0
+  ]
+ },
+ "bus_bench_r0": {
+  "size": [
+   58,
+   50
+  ],
+  "ground_anchor_px": [
+   29,
+   36.0
+  ]
+ },
+ "bus_bench_r1": {
+  "size": [
+   58,
+   54
+  ],
+  "ground_anchor_px": [
+   29,
+   40.0
+  ]
+ },
+ "bus_bench_r2": {
+  "size": [
+   58,
+   54
+  ],
+  "ground_anchor_px": [
+   29,
+   40.0
+  ]
+ },
+ "bus_bench_r3": {
+  "size": [
+   58,
+   50
+  ],
+  "ground_anchor_px": [
+   29,
+   36.0
+  ]
+ },
+ "traffic_cone": {
+  "size": [
+   22,
+   25
+  ],
+  "ground_anchor_px": [
+   11,
+   19.0
+  ]
+ },
+ "chainlink_fence_r0": {
+  "size": [
+   38,
+   61
+  ],
+  "ground_anchor_px": [
+   19.5,
+   51.8
+  ]
+ },
+ "chainlink_fence_r1": {
+  "size": [
+   38,
+   61
+  ],
+  "ground_anchor_px": [
+   18.5,
+   51.8
+  ]
+ }
+}

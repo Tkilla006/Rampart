@@ -1,0 +1,46 @@
+{
+  "NW": {
+    "file": "crown_vic_NW.png",
+    "size": [
+      162,
+      99
+    ],
+    "ground_center_px": [
+      80.0,
+      57.5
+    ]
+  },
+  "NE": {
+    "file": "crown_vic_NE.png",
+    "size": [
+      162,
+      99
+    ],
+    "ground_center_px": [
+      82.0,
+      57.5
+    ]
+  },
+  "SE": {
+    "file": "crown_vic_SE.png",
+    "size": [
+      162,
+      100
+    ],
+    "ground_center_px": [
+      82.0,
+      60.5
+    ]
+  },
+  "SW": {
+    "file": "crown_vic_SW.png",
+    "size": [
+      162,
+      100
+    ],
+    "ground_center_px": [
+      80.0,
+      60.5
+    ]
+  }
+}

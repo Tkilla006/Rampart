@@ -1,0 +1,408 @@
+{
+ "name": "Westlake intersection",
+ "district": "macarthur_park",
+ "size": [
+  15,
+  15
+ ],
+ "tile_units": 32,
+ "tiles": [
+  [
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "lane_dash_y",
+   "double_yellow_y",
+   "lane_dash_y",
+   "asphalt",
+   "curb_NW",
+   "sidewalk",
+   "alley",
+   "alley"
+  ],
+  [
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "asphalt",
+   "double_yellow_y",
+   "asphalt",
+   "asphalt",
+   "curb_NW",
+   "sidewalk",
+   "alley",
+   "alley"
+  ],
+  [
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "asphalt",
+   "double_yellow_y",
+   "asphalt",
+   "asphalt",
+   "curb_NW",
+   "sidewalk",
+   "alley",
+   "alley"
+  ],
+  [
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "parkway_grass",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "lane_dash_y",
+   "double_yellow_y",
+   "lane_dash_y",
+   "asphalt",
+   "curb_NW",
+   "sidewalk",
+   "alley",
+   "alley"
+  ],
+  [
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "asphalt",
+   "double_yellow_y",
+   "asphalt",
+   "asphalt",
+   "curb_NW",
+   "sidewalk",
+   "alley",
+   "alley"
+  ],
+  [
+   "curb_SW",
+   "curb_SW",
+   "curb_red_SW",
+   "curb_red_SW",
+   "curb_SW",
+   "sidewalk",
+   "crosswalk_y",
+   "crosswalk_y",
+   "crosswalk_y",
+   "crosswalk_y",
+   "crosswalk_y",
+   "sidewalk",
+   "curb_SW",
+   "curb_SW",
+   "curb_SW"
+  ],
+  [
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt"
+  ],
+  [
+   "lane_dash_x",
+   "asphalt",
+   "asphalt",
+   "lane_dash_x",
+   "asphalt",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "lane_dash_x",
+   "asphalt_cracked",
+   "asphalt"
+  ],
+  [
+   "double_yellow_x",
+   "double_yellow_x",
+   "double_yellow_x",
+   "manhole",
+   "double_yellow_x",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "double_yellow_x",
+   "double_yellow_x",
+   "double_yellow_x"
+  ],
+  [
+   "lane_dash_x",
+   "asphalt",
+   "asphalt",
+   "lane_dash_x",
+   "asphalt",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "lane_dash_x",
+   "asphalt",
+   "asphalt"
+  ],
+  [
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "asphalt",
+   "crosswalk_x",
+   "asphalt",
+   "asphalt",
+   "asphalt"
+  ],
+  [
+   "curb_NE",
+   "curb_NE",
+   "curb_NE",
+   "curb_NE",
+   "curb_NE",
+   "sidewalk",
+   "crosswalk_y",
+   "crosswalk_y",
+   "crosswalk_y",
+   "crosswalk_y",
+   "crosswalk_y",
+   "sidewalk",
+   "curb_NE",
+   "storm_drain_NE",
+   "curb_NE"
+  ],
+  [
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "lane_dash_y",
+   "double_yellow_y",
+   "lane_dash_y",
+   "asphalt",
+   "curb_NW",
+   "dirt",
+   "rubble_heavy",
+   "rubble"
+  ],
+  [
+   "sidewalk",
+   "sidewalk",
+   "sidewalk_stained",
+   "sidewalk",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "asphalt",
+   "double_yellow_y",
+   "asphalt_patched",
+   "asphalt",
+   "curb_NW",
+   "dirt_weeds",
+   "dirt",
+   "rubble_heavy"
+  ],
+  [
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "sidewalk",
+   "curb_SE",
+   "asphalt",
+   "asphalt",
+   "double_yellow_y",
+   "asphalt",
+   "asphalt",
+   "curb_NW",
+   "rubble",
+   "dirt_weeds",
+   "dirt"
+  ]
+ ],
+ "props": [
+  {
+   "name": "palm_tree",
+   "x": 1.5,
+   "y": 4.5,
+   "radius": 6
+  },
+  {
+   "name": "palm_tree",
+   "x": 4.5,
+   "y": 1.5,
+   "radius": 6
+  },
+  {
+   "name": "palm_tree",
+   "x": 12.2,
+   "y": 4.5,
+   "radius": 6
+  },
+  {
+   "name": "palm_tree",
+   "x": 4.5,
+   "y": 13.5,
+   "radius": 6
+  },
+  {
+   "name": "palm_tree",
+   "x": 14.2,
+   "y": 4.5,
+   "radius": 6
+  },
+  {
+   "name": "streetlight_r1",
+   "x": 4.6,
+   "y": 4.6,
+   "radius": 4
+  },
+  {
+   "name": "streetlight_r3",
+   "x": 11.4,
+   "y": 11.4,
+   "radius": 4
+  },
+  {
+   "name": "fire_hydrant",
+   "x": 3.2,
+   "y": 5.3,
+   "radius": 5
+  },
+  {
+   "name": "bus_bench_r2",
+   "x": 1.9,
+   "y": 4.4,
+   "radius": 14
+  },
+  {
+   "name": "trash_can",
+   "x": 12.4,
+   "y": 3.2,
+   "radius": 6
+  },
+  {
+   "name": "dumpster_r1",
+   "x": 13.6,
+   "y": 1.4,
+   "radius": 22
+  },
+  {
+   "name": "chainlink_fence_r0",
+   "x": 12.5,
+   "y": 12.1,
+   "radius": 0
+  },
+  {
+   "name": "chainlink_fence_r0",
+   "x": 14.5,
+   "y": 12.1,
+   "radius": 0
+  },
+  {
+   "name": "chainlink_fence_r1",
+   "x": 12.1,
+   "y": 12.5,
+   "radius": 0
+  },
+  {
+   "name": "chainlink_fence_r1",
+   "x": 12.1,
+   "y": 13.5,
+   "radius": 0
+  },
+  {
+   "name": "chainlink_fence_r1",
+   "x": 12.1,
+   "y": 14.5,
+   "radius": 0
+  },
+  {
+   "name": "traffic_cone",
+   "x": 13.2,
+   "y": 11.6,
+   "radius": 5
+  },
+  {
+   "name": "traffic_cone",
+   "x": 13.9,
+   "y": 11.6,
+   "radius": 5
+  },
+  {
+   "name": "traffic_cone",
+   "x": 4.5,
+   "y": 10.4,
+   "radius": 5
+  }
+ ],
+ "vehicles": [
+  {
+   "name": "crown_vic",
+   "facing": "NW",
+   "x": 2.6,
+   "y": 10.25,
+   "half_extents": [
+    1.85,
+    0.7
+   ],
+   "interact": "ST-06"
+  }
+ ],
+ "blocked": [
+  [
+   12.0,
+   12.0,
+   15.0,
+   15.0
+  ]
+ ],
+ "spawn": {
+  "x": 3.3,
+  "y": 11.45,
+  "facing": "up"
+ }
+}

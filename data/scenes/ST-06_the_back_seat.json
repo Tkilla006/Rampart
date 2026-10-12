@@ -1,0 +1,60 @@
+{
+ "event": "ST-06",
+ "title": "The Back Seat",
+ "start": "inspect",
+ "nodes": {
+  "inspect": {
+   "speaker": "",
+   "text": "Car check. The log sheet says the last unit in this Crown Vic was Calloway's gang car. Inspect the car and search the back seat for what the last shift left.",
+   "choices": [
+    {"text": "Lift the rear seat and search it.", "next": "found"},
+    {"text": "Sign the sheet. The car looks fine.", "next": "skipped",
+     "effects": [{"set_flag": "skipped_car_check"}, {"complete_event": "ST-06", "outcome": "skipped"}]}
+   ]
+  },
+  "found": {
+   "speaker": "",
+   "portrait": "surprised",
+   "text": "Wedged against the seat frame: a small baggie of Spark.",
+   "choices": [
+    {"text": "Book it as found property.", "next": "booked",
+     "effects": [{"set_flag": "calloway_noticed_you"}, {"minutes": 30}, {"complete_event": "ST-06", "outcome": "booked"}]},
+    {"text": "Tell your FTO.", "next": "told_fto",
+     "effects": [{"minutes": 5}, {"complete_event": "ST-06", "outcome": "told_fto"}]},
+    {"text": "Toss it down the storm drain.", "next": "tossed",
+     "effects": [{"minutes": 2}, {"complete_event": "ST-06", "outcome": "tossed"}]},
+    {"text": "Pocket it.", "next": "pocketed",
+     "effects": [{"set_flag": "pocketed_spark"}, {"complete_event": "ST-06", "outcome": "pocketed"}]}
+   ]
+  },
+  "skipped": {
+   "speaker": "",
+   "portrait": "neutral",
+   "text": "You sign the inspection sheet without lifting the seat.",
+   "end": true
+  },
+  "booked": {
+   "speaker": "",
+   "portrait": "neutral",
+   "text": "You fill out the property report on the trunk lid. Somebody in the gang unit will see your name on it.",
+   "end": true
+  },
+  "told_fto": {
+   "speaker": "FTO",
+   "text": "Good. I'll handle it.",
+   "end": true
+  },
+  "tossed": {
+   "speaker": "",
+   "portrait": "neutral",
+   "text": "It goes down the storm drain on the corner. No paperwork, no questions.",
+   "end": true
+  },
+  "pocketed": {
+   "speaker": "",
+   "portrait": "shaken",
+   "text": "It goes into your vest pocket. Nobody saw. You think.",
+   "end": true
+  }
+ }
+}
