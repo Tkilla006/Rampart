@@ -59,7 +59,7 @@ func _ready() -> void:
 	mid.add_theme_constant_override("separation", 2)
 	row.add_child(mid)
 	_weapon_btn = _button(mid, "Weapon", _on_weapon)
-	_weapon_btn.custom_minimum_size = Vector2(150, 0)
+	_weapon_btn.custom_minimum_size = Vector2(120, 0)
 	_belt_box = HBoxContainer.new()
 	mid.add_child(_belt_box)
 	var grid := GridContainer.new()
@@ -145,10 +145,25 @@ func _label(parent: Node, text: String) -> Label:
 	return l
 
 
+var _compact := {}
+
+
+## Compact buttons: the shared theme's padding is too wide for an X-COM control panel.
 func _button(parent: Node, text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
 	b.add_theme_font_size_override("font_size", 8)
+	if _compact.is_empty():
+		var t := UiKit.theme()
+		for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+			var sb: StyleBoxFlat = t.get_stylebox(state, "Button").duplicate()
+			sb.content_margin_left = 2
+			sb.content_margin_right = 2
+			sb.content_margin_top = 1
+			sb.content_margin_bottom = 1
+			_compact[state] = sb
+	for state in _compact:
+		b.add_theme_stylebox_override(state, _compact[state])
 	b.focus_mode = Control.FOCUS_NONE
 	b.pressed.connect(cb)
 	parent.add_child(b)

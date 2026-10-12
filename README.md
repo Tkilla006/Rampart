@@ -4,61 +4,88 @@ Rampart (working title) is an 18+ pixel-art CRPG in the Baldur's Gate tradition:
 
 Built in Godot 4.3 (GDScript, Compatibility renderer).
 
-![The car check on a Westlake corner](docs/art/slice_car_check.png)
+
+## What's built
+
+Rampart plays as a port of *UFO: Enemy Unknown* and *Xenonauts*, with all-original code and art (see [design section 19](design/19-xcom-port.md)):
+
+- **Division map (Geoscape):** compressed time. Calls for service appear across six districts, waiting calls escalate or go to other units, and your car responds Code 2 or Code 3. Dated 2010 events show up as news, and a monthly review grades your work and sets the budget.
+- **Battlescape:** isometric and turn-based, with time units, kneeling, snap and aimed fire, controlled pairs, reaction fire, fog of war, night and streetlights, walls with doors and windows, and cover that stops rounds or doesn't. Missed rounds travel on through glass and drywall and into bystanders.
+- **Police procedure:** commands, de-escalation, records checks, witnesses, pat-downs, cuffs and first aid. Taser, OC spray, beanbag and baton. Legal basis is tracked, and every use of force is reviewed.
+- **People:** suspects with dispositions and states who surrender, flee, draw hidden weapons or shoot. Civilians freeze, hide and get hurt. Composure and Habits take over when officers panic.
+- **Station:** the roster from section 11, the crew of 2A43, backup units, kit room loadouts, range time and the field manual.
+- **Character creation:** origin, background, academy record, attributes, traits, flaw and Ironman. Your record and background assign your training officer.
+- **Prologue:** the first car check (event ST-06, The Back Seat).
+- **Data:** all 155 scripted events from section 17.
+
+| | |
+|---|---|
+| ![Division map](docs/art/shot_cityscape.png) | ![Battlescape](docs/art/shot_battlescape.png) |
+| ![Police action menu](docs/art/shot_action_menu.png) | ![Character creation](docs/art/shot_creation.png) |
 
 ## Running it
 
 1. Open the folder in Godot 4.3 or later and press Play, or run `godot --path .`
-2. Move with WASD, the arrow keys, a stick or a mouse click. Hold Shift to run. Press E to interact and Space to pause.
+2. Start with **New probation**, or use **Quick battle** to play any call type on its own.
 
-The current build is the first vertical slice. You start on a Westlake corner at PM watch roll call on Saturday, July 10, 2010. You walk to the Crown Vic and do the first car check (event ST-06, The Back Seat). Whatever you choose is written to the game state as the flags the design calls for.
+### Controls
+
+| Where | Control |
+|---|---|
+| Division map | Click a call, then press Respond Code 2 or Code 3. The time buttons run the clock |
+| Battlescape: moving | Click an officer to select it, click ground to move (the cost shows at the cursor), right-click to turn |
+| Battlescape: people | Left- or right-click a person for the police action menu |
+| Battlescape: firing | Choose a mode from the weapon button, then click a target |
+| Battlescape: keys | K kneel, N next officer, C center, R reload, P bag evidence, I gear, Enter end turn, WASD or arrows pan, mouse wheel zoom |
+| Prologue | WASD or arrows or click to move, E interact, Space pause |
 
 ## Tests
 
 ```
-godot --headless --path . res://tests/run_tests.tscn
+godot --headless --path . res://tests/run_tests.tscn       # rules, campaign, data; exits 1 on failure
+godot --headless --path . -s res://tests/check_scripts.gd  # loads every script and scene
+xvfb-run godot --path . -s res://tests/capture_game.gd -- /tmp/shots   # screenshots of every screen
 ```
 
-These tests cover the check rules and the Composure, stress and Habit rules. They also cover character creation limits, game state, effects, save and load, the event library and scene graphs, the isometric projection, collision on the street map, and a full playthrough of the car check. The runner exits with code 1 on any failure.
-
-To render screenshots of the slice, you need a display or `xvfb-run`:
-
-```
-godot --path . -s res://tests/capture_screens.gd -- /path/to/output
-```
+The tests cover:
+- **Rules:** checks, Composure, Habits and creation rules; tactical movement costs, line of sight, cover and hit chance.
+- **Tactical play:** reaction fire, commands and arrests, less-lethal options, bleeding and the use-of-force review. Random play runs across every call type and outcome.
+- **Campaign:** call generation, escalation, dispatch, mission results, the monthly review, and saving and loading.
+- **Data:** the event library and scene graphs.
 
 ## Project layout
 
 | Path | What it holds |
 |---|---|
 | `design/` | The game design document, one file per section |
-| `scripts/systems/` | Rules: percentile checks, the officer's attributes, skills and Composure, Habits |
-| `scripts/autoload/` | `GameState` (flags, reputation, relationships, clock, save/load) and `EventLibrary` (the 155 scripted events and playable scenes) |
-| `scripts/world/` | Isometric projection, the street map builder, the officer on foot |
-| `scripts/ui/` | HUD, with tunnel vision at low Composure, and the dialogue box, with portraits and visible odds |
-| `scenes/` | `main.tscn`, the vertical slice |
-| `data/events/events.json` | All 155 scripted events from section 17 as data, generated from the design document |
-| `data/scenes/` | Playable scene graphs, one per built event |
-| `data/maps/` | District blocks: tiles, props, vehicles, blockers, spawn |
-| `art/` | Generated sprites, portraits, tiles, props and the Crown Vic |
-| `tools/` | Procedural art scripts, the event and map builders |
-| `tests/` | Headless test runner and screenshot capture |
+| `scripts/systems/` | Percentile checks, the officer's attributes, skills and Composure, Habits |
+| `scripts/tactical/` | Battlescape rules (`mission.gd`), map, units, pathfinding, AI, the map generator |
+| `scripts/tactical/view/` | Battlescape rendering, the control panel, unit sprites |
+| `scripts/strategic/` | Main menu, character creation, division map, station, ending |
+| `scripts/autoload/` | `GameState`, `EventLibrary`, `Campaign` (the strategic layer), `Flow` (screens) |
+| `scripts/world/`, `scripts/prologue.gd` | The prologue street scene |
+| `data/tactical/items.json` | Equipment, fire modes, ranges, loadouts |
+| `data/strategic/` | Call types and their hidden truths, the Rampart officers, character creation |
+| `data/events/events.json` | All 155 scripted events, generated from the design |
+| `art/` | Generated sprites, portraits, tiles, walls, props and cars |
+| `tools/` | Procedural art scripts and the event, map and tileset builders |
+| `tests/` | Test runner, script checker, screenshot capture |
 
 ## Tools
 
 All art is procedural. To rebuild it, you need Python 3 with Pillow, numpy and scipy:
 
 ```
-tools/build_art.sh          # officer sprite sheet and SpriteFrames, portraits, street tiles and TileSet, props, Crown Vic
+tools/build_art.sh              # officers, portraits, people, street tiles, walls, interiors, props, cars, tilesets
 python3 tools/build_events.py   # design/17-scripted-events.md -> data/events/events.json
-python3 tools/make_map.py       # the Westlake test intersection -> data/maps/westlake_intersection.json
+python3 tools/make_map.py       # the prologue's Westlake corner -> data/maps/westlake_intersection.json
 ```
 
-The design document is the source of truth for events. Edit `design/17-scripted-events.md`, then rerun `build_events.py`. The builder checks the event counts per category and every cross-reference between events.
+The design document is the source of truth for events. Edit `design/17-scripted-events.md`, then rerun `build_events.py`.
 
 ### Adding a playable event
 
-Add a JSON file to `data/scenes/` with `event`, `start` and `nodes`. Each node has `text`, an optional `speaker` and `portrait` (a rookie expression), and either `choices`, `next` or `end: true`. A choice can carry `effects`, `requires` conditions, and a `check` (`{"skill": "search", "modifiers": 0}` with `on_success` and `on_failure`). Its odds are shown on the button. The tests validate every scene graph. They also check that a scene sets only the flags its event lists in the design.
+Add a JSON file to `data/scenes/` with `event`, `start` and `nodes`. Each node has `text`, an optional `speaker` and `portrait`, and either `choices`, `next` or `end: true`. A choice can carry `effects`, `requires` conditions, and a `check` (`{"skill": "search", "modifiers": 0}` with `on_success` and `on_failure`). The tests validate every scene graph.
 
 ## Game Design Document
 
@@ -82,3 +109,4 @@ Oct 11, 2026 · @Claude T
 16. [Progression, difficulty, content and presentation](design/16-progression-difficulty-content-and-presentation.md)
 17. [Scripted events](design/17-scripted-events.md)
 18. [Open questions and sources](design/18-open-questions-and-sources.md)
+19. [The X-COM port](design/19-xcom-port.md)

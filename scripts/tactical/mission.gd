@@ -476,7 +476,8 @@ func _stray_round(u: TacUnit, target: TacUnit, weapon_id: String, chance: int) -
 			outcome = "hits %s" % _label(victim)
 			_emit({"type": "shot", "unit": u.id, "from": u.pos, "to": c, "kind": "firearm", "hit": true, "item": weapon_id})
 			_apply_hit(u, victim, weapon_id)
-			stray_rounds.append({"by": u.id, "cell": c, "outcome": outcome, "victim": victim.id})
+			if u.is_officer():
+				stray_rounds.append({"by": u.id, "cell": c, "outcome": outcome, "victim": victim.id})
 			say("%s misses %s; the round %s." % [_label(u), _label(target), outcome])
 			return
 	_emit({"type": "shot", "unit": u.id, "from": u.pos, "to": landed, "kind": "firearm", "hit": false, "item": weapon_id})

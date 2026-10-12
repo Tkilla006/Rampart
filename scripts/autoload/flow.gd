@@ -16,6 +16,9 @@ var skirmish := false
 
 
 func _ready() -> void:
+	# UI under CanvasLayers does not inherit the window theme, so fold ours into the default theme.
+	ThemeDB.get_default_theme().merge_with(UiKit.theme())
+	ThemeDB.get_default_theme().default_font_size = 9
 	get_tree().root.theme = UiKit.theme()
 	Campaign.game_over.connect(func(_e): go(ENDING))
 
