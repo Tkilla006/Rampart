@@ -24,6 +24,6 @@ Adults only. The game depicts graphic violence, death, addiction, trauma, police
 
 ## Format
 
-- **Genre:** Single-player isometric CRPG with real-time-with-pause exploration and turn-based Critical Time for dangerous moments.
+- **Genre:** Single-player isometric CRPG: Baldur's Gate-style exploration, dialogue and party play in real time with pause, and XCOM-style turn-based tactics (Critical Time) when a situation turns dangerous.
 - **Length target:** One probation (about 18 in-game months) per playthrough; strong replay value from origin, background, FTO and ending variety.
 - **Platform:** PC first; controller support for direct movement.

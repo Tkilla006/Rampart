@@ -23,10 +23,12 @@ static func override_chance(nerve: int, skill: int, habit_strength: int, stress_
 	return nerve * 5 + skill * 10 - habit_strength * 10 - stress_penalty
 
 
-## Firearms hit chance (design section 6). Penalties are passed as positive numbers.
-static func hit_chance(perception: int, firearms: int, aim: int = 0, stress: int = 0, movement: int = 0,
-		cover: int = 0, light: int = 0, range_penalty: int = 0) -> int:
-	return perception * 5 + firearms * 10 + aim - stress - movement - cover - light - range_penalty
+## Firearms hit chance (design section 6.3):
+## (Perception x 5) + (Firearms x 10) + aim + range - cover - stress - movement - light.
+## Range is a signed modifier for the range band; the other penalties are passed as positive numbers.
+static func hit_chance(perception: int, firearms: int, aim: int = 0, range_mod: int = 0, cover: int = 0,
+		stress: int = 0, movement: int = 0, light: int = 0) -> int:
+	return perception * 5 + firearms * 10 + aim + range_mod - cover - stress - movement - light
 
 
 ## Resolves a check against a given d100 roll (1-100). Kept separate from randomness so it can be tested.

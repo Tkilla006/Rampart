@@ -61,7 +61,8 @@ func test_checks(_gs, _lib) -> void:
 	expect_eq(Check.display_odds(150), 94, "displayed odds cap at 94")
 	expect_eq(Check.display_odds(-20), 0, "displayed odds floor at 0")
 	expect_eq(Check.override_chance(7, 3, 2, 10), 35 + 30 - 20 - 10, "override formula")
-	expect_eq(Check.hit_chance(6, 3, 20, 30, 20), 30 + 30 + 20 - 30 - 20, "hit formula")
+	# Aim +20, a range modifier of -10, half cover (-20), stress 30, moving 20.
+	expect_eq(Check.hit_chance(6, 3, 20, -10, 20, 30, 20), 30 + 30 + 20 - 10 - 20 - 30 - 20, "hit formula")
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 42
 	for i in 200:

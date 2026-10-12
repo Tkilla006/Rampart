@@ -69,7 +69,7 @@ Oct 11, 2026 · @Claude T
 3. [Character creation](design/03-character-creation.md)
 4. [Attributes, skills and checks](design/04-attributes-skills-and-checks.md)
 5. [Habits, stress and trauma](design/05-habits-stress-and-trauma.md)
-6. [Combat](design/06-combat.md)
+6. [Encounters: interactions and tactical combat](design/06-encounters-interactions-and-tactical-combat.md)
 7. [Combat by background, FTO and partner](design/07-combat-by-background-fto-and-partner.md)
 8. [Shifts, calls and playthrough styles](design/08-shifts-calls-and-playthrough-styles.md)
 9. [Report writing](design/09-report-writing.md)
