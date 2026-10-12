@@ -70,6 +70,9 @@ func _fill_roster() -> void:
 			tag = " [backup]"
 		if int(r.get("injured_days", 0)) > 0:
 			tag += " (injured %dd)" % int(r.injured_days)
+		elif int(r.get("off_days", 0)) > 0:
+			tag += " (day off)"
+		tag += "  " + Campaign.energy_label(k)
 		var display: String = GameState.officer.display_name if k == "player" else r.name
 		_roster.add_item("%s%s" % [display, tag])
 		_keys.append(k)
@@ -96,6 +99,9 @@ func _show(i: int) -> void:
 		lines.append("Approval of you: %d" % appr)
 	if int(r.get("injured_days", 0)) > 0:
 		lines.append("Light duty for %d more days." % int(r.injured_days))
+	var mood := "happy" if int(r.get("happiness", 7)) >= int(r.get("happiness_threshold", 4)) + 2 else ("unhappy" if int(r.get("happiness", 7)) < int(r.get("happiness_threshold", 4)) else "getting by")
+	lines.append("Energy: %s (%d/6). Mood: %s.%s%s" % [Campaign.energy_label(k), int(r.get("energy", 6)), mood,
+		" Drinks after shifts." if r.get("drinker", false) else "", " Often late." if int(r.get("laziness", 0)) >= 2 else ""])
 	_detail.text = "\n".join(lines)
 	_loadout.select(ItemDB.loadout_ids().find(r.get("loadout", "patrol")))
 

@@ -1,0 +1,98 @@
+{
+ "call_type": "man_with_gun",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "toy"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     2
+    ]
+   },
+   "start": "gun"
+  },
+  {
+   "when": {
+    "truth": [
+     1
+    ]
+   },
+   "start": "phone"
+  }
+ ],
+ "nodes": {
+  "toy": {
+   "text": "The man with a gun is a kid with a plastic water pistol, orange tip and all. His mother arrives at a run.",
+   "options": [
+    {
+     "text": "Explain to both of them how close that was.",
+     "success": {
+      "result": "warn"
+     }
+    }
+   ]
+  },
+  "gun": {
+   "text": "A man in the courtyard with his hand at his waistband, scanning the windows. The 911 caller is on the line saying he's got a gun.",
+   "options": [
+    {
+     "text": "Take cover and give commands.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Approach and talk.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Wait for backup.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "phone": {
+   "text": "A man pacing the courtyard, shouting into something black in his hand. It could be a phone.",
+   "options": [
+    {
+     "text": "Look before you do anything.",
+     "success": {
+      "next": "phone_look"
+     },
+     "skill": "streetwise",
+     "failure": {
+      "result": "tactical",
+      "note": "You can't tell, and he's coming toward you."
+     }
+    },
+    {
+     "text": "Draw and give commands.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "phone_look": {
+   "text": "It's a phone. He's fighting with his landlord about an eviction. He has no idea anyone called the police.",
+   "options": [
+    {
+     "text": "Tell him what the caller said, and let him go.",
+     "success": {
+      "result": "cleared",
+      "note": "He goes pale. Then he thanks you."
+     }
+    }
+   ]
+  }
+ }
+}

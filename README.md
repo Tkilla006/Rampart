@@ -15,6 +15,11 @@ Rampart plays as a port of *UFO: Enemy Unknown* and *Xenonauts*, with all-origin
 - **People:** suspects with dispositions and states who surrender, flee, draw hidden weapons or shoot. Civilians freeze, hide and get hurt. Composure and Habits take over when officers panic.
 - **Station:** the roster from section 11, the crew of 2A43, backup units, kit room loadouts, range time and the field manual.
 - **Character creation:** origin, background, academy record, attributes, traits, flaw and Ironman. Your record and background assign your training officer.
+- **Dispatch and personnel:** structure studied from *This Is the Police 2* (see [design section 20](design/20-dispatch-and-personnel.md)):
+  - False alarms and prank flags, and weekday, payday and month call volume.
+  - On-scene choice scenes for every call type, where the best officer for the job makes the roll and bad turns go to the battlescape.
+  - Officer energy, lateness, hangovers, day-off requests and Code 3 crashes when tired.
+  - Story beats from section 17 placed on the calendar.
 - **Prologue:** the first car check (event ST-06, The Back Seat).
 - **Data:** all 155 scripted events from section 17.
 
@@ -65,7 +70,8 @@ The tests cover:
 | `scripts/autoload/` | `GameState`, `EventLibrary`, `Campaign` (the strategic layer), `Flow` (screens) |
 | `scripts/world/`, `scripts/prologue.gd` | The prologue street scene |
 | `data/tactical/items.json` | Equipment, fire modes, ranges, loadouts |
-| `data/strategic/` | Call types and their hidden truths, the Rampart officers, character creation |
+| `data/strategic/` | Call types (truths, false alarms, volume), Rampart officers, character creation, day-off reasons, story schedule |
+| `data/scenes/calls/` | On-scene choice scenes, one per call type |
 | `data/events/events.json` | All 155 scripted events, generated from the design |
 | `art/` | Generated sprites, portraits, tiles, walls, props and cars |
 | `tools/` | Procedural art scripts and the event, map and tileset builders |
@@ -110,3 +116,4 @@ Oct 11, 2026 · @Claude T
 17. [Scripted events](design/17-scripted-events.md)
 18. [Open questions and sources](design/18-open-questions-and-sources.md)
 19. [The X-COM port](design/19-xcom-port.md)
+20. [Dispatch, on-scene choices and personnel](design/20-dispatch-and-personnel.md)

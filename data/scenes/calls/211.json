@@ -1,0 +1,126 @@
+{
+ "call_type": "211",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "alarm"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     1
+    ]
+   },
+   "start": "robbery"
+  },
+  {
+   "when": {
+    "truth": [
+     2
+    ]
+   },
+   "start": "lift"
+  }
+ ],
+ "nodes": {
+  "alarm": {
+   "text": "The silent alarm went off at a corner market. The clerk is restocking cigarettes. He hit the button with his knee.",
+   "options": [
+    {
+     "text": "Check the store anyway.",
+     "success": {
+      "result": "false_alarm",
+      "note": "Nothing. A free coffee you're not supposed to take."
+     }
+    },
+    {
+     "text": "Clear it from the car.",
+     "success": {
+      "result": "false_alarm"
+     }
+    }
+   ]
+  },
+  "robbery": {
+   "text": "Through the front glass: a clerk with his hands up and a man with a gun at the register. He hasn't seen your car yet.",
+   "options": [
+    {
+     "text": "Take positions outside and wait for him to come out.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Go in now.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Call it in and request backup first.",
+     "success": {
+      "result": "tactical",
+      "note": "Backup is rolling."
+     },
+     "skill": "radio_and_dispatch",
+     "failure": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "lift": {
+   "text": "The \"robbery\" is a skinny kid the clerk has cornered by the beer cooler. The clerk says the kid has a gun in his pocket. The kid says it's his phone.",
+   "options": [
+    {
+     "text": "Order him to show his hands, slowly.",
+     "success": {
+      "next": "lift_hands"
+     },
+     "skill": "command_presence",
+     "failure": {
+      "result": "tactical",
+      "note": "He panics and runs for the door."
+     }
+    },
+    {
+     "text": "Read him before you decide.",
+     "success": {
+      "next": "lift_hands"
+     },
+     "skill": "streetwise",
+     "failure": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "lift_hands": {
+   "text": "It's a phone. In his other pocket: two candy bars and a can of baby formula.",
+   "options": [
+    {
+     "text": "Cite him for petty theft.",
+     "success": {
+      "result": "cite"
+     }
+    },
+    {
+     "text": "Pay for the formula yourself and warn him.",
+     "success": {
+      "result": "warn",
+      "note": "The clerk calls you soft. The kid says thank you."
+     }
+    },
+    {
+     "text": "Book him.",
+     "success": {
+      "result": "arrest"
+     }
+    }
+   ]
+  }
+ }
+}

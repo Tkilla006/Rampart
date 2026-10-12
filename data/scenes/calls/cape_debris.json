@@ -1,0 +1,53 @@
+{
+ "call_type": "cape_debris",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "over"
+  },
+  {
+   "when": {
+    "truth": [
+     0
+    ]
+   },
+   "start": "debris"
+  }
+ ],
+ "nodes": {
+  "over": {
+   "text": "By the time you arrive the fight has moved to Hollywood. Some broken glass, a car alarm, a hero's PR team already handing out water.",
+   "options": [
+    {
+     "text": "Take statements for the Ledger.",
+     "success": {
+      "result": "report"
+     },
+     "skill": "interview",
+     "failure": {
+      "result": "report"
+     }
+    }
+   ]
+  },
+  "debris": {
+   "text": "A facade has come down across the sidewalk. People are trapped under a car. Someone is going through a broken storefront with a garbage bag.",
+   "options": [
+    {
+     "text": "Triage and evacuate first.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Stop the looter.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  }
+ }
+}

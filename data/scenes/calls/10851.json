@@ -1,0 +1,88 @@
+{
+ "call_type": "10851",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "tow"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     1
+    ]
+   },
+   "start": "car"
+  }
+ ],
+ "nodes": {
+  "tow": {
+   "text": "The \"stolen\" Honda was towed for street sweeping. The owner is not happy with anyone.",
+   "options": [
+    {
+     "text": "Give her the tow yard's number.",
+     "success": {
+      "result": "false_alarm"
+     }
+    }
+   ]
+  },
+  "car": {
+   "text": "The stolen car is parked behind a laundromat, engine running, two men inside.",
+   "options": [
+    {
+     "text": "High-risk stop: commands from behind your doors.",
+     "success": {
+      "next": "car_out"
+     },
+     "skill": "command_presence",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Box it in with the patrol car.",
+     "success": {
+      "next": "car_out"
+     },
+     "skill": "driving",
+     "failure": {
+      "result": "tactical",
+      "note": "They see you coming."
+     }
+    },
+    {
+     "text": "Walk up to the window.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "car_out": {
+   "text": "Both men come out with their hands up. The driver keeps glancing at the floorboard.",
+   "options": [
+    {
+     "text": "Cuff both and search the car.",
+     "success": {
+      "result": "arrest",
+      "note": "A baggie of Spark under the seat. Two in custody."
+     },
+     "skill": "search",
+     "failure": {
+      "result": "arrest"
+     }
+    },
+    {
+     "text": "Cuff the driver, let the passenger sit on the curb.",
+     "success": {
+      "result": "tactical",
+      "note": "The passenger runs."
+     }
+    }
+   ]
+  }
+ }
+}

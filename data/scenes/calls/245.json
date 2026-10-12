@@ -1,0 +1,143 @@
+{
+ "call_type": "245",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "gone"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     1
+    ]
+   },
+   "start": "hot"
+  },
+  {
+   "when": {
+    "truth": [
+     2
+    ]
+   },
+   "start": "bat"
+  }
+ ],
+ "nodes": {
+  "gone": {
+   "text": "A blood trail on the sidewalk ends at the curb. Whoever was hurt got in a car. A vendor saw nothing, loudly.",
+   "options": [
+    {
+     "text": "Canvass the block.",
+     "success": {
+      "result": "report",
+      "note": "A partial plate and a direction of travel. It goes in the report."
+     },
+     "skill": "interview",
+     "failure": {
+      "result": "report",
+      "note": "Nobody saw anything."
+     }
+    },
+    {
+     "text": "Check the hospitals by radio.",
+     "success": {
+      "result": "report",
+      "note": "County has a stab victim who won't give a name."
+     },
+     "skill": "radio_and_dispatch",
+     "failure": {
+      "result": "report"
+     }
+    }
+   ]
+  },
+  "hot": {
+   "text": "A crowd has formed around a man down on the sidewalk. Someone points down the block: \"He went that way! He's still got it!\"",
+   "options": [
+    {
+     "text": "Go after the suspect.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Treat the victim first.",
+     "success": {
+      "result": "tactical",
+      "note": "You kneel by the victim. The suspect is still out there."
+     }
+    },
+    {
+     "text": "Set a perimeter and call the airship.",
+     "success": {
+      "result": "tactical",
+      "note": "The airship is twenty minutes out."
+     },
+     "skill": "radio_and_dispatch",
+     "failure": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "bat": {
+   "text": "A man with a baseball bat is pacing in front of a liquor store with its window broken. He's shaking.",
+   "options": [
+    {
+     "text": "Talk to him from a distance.",
+     "success": {
+      "next": "bat_talk"
+     },
+     "skill": "de_escalation",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Order him to drop it.",
+     "success": {
+      "next": "bat_talk"
+     },
+     "skill": "command_presence",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Draw the Taser.",
+     "success": {
+      "result": "arrest",
+      "note": "The Taser drops him. Cuffs, an ambulance check, a report."
+     },
+     "skill": "less_lethal",
+     "item": "taser_x26",
+     "failure": {
+      "result": "tactical",
+      "note": "One probe misses."
+     }
+    }
+   ]
+  },
+  "bat_talk": {
+   "text": "The bat hits the sidewalk. The store owner says the man's brother was shot here last month.",
+   "options": [
+    {
+     "text": "Arrest him for the window.",
+     "success": {
+      "result": "arrest"
+     }
+    },
+    {
+     "text": "Get the owner to take a report and let it go to the DA.",
+     "success": {
+      "result": "report",
+      "note": "A vandalism report. He goes home with his sister."
+     }
+    }
+   ]
+  }
+ }
+}

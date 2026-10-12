@@ -9,10 +9,24 @@ signal car_arrived(call: Dictionary)
 signal news(title: String, text: String)
 signal month_report(report: Dictionary)
 signal game_over(ending: Dictionary)
+signal story_event(entry: Dictionary)
+signal day_off_request(request: Dictionary)
+signal scene_ready(call: Dictionary)
 
 const CALL_TYPES := "res://data/strategic/call_types.json"
 const PEOPLE := "res://data/strategic/people.json"
 const CREATION := "res://data/strategic/creation.json"
+const REASONS := "res://data/strategic/day_off_reasons.json"
+const SCHEDULE := "res://data/strategic/story_schedule.json"
+
+## Officer energy (0-6) and reliability, in the This Is the Police mold, tuned for Rampart.
+const MAX_ENERGY := 6
+const TIRED_ENERGY := 1
+const REST_PER_DAY := 3
+const ACCIDENT_EXHAUSTED := 0.10
+const ACCIDENT_TIRED := 0.03
+const ACCIDENT_HUNGOVER := 0.06
+const DAY_OFF_CHANCE := 0.06
 
 ## X-COM time compression: game seconds per real second.
 const SPEEDS := {"pause": 0, "5 sec": 5, "1 min": 60, "5 min": 300, "30 min": 1800, "1 hour": 3600, "1 day": 86400}
@@ -64,6 +78,11 @@ var _accum := 0.0
 var _next_call_in := 30.0
 var _next_id := 1
 var rng := RandomNumberGenerator.new()
+var volume := {}
+var reasons: Array = []
+var schedule: Array = []
+var fired_story := {}
+var _was_on_duty := false
 
 
 func _ready() -> void:
@@ -78,6 +97,9 @@ func _load_data() -> void:
 	districts = ct.districts
 	people = JSON.parse_string(FileAccess.get_file_as_string(PEOPLE)).officers
 	creation = JSON.parse_string(FileAccess.get_file_as_string(CREATION))
+	volume = ct.get("volume", {})
+	reasons = JSON.parse_string(FileAccess.get_file_as_string(REASONS)).reasons
+	schedule = JSON.parse_string(FileAccess.get_file_as_string(SCHEDULE)).schedule
 
 
 # ---------------------------------------------------------------- new game
@@ -107,6 +129,18 @@ func new_campaign(player_profile: Dictionary, fto_key: String) -> void:
 		p["injured_days"] = 0
 		roster[k] = p
 	roster["player"]["injured_days"] = 0
+	for k in roster:
+		var r: Dictionary = roster[k]
+		r["energy"] = int(r.get("energy", MAX_ENERGY))
+		r["laziness"] = int(r.get("laziness", 0))
+		r["drinker"] = bool(r.get("drinker", false))
+		r["happiness"] = int(r.get("happiness", 7))
+		r["happiness_threshold"] = int(r.get("happiness_threshold", 4))
+		r["off_days"] = 0
+		r["hungover"] = false
+	roster["player"]["drinker"] = "bottle_problem" in player_profile.get("traits", [])
+	fired_story.clear()
+	_was_on_duty = false
 	crew = ["player", fto_key]
 	backup_crew = ["bailey", "duquette"]
 	GameState.set_flag("fto", fto_key)
@@ -165,13 +199,178 @@ func advance_minute() -> void:
 		_monthly_review()
 	if not active:
 		return
-	if is_on_duty():
-		_next_call_in -= 1.0 * float(difficulty.call_pressure)
+	var on := is_on_duty()
+	if on and not _was_on_duty:
+		_start_shift()
+	elif not on and _was_on_duty:
+		_end_shift()
+	_was_on_duty = on
+	if on:
+		_next_call_in -= 1.0 * float(difficulty.call_pressure) * volume_multiplier()
 		if _next_call_in <= 0:
 			spawn_call()
 			_next_call_in = rng.randf_range(0.5, 1.5) * CALL_MINUTES
 	_update_calls()
 	_update_car()
+
+
+## How busy the watch is: weekday, paydays and the probation ramp.
+func volume_multiplier() -> float:
+	var m := 1.0
+	var wd: Array = volume.get("weekday", [1, 1, 1, 1, 1, 1, 1])
+	m *= float(wd[weekday()])
+	if int(GameState.date.day) in [1, 15]:
+		m *= float(volume.get("payday", 1.0))
+	m *= 1.0 + float(volume.get("month_ramp", 0.0)) * months_elapsed()
+	return m
+
+
+func days_elapsed() -> int:
+	var t0 := Time.get_unix_time_from_datetime_dict({"year": START.year, "month": START.month, "day": START.day, "hour": 12})
+	var t1 := Time.get_unix_time_from_datetime_dict({"year": GameState.date.year, "month": GameState.date.month, "day": GameState.date.day, "hour": 12})
+	return int((t1 - t0) / 86400)
+
+
+# ---------------------------------------------------------------- personnel: energy and reliability
+
+## Roll call: who is late, who is hungover, who wants the day off (This Is the Police style personnel).
+func _start_shift() -> void:
+	for k in crew + backup_crew:
+		var r: Dictionary = roster.get(k, {})
+		if r.is_empty():
+			continue
+		r.hungover = false
+		var unhappy := int(r.happiness) < int(r.happiness_threshold)
+		if bool(r.drinker) and (unhappy or int(r.energy) <= 2) and rng.randf() < 0.35:
+			r.hungover = true
+			news.emit("Roll call", "%s shows up hungover." % _display(k))
+		var late := 0.08 * int(r.laziness) * (2.0 if unhappy else 1.0)
+		if k in crew and k != "player" and rng.randf() < late and car.state == "available":
+			car.state = "busy"
+			car.busy_left = 30.0
+			news.emit("Roll call", "%s is late. 2A43 can't go in service for half an hour." % _display(k))
+	_day_off_requests()
+	_story_check()
+
+
+## End of watch: everyone who worked loses energy.
+func _end_shift() -> void:
+	for k in crew:
+		var r: Dictionary = roster.get(k, {})
+		if not r.is_empty():
+			r.energy = maxi(0, int(r.energy) - 1)
+			r.hungover = false
+
+
+func _day_off_requests() -> void:
+	for k in crew + backup_crew:
+		if k == "player" or rng.randf() >= DAY_OFF_CHANCE:
+			continue
+		var reason: Dictionary = reasons[rng.randi_range(0, reasons.size() - 1)]
+		day_off_request.emit({"key": k, "name": _display(k), "reason": reason.text, "severe": reason.severe})
+		return
+
+
+func answer_day_off(key: String, granted: bool, severe: bool) -> void:
+	var r: Dictionary = roster.get(key, {})
+	if r.is_empty():
+		return
+	if granted:
+		r.off_days = 1
+		r.happiness = mini(10, int(r.happiness) + 1)
+		r.energy = mini(MAX_ENERGY, int(r.energy) + 1)
+	else:
+		r.happiness = maxi(0, int(r.happiness) - (4 if severe else 2))
+		GameState.change_relationship(key, "approval", -2 if severe else -1)
+
+
+func is_available(key: String) -> bool:
+	var r: Dictionary = roster.get(key, {})
+	return int(r.get("injured_days", 0)) <= 0 and int(r.get("off_days", 0)) <= 0
+
+
+func energy_label(key: String) -> String:
+	var e := int(roster.get(key, {}).get("energy", MAX_ENERGY))
+	return ["Exhausted", "Tired", "Worn", "Worn", "Rested", "Rested", "Fresh"][clampi(e, 0, 6)]
+
+
+func _display(key: String) -> String:
+	if key == "player":
+		return GameState.officer.display_name
+	return String(roster.get(key, {}).get("name", key))
+
+
+## Responding Code 3 with a tired or hungover crew risks a crash on the way.
+func accident_chance() -> float:
+	var worst := 0.0
+	for k in available_crew():
+		var r: Dictionary = roster[k]
+		var c := 0.0
+		if int(r.energy) <= 0:
+			c = ACCIDENT_EXHAUSTED
+		elif int(r.energy) <= TIRED_ENERGY:
+			c = ACCIDENT_TIRED
+		if bool(r.get("hungover", false)):
+			c = maxf(c, ACCIDENT_HUNGOVER)
+		worst = maxf(worst, c)
+	return worst
+
+
+## Fixed story beats from design 17 come up on their day (story_schedule.json).
+func _story_check() -> void:
+	var day := days_elapsed()
+	for entry in schedule:
+		var id: String = entry.event
+		if fired_story.has(id) or GameState.is_event_completed(id) or int(entry.day) > day:
+			continue
+		if entry.has("fto") and GameState.get_flag("fto", "") != entry.fto:
+			continue
+		if entry.has("requires_any") and not Array(entry.requires_any).any(func(f): return GameState.has_flag(f)):
+			continue
+		fired_story[id] = true
+		story_event.emit(entry)
+		return
+
+
+## The player picked a branch on a story card: record it, set the flags it implies.
+func resolve_story(entry: Dictionary, choice: String) -> Array[String]:
+	var notes: Array[String] = []
+	var id: String = entry.event
+	GameState.complete_event(id, choice)
+	for f in entry.get("always_flags", []):
+		GameState.set_flag(f)
+	var cf: Dictionary = entry.get("choice_flags", {})
+	for needle in cf:
+		if String(needle).to_lower() in choice.to_lower():
+			GameState.set_flag(cf[needle])
+	if entry.has("check"):
+		var ck: Dictionary = entry.check
+		if not ck.has("fto") or GameState.get_flag("fto", "") == ck.fto:
+			var res := GameState.officer.check_skill(ck.skill, 0, rng)
+			notes.append("%s: %s" % [String(ck.skill).capitalize(), res.describe()])
+			if res.success:
+				GameState.set_flag(ck.flag)
+	if entry.has("composure"):
+		GameState.change_composure(int(entry.composure))
+	return notes
+
+
+## Splits an event's branches text from design 17 into choices for a story card.
+static func branch_choices(branches: String) -> Array[String]:
+	var out: Array[String] = []
+	var text := branches.trim_suffix(".")
+	for part in text.split(";"):
+		var p := part.strip_edges()
+		p = p.replace(", or ", ", ").replace(" or ", ", ")
+		for bit in p.split(", "):
+			var b := bit.strip_edges()
+			if b.length() > 2:
+				out.append(b.substr(0, 1).to_upper() + b.substr(1))
+	if out.size() > 5:
+		out.resize(5)
+	if out.is_empty():
+		out.append("Continue")
+	return out
 
 
 func skip_to_next_shift() -> void:
@@ -182,8 +381,13 @@ func skip_to_next_shift() -> void:
 
 
 func _new_day() -> void:
+	var working := is_on_duty() or weekday() in DUTY_DAYS
 	for k in roster:
 		var r: Dictionary = roster[k]
+		if int(r.get("off_days", 0)) > 0:
+			r.off_days = int(r.off_days) - 1
+		if not working or not k in crew:
+			r.energy = mini(MAX_ENERGY, int(r.get("energy", MAX_ENERGY)) + REST_PER_DAY)
 		if int(r.get("injured_days", 0)) > 0:
 			r["injured_days"] = int(r.injured_days) - 1
 			if int(r.injured_days) == 0:
@@ -238,14 +442,22 @@ func spawn_call(type_id: String = "", district: String = "") -> Dictionary:
 			w[t] = float(ct.weight) * dw * float(ct.watches.get(GameState.watch, 1.0))
 		type_id = _pick_weighted(w)
 	var t: Dictionary = call_types[type_id]
+	# The worse truths behind a call get more likely as the probation goes on.
 	var odds := {}
+	var ramp := 1.0 + float(volume.get("danger_ramp", 0.0)) * months_elapsed()
 	for i in t.truth.size():
-		odds[str(i)] = t.truth[i].odds
+		var danger := _truth_danger(t.truth[i])
+		odds[str(i)] = float(t.truth[i].odds) * pow(ramp, maxi(0, danger - 3))
 	var truth_index := int(_pick_weighted(odds))
+	var false_alarm := rng.randf() < float(t.get("false_alarm", 0.0))
+	# Misleading dispatch: some false alarms are flagged as pranks, and so are some real calls.
+	var note := ""
+	if false_alarm and rng.randf() < 0.5 or not false_alarm and rng.randf() < 0.12:
+		note = "Caller hung up. Possible prank."
 	var c := {
 		"id": _next_id, "type": type_id, "label": t.label, "priority": int(t.priority), "district": district,
 		"pos": _random_point(district), "created": elapsed_minutes, "status": "pending",
-		"truth_index": truth_index, "address": _address(district),
+		"truth_index": truth_index, "address": _address(district), "false_alarm": false_alarm, "note": note,
 	}
 	_next_id += 1
 	calls.append(c)
@@ -254,6 +466,16 @@ func spawn_call(type_id: String = "", district: String = "") -> Dictionary:
 	if speed != "pause" and int(c.priority) >= 2:
 		speed = "pause"
 	return c
+
+
+static func _truth_danger(truth: Dictionary) -> int:
+	var worst := 0
+	for sp in truth.get("suspects", []):
+		var d: int = {"compliant": 0, "passive": 1, "active": 2, "assaultive": 3, "deadly": 4}.get(sp.get("disposition", "passive"), 1)
+		if sp.get("weapon") != null or sp.get("hidden") != null:
+			d += 1
+		worst = maxi(worst, d)
+	return worst
 
 
 func _random_point(district: String) -> Vector2:
@@ -330,6 +552,12 @@ func respond(call_id: int, code: int) -> bool:
 	car.travelled = 0.0
 	if code == 3 and int(c.priority) <= 1:
 		GameState.change_reputation("command", -1)
+	if code == 3 and rng.randf() < accident_chance():
+		car.eta = float(car.eta) + 20.0
+		var hurt: String = available_crew()[rng.randi_range(0, available_crew().size() - 1)]
+		roster[hurt].injured_days = int(roster[hurt].get("injured_days", 0)) + 2
+		GameState.change_reputation("command", -1)
+		news.emit("Collision", "Running Code 3 on no sleep, 2A43 clips a car at %s. %s is hurt; you're twenty minutes late." % [c.address, _display(hurt)])
 	call_changed.emit(c)
 	return true
 
@@ -384,7 +612,8 @@ func tac_unit_for(key: String) -> TacUnit:
 	var o := officer_from_record(r)
 	var extra := {"loadout": r.get("loadout", "patrol"), "rank": r.get("rank", "Police Officer I"),
 		"traits": r.get("traits", []), "background": creation.backgrounds.get(r.get("background", ""), {}),
-		"boosted": r.get("boosted", false), "hungover": r.get("hungover", false), "look": r.get("look", "officer")}
+		"boosted": r.get("boosted", false), "hungover": r.get("hungover", false), "look": r.get("look", "officer"),
+		"energy": int(r.get("energy", MAX_ENERGY))}
 	var display: String = r.get("name", key)
 	if key == "player":
 		display = GameState.officer.display_name
@@ -394,7 +623,7 @@ func tac_unit_for(key: String) -> TacUnit:
 
 
 func available_crew() -> Array:
-	return crew.filter(func(k): return int(roster.get(k, {}).get("injured_days", 0)) <= 0)
+	return crew.filter(func(k): return is_available(k))
 
 
 ## Builds the battlescape for the call the car arrived at, from the true situation behind it.
@@ -421,6 +650,97 @@ func begin_mission(call_id: int) -> TacMission:
 	_pending_mission = m
 	_pending_call = c
 	return m
+
+
+## The officers on scene for a text scene: name, Rampart character sheet, what they carry.
+func scene_crew() -> Array:
+	var out: Array = []
+	for k in available_crew():
+		var r: Dictionary = roster[k]
+		var items: Array = []
+		var l := ItemDB.loadout(r.get("loadout", "patrol"))
+		items.append(l.get("right_hand", ""))
+		items.append_array(l.get("belt", []))
+		var o := officer_from_record(r)
+		if bool(r.get("hungover", false)) or int(r.get("energy", MAX_ENERGY)) <= TIRED_ENERGY:
+			# Hungover or exhausted: thinking goes first (design 5, Fatigue). Work on a copy.
+			o = Officer.from_dict(o.to_dict())
+			o.composure = o.max_composure() / 3
+		out.append({"key": k, "name": _display(k), "officer": o, "items": items})
+	return out
+
+
+## Reading the scene on approach (design 8): Perception and Streetwise can tell dispatch got it wrong.
+func approach_hint(call_id: int) -> String:
+	var c := get_call(call_id)
+	var best := 0
+	for m in scene_crew():
+		best = maxi(best, (m.officer as Officer).skill_chance("streetwise"))
+	if not Check.make(best, rng).success:
+		return ""
+	if c.get("false_alarm", false):
+		return "Rolling up, it's quiet. Nobody waiting, no crowd. This may be nothing."
+	var t: Dictionary = call_types[c.type].truth[int(c.truth_index)]
+	if t.has("true_label"):
+		return "Something's off. This doesn't look like what dispatch said: %s." % String(t.true_label).to_lower()
+	if _truth_danger(t) >= 4:
+		return "People are running away from the address, not toward it."
+	return ""
+
+
+func call_scene(call_id: int) -> CallScene:
+	var c := get_call(call_id)
+	var data := CallScene.load_for(c.type)
+	if data.is_empty():
+		return null
+	var cs := CallScene.new(data, c, scene_crew())
+	cs.start()
+	return cs
+
+
+## A call settled on scene, without the battlescape: points, reputation, injuries, time, energy.
+func apply_scene_result(call_id: int, r: Dictionary) -> Array[String]:
+	var notes: Array[String] = []
+	var c := get_call(call_id)
+	var code: String = r.result
+	var fx: Dictionary = CallScene.RESULT_EFFECTS[code]
+	c.status = "cleared" if code != "escaped" else "lost"
+	if r.get("note", "") != "":
+		notes.append(r.note)
+	month_stats.cleared += 1 if code != "escaped" else 0
+	month_stats.arrests += 1 if code == "arrest" else 0
+	month_stats.score += int(fx.score)
+	if int(fx.squad) != 0:
+		GameState.change_reputation("squad", int(fx.squad))
+	if int(fx.community) != 0:
+		GameState.change_reputation("community:%s" % c.district, int(fx.community))
+	var injury := int(r.get("injury", 0))
+	if injury > 0 and roster.has(r.get("officer", "")):
+		var who: Dictionary = roster[r.officer]
+		who.injured_days = int(who.get("injured_days", 0)) + CallScene.INJURY_DAYS[injury]
+		who.happiness = maxi(0, int(who.happiness) - 1)
+		notes.append("%s is %s: %d days of light duty." % [r.officer_name, CallScene.INJURY_NAMES[injury], CallScene.INJURY_DAYS[injury]])
+	var fto: String = GameState.get_flag("fto", "")
+	if fto != "":
+		var approval := 1 if int(fx.score) >= 15 else (-1 if int(fx.score) < 0 else 0)
+		GameState.change_relationship(fto, "approval", approval)
+		GameState.change_reputation("fto", approval)
+	var label: String = {"arrest": "Arrest", "cite": "Citation", "warn": "Warning", "report": "Report only", "hold_5150": "5150 hold",
+		"cleared": "Cleared", "escaped": "Suspect escaped", "false_alarm": "False alarm"}.get(code, code)
+	history.append({"date": GameState.date_text(), "label": "%s: %s" % [c.label, label], "score": fx.score,
+		"rating": label, "success": code != "escaped"})
+	_spend_call_time(int(fx.minutes))
+	notes.append("%s. %d minutes on scene and paperwork." % [label, int(fx.minutes)])
+	return notes
+
+
+func _spend_call_time(minutes: int) -> void:
+	car.state = "busy"
+	car.busy_left = float(minutes)
+	car.pos = STATION_POS if minutes >= 60 else car.pos
+	if minutes >= 90:
+		for k in available_crew():
+			roster[k].energy = maxi(0, int(roster[k].energy) - 1)
 
 
 func take_pending_mission() -> TacMission:
@@ -468,10 +788,15 @@ func apply_result(result: Dictionary) -> Array[String]:
 		GameState.change_relationship(fto, "approval", approval)
 		GameState.change_reputation("fto", approval)
 	# Officers: injuries, Composure, trauma and skills gained from what they did (no XP for kills).
+	var traumatic := int(result.civilians_dead) > 0 or int(result.suspects_dead) > 0
 	for o in result.officers:
 		var r: Dictionary = roster.get(o.key, {})
 		if r.is_empty():
 			continue
+		r.happiness = clampi(int(r.get("happiness", 7)) + (1 if result.success else -1) - (1 if int(o.health) < int(o.health_max) else 0), 0, 10)
+		if (traumatic or int(o.health) < int(o.health_max) / 2) and not bool(r.get("drinker", false)) and rng.randf() < 0.1:
+			r.drinker = true
+			notes.append("%s has started drinking after shifts." % o.name)
 		var lost := int(o.health_max) - int(o.health)
 		if lost > 0:
 			r["injured_days"] = int(r.get("injured_days", 0)) + maxi(1, lost / 2)
@@ -496,8 +821,7 @@ func apply_result(result: Dictionary) -> Array[String]:
 					notes.append("%s improves at %s (%d)." % [o.name, skill.replace("_", " "), now + 1])
 	# Time on scene and the paperwork after: booking eats the shift (design 6.2, 8).
 	var minutes_used := int(result.turns) * 2 + 20 + int(result.arrested) * 75 + (60 if int(result.rounds_fired) > 0 else 0)
-	car.state = "busy"
-	car.busy_left = float(minutes_used)
+	_spend_call_time(minutes_used)
 	car.pos = STATION_POS
 	notes.append("Scene, booking and reports: %d minutes." % minutes_used)
 	if difficulty.get("ironman", false):
@@ -587,7 +911,8 @@ func to_dict() -> Dictionary:
 	return {"active": active, "roster": roster.duplicate(true), "calls": cs, "car": cr, "crew": Array(crew),
 		"backup_crew": Array(backup_crew), "elapsed": elapsed_minutes, "month_stats": month_stats.duplicate(true),
 		"history": history.duplicate(true), "budget": overtime_budget, "poor_months": poor_months,
-		"difficulty": difficulty.duplicate(), "fired_events": fired_events.duplicate(), "next_id": _next_id, "ending": ending}
+		"difficulty": difficulty.duplicate(), "fired_events": fired_events.duplicate(), "next_id": _next_id, "ending": ending,
+		"fired_story": fired_story.duplicate(), "was_on_duty": _was_on_duty}
 
 
 func from_dict(d: Dictionary) -> void:
@@ -613,4 +938,6 @@ func from_dict(d: Dictionary) -> void:
 	fired_events = d.get("fired_events", {}).duplicate()
 	_next_id = int(d.get("next_id", 1))
 	ending = d.get("ending", {})
+	fired_story = d.get("fired_story", {}).duplicate()
+	_was_on_duty = d.get("was_on_duty", false)
 	speed = "pause"

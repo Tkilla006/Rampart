@@ -1,0 +1,98 @@
+{
+ "call_type": "23152",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "tired"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     1
+    ]
+   },
+   "start": "weave"
+  }
+ ],
+ "nodes": {
+  "tired": {
+   "text": "The weaving car belongs to a nurse coming off a double. She's not drunk. She's asleep at the wheel.",
+   "options": [
+    {
+     "text": "Follow her home.",
+     "success": {
+      "result": "warn",
+      "note": "Two miles at fifteen miles an hour. She waves from her porch."
+     }
+    },
+    {
+     "text": "Cite her for the lane violation.",
+     "success": {
+      "result": "cite"
+     }
+    }
+   ]
+  },
+  "weave": {
+   "text": "You light up a weaving sedan. It stops half on the curb. The driver smells like a bar.",
+   "options": [
+    {
+     "text": "Field sobriety tests.",
+     "success": {
+      "next": "fst"
+     },
+     "skill": "law_and_policy",
+     "failure": {
+      "next": "fst_bad"
+     }
+    },
+    {
+     "text": "Pull him out of the car.",
+     "success": {
+      "result": "tactical",
+      "note": "He doesn't want to come out."
+     }
+    }
+   ]
+  },
+  "fst": {
+   "text": "He fails the walk-and-turn and almost falls on the one-leg stand. The breath test confirms it.",
+   "options": [
+    {
+     "text": "Arrest for DUI.",
+     "success": {
+      "result": "arrest",
+      "note": "DUI arrest. The tow, the blood draw, the report."
+     },
+     "skill": "command_presence",
+     "modifier": 10,
+     "failure": {
+      "result": "tactical",
+      "note": "He decides he's not going."
+     }
+    }
+   ]
+  },
+  "fst_bad": {
+   "text": "You skip a step in the tests. Any lawyer will see it. He's still drunk.",
+   "options": [
+    {
+     "text": "Arrest anyway.",
+     "success": {
+      "result": "arrest",
+      "note": "The arrest will be a fight in court."
+     }
+    },
+    {
+     "text": "Park his car and call him a cab.",
+     "success": {
+      "result": "warn"
+     }
+    }
+   ]
+  }
+ }
+}

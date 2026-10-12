@@ -1,0 +1,79 @@
+{
+ "call_type": "spark",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "gone"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     1
+    ]
+   },
+   "start": "boost"
+  }
+ ],
+ "nodes": {
+  "gone": {
+   "text": "A smashed bus shelter and a trail of glass. Whoever did it is gone. Two kids on bikes say he was \"glowing.\"",
+   "options": [
+    {
+     "text": "Write it up.",
+     "success": {
+      "result": "report"
+     }
+    }
+   ]
+  },
+  "boost": {
+   "text": "A man on Spark is tearing a parking meter out of the concrete with his bare hands. His eyes are wrong.",
+   "options": [
+    {
+     "text": "Keep your distance and wait for him to burn out.",
+     "success": {
+      "next": "boost_wait"
+     },
+     "skill": "super_incident_response",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Taser.",
+     "success": {
+      "result": "tactical",
+      "note": "He pulls the probes out and turns toward you."
+     }
+    },
+    {
+     "text": "Go in, everyone at once.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "boost_wait": {
+   "text": "Ten minutes. Twelve. He sits down hard on the curb, shaking, bleeding from the nose.",
+   "options": [
+    {
+     "text": "Cuff him and call the RA.",
+     "success": {
+      "result": "arrest",
+      "note": "In custody and on his way to County."
+     }
+    },
+    {
+     "text": "Call the RA and stay back.",
+     "success": {
+      "result": "hold_5150"
+     }
+    }
+   ]
+  }
+ }
+}

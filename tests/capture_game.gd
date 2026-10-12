@@ -46,9 +46,26 @@ func _run() -> void:
 	await _frames(5)
 	if current_scene._modal:
 		current_scene._modal.queue_free()
+		current_scene._modal = null
+	current_scene._modal_queue.clear()
 	current_scene._select(int(campaign.calls[0].id))
 	await _frames(5)
 	await _shot("12_cityscape")
+	# On scene: the choice-based scene for the 415, then a story card.
+	var c415 = campaign.calls[1]
+	c415.truth_index = 1
+	c415.false_alarm = false
+	current_scene._on_arrived(c415)
+	await _frames(5)
+	await _shot("12b_call_scene")
+	current_scene._modal.queue_free()
+	current_scene._modal = null
+	current_scene._on_story(campaign.schedule[1])
+	await _frames(5)
+	await _shot("12c_story_card")
+	current_scene._modal.queue_free()
+	current_scene._modal = null
+	current_scene._modal_queue.clear()
 	await _goto("res://scenes/station.tscn")
 	current_scene._roster.select(0)
 	current_scene._show(0)

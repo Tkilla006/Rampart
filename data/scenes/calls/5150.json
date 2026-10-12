@@ -1,0 +1,172 @@
+{
+ "call_type": "5150",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "left"
+  },
+  {
+   "when": {
+    "truth": [
+     0
+    ]
+   },
+   "start": "crisis"
+  },
+  {
+   "when": {
+    "truth": [
+     1
+    ]
+   },
+   "start": "knife"
+  }
+ ],
+ "nodes": {
+  "left": {
+   "text": "The caller described a man talking to himself in the street. He's gone. The caller wants to know why it took you so long.",
+   "options": [
+    {
+     "text": "Drive the area.",
+     "success": {
+      "result": "false_alarm"
+     }
+    }
+   ]
+  },
+  "crisis": {
+   "text": "A man in a hospital bracelet is standing in traffic, arguing with someone only he can see.",
+   "options": [
+    {
+     "text": "Talk to him. Slowly. Name first.",
+     "success": {
+      "next": "crisis_talk"
+     },
+     "skill": "de_escalation",
+     "modifier": 10,
+     "failure": {
+      "next": "crisis_worse"
+     }
+    },
+    {
+     "text": "Get him out of the street, hands-on.",
+     "success": {
+      "result": "hold_5150",
+      "injury": 1,
+      "note": "He fights you to the curb and then just stops."
+     },
+     "skill": "defensive_tactics",
+     "failure": {
+      "next": "crisis_worse"
+     }
+    },
+    {
+     "text": "Command him to the sidewalk.",
+     "success": {
+      "next": "crisis_talk"
+     },
+     "skill": "command_presence",
+     "modifier": -20,
+     "failure": {
+      "next": "crisis_worse"
+     }
+    }
+   ]
+  },
+  "crisis_talk": {
+   "text": "He tells you his name is Tomás and the cars are listening. He walks to the curb with you.",
+   "options": [
+    {
+     "text": "Place him on a 5150 hold for evaluation.",
+     "success": {
+      "result": "hold_5150",
+      "note": "Three hours at County. He thanks you, once."
+     }
+    },
+    {
+     "text": "Get him to a shelter bed instead.",
+     "success": {
+      "result": "warn",
+      "note": "The shelter has one bed left. He takes it. Maybe."
+     },
+     "skill": "interview",
+     "failure": {
+      "result": "cleared"
+     }
+    }
+   ]
+  },
+  "crisis_worse": {
+   "text": "He backs further into traffic. A bus brakes hard.",
+   "options": [
+    {
+     "text": "Keep talking.",
+     "success": {
+      "next": "crisis_talk"
+     },
+     "skill": "de_escalation",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Go get him.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "knife": {
+   "text": "A woman in a doorway is holding a kitchen knife against her own wrist. Her mother is behind you on the sidewalk, begging.",
+   "options": [
+    {
+     "text": "Keep your distance and talk.",
+     "success": {
+      "next": "knife_talk"
+     },
+     "skill": "de_escalation",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Call for a mental evaluation team and hold.",
+     "success": {
+      "result": "tactical",
+      "note": "They're forty minutes out."
+     },
+     "skill": "radio_and_dispatch",
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Taser.",
+     "success": {
+      "result": "hold_5150",
+      "note": "She drops. The knife skitters away. Her mother screams anyway."
+     },
+     "skill": "less_lethal",
+     "item": "taser_x26",
+     "failure": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "knife_talk": {
+   "text": "She sets the knife on the step. She sits down next to it and won't look at you.",
+   "options": [
+    {
+     "text": "Secure the knife, then a 5150 hold.",
+     "success": {
+      "result": "hold_5150"
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,244 @@
+{
+ "_comment": "When fixed story beats from design section 17 surface on the campaign calendar (day 0 is the first shift). These timings are placeholders read off each trigger. choice_flags: a branch containing the text sets the flag. always_flags: set whichever branch is chosen. check: a skill check by the player that sets a flag. fto: only with that training officer. requires_any: flags, one of which must be set.",
+ "schedule": [
+  {
+   "event": "ST-01",
+   "day": 0
+  },
+  {
+   "event": "ST-02",
+   "day": 0,
+   "choice_flags": {
+    "Temple Street": "asked_temple_st"
+   }
+  },
+  {
+   "event": "ST-03",
+   "day": 0,
+   "check": {
+    "skill": "search",
+    "flag": "saw_arakawa_slip",
+    "fto": "arakawa"
+   }
+  },
+  {
+   "event": "ST-04",
+   "day": 0
+  },
+  {
+   "event": "ST-05",
+   "day": 0
+  },
+  {
+   "event": "ST-07",
+   "day": 0,
+   "always_flags": [
+    "first_body"
+   ],
+   "composure": -3
+  },
+  {
+   "event": "ST-08",
+   "day": 0,
+   "always_flags": [
+    "knows_the_hole"
+   ]
+  },
+  {
+   "event": "ST-09",
+   "day": 1
+  },
+  {
+   "event": "DC-01",
+   "day": 3,
+   "fto": "ortega"
+  },
+  {
+   "event": "PL-01",
+   "day": 4
+  },
+  {
+   "event": "ST-10",
+   "day": 6
+  },
+  {
+   "event": "DC-04",
+   "day": 10,
+   "fto": "whitfield",
+   "always_flags": [
+    "saw_camera"
+   ]
+  },
+  {
+   "event": "DC-06",
+   "day": 12,
+   "fto": "arakawa",
+   "requires_any": [
+    "saw_arakawa_slip"
+   ],
+   "choice_flags": {
+    "ask how": "arakawa_sure_thing"
+   }
+  },
+  {
+   "event": "MS-01",
+   "day": 20,
+   "choice_flags": {
+    "note": "burn_mark",
+    "photograph": "burn_mark",
+    "mention": "burn_mark"
+   }
+  },
+  {
+   "event": "MS-05",
+   "day": 23,
+   "choice_flags": {
+    "full report": "missing_beto",
+    "County": "missing_beto"
+   }
+  },
+  {
+   "event": "DC-02",
+   "day": 25,
+   "fto": "ortega",
+   "always_flags": [
+    "ortega_temple"
+   ]
+  },
+  {
+   "event": "DC-13",
+   "day": 30
+  },
+  {
+   "event": "MS-03",
+   "day": 35,
+   "always_flags": [
+    "calloway_hole"
+   ]
+  },
+  {
+   "event": "PL-15",
+   "day": 40
+  },
+  {
+   "event": "DC-07",
+   "day": 40,
+   "fto": "arakawa",
+   "always_flags": [
+    "sarkisian_collector"
+   ]
+  },
+  {
+   "event": "ST-15",
+   "day": 45
+  },
+  {
+   "event": "MS-04",
+   "day": 48,
+   "always_flags": [
+    "slow_roll"
+   ]
+  },
+  {
+   "event": "MS-06",
+   "day": 50,
+   "always_flags": [
+    "early_odds"
+   ]
+  },
+  {
+   "event": "MS-02",
+   "day": 70,
+   "choice_flags": {
+    "field interview": "restora_trucks",
+    "run the plates": "restora_trucks"
+   }
+  },
+  {
+   "event": "ST-13",
+   "day": 84
+  },
+  {
+   "event": "MS-07",
+   "day": 90,
+   "always_flags": [
+    "met_hector"
+   ]
+  },
+  {
+   "event": "MS-08",
+   "day": 112,
+   "always_flags": [
+    "castellan_early",
+    "van_at_6th",
+    "pulled_punch"
+   ],
+   "composure": -8
+  },
+  {
+   "event": "MS-09",
+   "day": 113
+  },
+  {
+   "event": "MS-10",
+   "day": 119
+  },
+  {
+   "event": "MS-11",
+   "day": 125,
+   "always_flags": [
+    "entry_style"
+   ]
+  },
+  {
+   "event": "MS-12",
+   "day": 140,
+   "choice_flags": {
+    "tell everything": "szabo_partner",
+    "tell some": "szabo_partner"
+   }
+  },
+  {
+   "event": "MS-17",
+   "day": 150,
+   "requires_any": [
+    "asked_temple_st"
+   ],
+   "always_flags": [
+    "temple_1998"
+   ]
+  },
+  {
+   "event": "ST-16",
+   "day": 168
+  },
+  {
+   "event": "PL-16",
+   "day": 200
+  },
+  {
+   "event": "MS-21",
+   "day": 210,
+   "requires_any": [
+    "saw_arakawa_slip",
+    "slow_roll"
+   ]
+  },
+  {
+   "event": "PL-18",
+   "day": 230
+  },
+  {
+   "event": "MS-25",
+   "day": 300
+  },
+  {
+   "event": "MS-28",
+   "day": 420
+  },
+  {
+   "event": "MS-29",
+   "day": 480
+  }
+ ]
+}

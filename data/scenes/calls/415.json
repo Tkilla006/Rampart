@@ -1,0 +1,261 @@
+{
+ "call_type": "415",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "quiet"
+  },
+  {
+   "when": {
+    "truth": [
+     0
+    ]
+   },
+   "start": "drunk"
+  },
+  {
+   "when": {
+    "truth": [
+     1
+    ]
+   },
+   "start": "argue"
+  },
+  {
+   "when": {
+    "truth": [
+     2
+    ]
+   },
+   "start": "blood"
+  }
+ ],
+ "nodes": {
+  "quiet": {
+   "text": "The apartment is dark. A neighbor in a bathrobe says the shouting stopped an hour ago. Nobody answers the door.",
+   "options": [
+    {
+     "text": "Knock again and announce.",
+     "success": {
+      "next": "quiet2"
+     }
+    },
+    {
+     "text": "Clear it and log it.",
+     "success": {
+      "result": "false_alarm"
+     }
+    }
+   ]
+  },
+  "quiet2": {
+   "text": "A woman opens the door on the chain. She says it was the TV and the TV is off now. There's a fresh bruise on her cheek she doesn't mention.",
+   "options": [
+    {
+     "text": "Ask, quietly, whether she's safe to talk.",
+     "success": {
+      "result": "report",
+      "note": "She talks. You take a domestic violence report and leave her a card."
+     },
+     "skill": "interview",
+     "failure": {
+      "result": "cleared",
+      "note": "She closes the door. You leave a card in the jamb."
+     }
+    },
+    {
+     "text": "Take her word for it.",
+     "success": {
+      "result": "cleared",
+      "note": "You clear the call. Your FTO says nothing for two blocks."
+     }
+    }
+   ]
+  },
+  "drunk": {
+   "text": "A man in an undershirt is in the courtyard, drunk, yelling at a window on the second floor. Neighbors are watching from the stairs.",
+   "options": [
+    {
+     "text": "Talk him down.",
+     "success": {
+      "next": "drunk_calm"
+     },
+     "skill": "de_escalation",
+     "failure": {
+      "next": "drunk_angry"
+     }
+    },
+    {
+     "text": "Order him to sit on the curb.",
+     "success": {
+      "next": "drunk_calm"
+     },
+     "skill": "command_presence",
+     "failure": {
+      "next": "drunk_angry"
+     }
+    },
+    {
+     "text": "Go hands-on and take him in for drunk in public.",
+     "success": {
+      "result": "arrest",
+      "injury": 1,
+      "note": "He fights the cuffs a little. You win."
+     },
+     "skill": "defensive_tactics",
+     "failure": {
+      "result": "tactical",
+      "note": "He swings at you."
+     }
+    }
+   ]
+  },
+  "drunk_calm": {
+   "text": "He sits. He cries a little. His sister lives upstairs and she won't let him in.",
+   "options": [
+    {
+     "text": "Get the sister to take him in for the night.",
+     "success": {
+      "result": "cleared",
+      "note": "She takes him. The courtyard goes quiet."
+     },
+     "skill": "interview",
+     "failure": {
+      "result": "warn",
+      "note": "She won't. You walk him to the corner and give him a warning."
+     }
+    },
+    {
+     "text": "Book him for drunk in public.",
+     "success": {
+      "result": "arrest"
+     }
+    }
+   ]
+  },
+  "drunk_angry": {
+   "text": "He squares up and calls you every name he knows in two languages.",
+   "options": [
+    {
+     "text": "Give him a clear way out: walk away now and it's over.",
+     "success": {
+      "result": "warn",
+      "note": "He walks."
+     },
+     "skill": "command_presence",
+     "modifier": -10,
+     "failure": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Take him down.",
+     "success": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "argue": {
+   "text": "Two people shouting on a landing. The man keeps his right hand in his jacket pocket and won't take it out.",
+   "options": [
+    {
+     "text": "Separate them and keep your distance from him.",
+     "success": {
+      "next": "argue_sep"
+     }
+    },
+    {
+     "text": "\"Show me your hands. Now.\"",
+     "success": {
+      "next": "argue_hands"
+     },
+     "skill": "command_presence",
+     "failure": {
+      "result": "tactical",
+      "note": "He bolts down the stairs."
+     }
+    },
+    {
+     "text": "Grab his arm.",
+     "success": {
+      "result": "tactical",
+      "note": "He pulls a knife out of the pocket."
+     }
+    }
+   ]
+  },
+  "argue_sep": {
+   "text": "Apart, she tells you he's been using again and he keeps a knife on him. He's watching you over his shoulder.",
+   "options": [
+    {
+     "text": "Pat him down: you have reasonable suspicion now.",
+     "success": {
+      "result": "arrest",
+      "note": "A kitchen knife in his jacket. Brandishing, on her statement."
+     },
+     "skill": "search",
+     "failure": {
+      "result": "tactical",
+      "note": "He twists away and runs."
+     }
+    },
+    {
+     "text": "Talk to him first.",
+     "success": {
+      "next": "argue_hands"
+     },
+     "skill": "de_escalation",
+     "failure": {
+      "result": "tactical"
+     }
+    }
+   ]
+  },
+  "argue_hands": {
+   "text": "He takes his hand out slowly. Empty. The knife is still in the pocket and everybody knows it.",
+   "options": [
+    {
+     "text": "Pat-down and arrest.",
+     "success": {
+      "result": "arrest"
+     }
+    },
+    {
+     "text": "Take the knife, write a report, let him go.",
+     "success": {
+      "result": "report",
+      "note": "You book the knife. He walks."
+     }
+    }
+   ]
+  },
+  "blood": {
+   "text": "This is not a disturbance. There's blood on the stairs and a man is bleeding in the courtyard. Somebody upstairs is still screaming.",
+   "options": [
+    {
+     "text": "Treat the victim while your partner covers.",
+     "success": {
+      "result": "tactical",
+      "note": "You go in with your partner covering."
+     }
+    },
+    {
+     "text": "Go after the screaming.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Wait for backup.",
+     "success": {
+      "result": "tactical",
+      "note": "Backup is coming. The victim is still bleeding."
+     }
+    }
+   ]
+  }
+ }
+}

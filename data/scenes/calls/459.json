@@ -1,0 +1,110 @@
+{
+ "call_type": "459",
+ "variants": [
+  {
+   "when": {
+    "false_alarm": true
+   },
+   "start": "cat"
+  },
+  {
+   "when": {
+    "truth": [
+     0,
+     1
+    ]
+   },
+   "start": "door"
+  }
+ ],
+ "nodes": {
+  "cat": {
+   "text": "A back door standing open, a garage light on. Inside: the owner's teenage son, who forgot his key and climbed in through the window.",
+   "options": [
+    {
+     "text": "Verify who he is and clear it.",
+     "success": {
+      "result": "false_alarm"
+     }
+    }
+   ]
+  },
+  "door": {
+   "text": "The back door of a renovated Victorian is pried open. Something moves upstairs.",
+   "options": [
+    {
+     "text": "Announce and wait at the door.",
+     "success": {
+      "next": "door_announce"
+     }
+    },
+    {
+     "text": "Clear the house room by room.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Check the alley behind first.",
+     "success": {
+      "next": "alley"
+     },
+     "skill": "search",
+     "failure": {
+      "next": "door_announce"
+     }
+    }
+   ]
+  },
+  "door_announce": {
+   "text": "\"Police! Come out with your hands up!\" A long silence, then footsteps on the back stairs, fast.",
+   "options": [
+    {
+     "text": "Chase.",
+     "success": {
+      "result": "tactical"
+     }
+    },
+    {
+     "text": "Hold the door and call the airship.",
+     "success": {
+      "result": "escaped",
+      "note": "He's gone over the back fence by the time it's overhead."
+     },
+     "skill": "radio_and_dispatch",
+     "failure": {
+      "result": "report"
+     }
+    }
+   ]
+  },
+  "alley": {
+   "text": "In the alley: a shopping cart full of picture frames and a man trying to climb the fence with a bag.",
+   "options": [
+    {
+     "text": "Grab him off the fence.",
+     "success": {
+      "result": "arrest",
+      "injury": 1,
+      "note": "You both hit the ground. He stays down."
+     },
+     "skill": "defensive_tactics",
+     "failure": {
+      "result": "tactical",
+      "note": "He drops down on your side, swinging."
+     }
+    },
+    {
+     "text": "Order him down.",
+     "success": {
+      "result": "arrest"
+     },
+     "skill": "command_presence",
+     "failure": {
+      "result": "tactical"
+     }
+    }
+   ]
+  }
+ }
+}

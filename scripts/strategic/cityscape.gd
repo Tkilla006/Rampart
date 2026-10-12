@@ -48,6 +48,8 @@ func _ready() -> void:
 	Campaign.car_arrived.connect(_on_arrived)
 	Campaign.news.connect(func(t, x): _popup(t, x))
 	Campaign.month_report.connect(_on_month)
+	Campaign.story_event.connect(_on_story)
+	Campaign.day_off_request.connect(_on_day_off)
 	_refresh_list()
 	if not Flow.last_notes.is_empty():
 		var r := Flow.last_result
@@ -162,8 +164,14 @@ func _draw_map() -> void:
 			continue
 		var p := _to_map(c.pos)
 		var col: Color = [Color(0.9, 0.9, 0.5), Color(1, 0.65, 0.3), Color(1, 0.4, 0.3), Color(1, 0.2, 0.2)][clampi(int(c.priority), 0, 3)]
-		var r := 4.0 + (2.0 if fmod(_blink, 1.0) < 0.5 and c.status == "pending" else 0.0)
+		# Warning and critical windows: the longer a call waits, the faster it blinks and the redder its ring.
+		var ct: Dictionary = Campaign.call_types[c.type]
+		var waited := clampf((Campaign.elapsed_minutes - float(c.created)) / maxf(1.0, float(ct.expire_minutes)), 0.0, 1.0)
+		var period := 1.0 if waited < 0.5 else (0.5 if waited < 0.8 else 0.25)
+		var r := 4.0 + (2.0 if fmod(_blink, period) < period / 2 and c.status == "pending" else 0.0)
 		map_node.draw_circle(p, r, col)
+		if c.status == "pending" and waited >= 0.5:
+			map_node.draw_arc(p, 7, -PI / 2, -PI / 2 + TAU * waited, 24, Color(1, 0.75, 0.2) if waited < 0.8 else Color(1, 0.2, 0.2), 1.5)
 		if int(c.id) == _selected:
 			map_node.draw_arc(p, 9, 0, TAU, 20, Color(1, 1, 1), 1.0)
 		map_node.draw_string(font, p + Vector2(6, -4), String(c.type), HORIZONTAL_ALIGNMENT_LEFT, -1, 8, col)
@@ -206,7 +214,7 @@ func _select(id: int) -> void:
 		return
 	var age := int(Campaign.elapsed_minutes - float(c.created))
 	_detail.text = "%s\n%s, %s\nPriority %d, waiting %d min. %s" % [c.label, c.address, Campaign.districts[c.district].label,
-		int(c.priority), age, "Dispatch information is often wrong." if int(c.priority) >= 2 else ""]
+		int(c.priority), age, c.get("note", "")]
 
 
 func _respond(code: int) -> void:
@@ -216,8 +224,67 @@ func _respond(code: int) -> void:
 
 
 func _on_arrived(c: Dictionary) -> void:
-	_modal_open("2A43 on scene", "%s\n%s\n\nYou and your partner get out of the car. Whatever dispatch said, this is what it is now." % [c.label, c.address],
+	var hint := Campaign.approach_hint(int(c.id))
+	var cs := Campaign.call_scene(int(c.id))
+	if cs and cs.current != "":
+		_show_scene(cs, c, hint)
+		return
+	_modal_open("2A43 on scene", "%s\n%s\n\n%s" % [c.label, c.address, hint if hint != "" else "Whatever dispatch said, this is what it is now."],
 		"Go in", func(): Flow.start_call(int(c.id)))
+
+
+## The on-scene choices (This Is the Police style): pick what to do; the best officer for it rolls.
+func _show_scene(cs: CallScene, c: Dictionary, hint: String = "") -> void:
+	var node := cs.node()
+	var text := ""
+	if hint != "":
+		text += hint + "\n\n"
+	if not cs.log.is_empty():
+		text += cs.log[-1] + "\n\n"
+	text += String(node.text)
+	var options: Array = []
+	var opts: Array = node.get("options", [])
+	for i in opts.size():
+		var idx := i
+		options.append({"label": cs.option_label(opts[i]), "disabled": not cs.option_available(opts[i]),
+			"cb": func(): _scene_choice(cs, c, idx)})
+	_choice_modal("%s, %s" % [c.label, c.address], text, options)
+
+
+func _scene_choice(cs: CallScene, c: Dictionary, index: int) -> void:
+	if not cs.choose(index):
+		_show_scene(cs, c)
+		return
+	var last: String = cs.log[-1] if not cs.log.is_empty() else ""
+	if cs.result.result == "tactical":
+		var note: String = cs.result.get("note", "")
+		_modal_open("It goes bad", (last + "\n\n" if last != "" else "") + (note if note != "" else "This one won't settle by talking."),
+			"Go in", func(): Flow.start_call(int(c.id)))
+		return
+	var notes := Campaign.apply_scene_result(int(c.id), cs.result)
+	_refresh_list()
+	_popup("Call closed", ((last + "\n\n") if last != "" else "") + "\n".join(notes))
+
+
+func _on_story(entry: Dictionary) -> void:
+	var e: Dictionary = EventLibrary.get_event(entry.event)
+	if e.is_empty():
+		return
+	var options: Array = []
+	for choice in Campaign.branch_choices(e.branches):
+		var ch: String = choice
+		options.append({"label": ch, "cb": func():
+			var notes := Campaign.resolve_story(entry, ch)
+			if not notes.is_empty():
+				_popup(e.title, "\n".join(notes))})
+	_choice_modal("%s: %s" % [e.id, e.title], String(e.what_happens), options)
+
+
+func _on_day_off(req: Dictionary) -> void:
+	var text := "%s %s and asks for tomorrow off.%s" % [req.name, req.reason, " It sounds serious." if req.severe else ""]
+	_choice_modal("Day off request", text, [
+		{"label": "Give them the day", "cb": func(): Campaign.answer_day_off(req.key, true, req.severe)},
+		{"label": "Say no: we need you", "cb": func(): Campaign.answer_day_off(req.key, false, req.severe)}])
 
 
 func _on_month(rep: Dictionary) -> void:
@@ -241,18 +308,42 @@ func _popup(title: String, text: String) -> void:
 
 
 func _modal_open(title: String, text: String, button_text: String, cb: Callable) -> void:
+	_choice_modal(title, text, [{"label": button_text, "cb": cb}])
+
+
+var _modal_queue: Array = []
+
+
+## Modals queue up: roll call, story beats and calls can arrive together.
+func _choice_modal(title: String, text: String, options: Array) -> void:
 	Campaign.set_speed("pause")
-	if _modal:
-		_modal.queue_free()
+	if _modal and is_instance_valid(_modal) and not _modal.is_queued_for_deletion():
+		_modal_queue.append([title, text, options])
+		return
 	_modal = PanelContainer.new()
-	_modal.position = Vector2(110, 70)
-	_modal.custom_minimum_size = Vector2(300, 0)
+	_modal.position = Vector2(80, 40)
+	_modal.custom_minimum_size = Vector2(360, 0)
 	add_child(_modal)
 	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 3)
 	_modal.add_child(col)
 	UiKit.label(col, title, UiKit.ACCENT, 11)
-	UiKit.para(col, text, 290)
+	UiKit.para(col, text, 350)
 	var m := _modal
-	UiKit.button(col, button_text, func():
-		m.queue_free()
-		cb.call())
+	for o in options:
+		var cb: Callable = o.cb
+		var b := UiKit.button(col, String(o.label), func():
+			m.queue_free()
+			_modal = null
+			cb.call()
+			_next_modal())
+		b.disabled = o.get("disabled", false)
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.custom_minimum_size = Vector2(350, 0)
+
+
+func _next_modal() -> void:
+	if _modal == null and not _modal_queue.is_empty():
+		var nxt: Array = _modal_queue.pop_front()
+		_choice_modal(nxt[0], nxt[1], nxt[2])

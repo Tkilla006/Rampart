@@ -1,0 +1,45 @@
+{
+ "_comment": "Reasons an officer asks for a day off. severe: refusing costs more happiness.",
+ "reasons": [
+  {
+   "text": "needs to take a parent to a cardiology appointment",
+   "severe": true
+  },
+  {
+   "text": "has a custody hearing",
+   "severe": true
+  },
+  {
+   "text": "has a funeral to go to in Bakersfield",
+   "severe": true
+  },
+  {
+   "text": "has food poisoning from the taco truck",
+   "severe": true
+  },
+  {
+   "text": "wants to see a kid's school play",
+   "severe": false
+  },
+  {
+   "text": "has a court date on a day off and wants to swap",
+   "severe": false
+  },
+  {
+   "text": "is moving apartments",
+   "severe": false
+  },
+  {
+   "text": "has tickets to the Dodgers",
+   "severe": false
+  },
+  {
+   "text": "says the car needs a new transmission and the shop closes at five",
+   "severe": false
+  },
+  {
+   "text": "just wants a day",
+   "severe": false
+  }
+ ]
+}

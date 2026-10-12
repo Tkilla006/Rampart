@@ -28,6 +28,7 @@ func _run() -> void:
 		"tac_map_movement", "tac_line_of_sight", "tac_cover_and_hit_chance", "tac_reaction_fire",
 		"tac_commands_and_arrest", "tac_less_lethal", "tac_bleeding", "tac_force_review", "tac_factory_and_fuzz",
 		"creation_and_fto", "campaign_calls", "campaign_mission_result", "campaign_month_and_save",
+		"call_scenes", "dispatch_volume_and_false_alarms", "personnel", "story_schedule",
 	]:
 		_current = t
 		gs.new_game()
@@ -721,3 +722,139 @@ func test_campaign_month_and_save(_gs, _lib) -> void:
 	expect_eq(GameState.date.month, 4, "date restored")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 	campaign.active = false
+
+
+# ---------------------------------------------------------------- dispatch, scenes, personnel, story
+
+func test_call_scenes(_gs, _lib) -> void:
+	_new_campaign()
+	var types: Dictionary = campaign.call_types
+	for type_id in types:
+		var d: Dictionary = CallScene.load_for(type_id)
+		expect(not d.is_empty(), "%s has an on-scene choice file" % type_id)
+		var problems := CallScene.validate(d)
+		expect(problems.is_empty(), "%s scene is well formed: %s" % [type_id, problems])
+		# Every truth and the false alarm has a way in, and random play always ends in a known result.
+		var variants := []
+		for i in types[type_id].truth.size():
+			variants.append({"truth_index": i, "false_alarm": false})
+		variants.append({"truth_index": 0, "false_alarm": true})
+		for v in variants:
+			var c := {"type": type_id, "truth_index": v.truth_index, "false_alarm": v.false_alarm}
+			var cs := CallScene.new(d, c, campaign.scene_crew(), 7)
+			expect(cs.start() != "", "%s %s has a starting node" % [type_id, v])
+			var ended := false
+			for step in 12:
+				var opts: Array = cs.node().get("options", [])
+				var pick := -1
+				for i in opts.size():
+					if cs.option_available(opts[i]):
+						pick = i
+						break
+				expect(pick >= 0, "%s: some option is always available" % type_id)
+				if pick < 0 or cs.choose(pick):
+					ended = true
+					break
+			expect(ended and cs.result.result in CallScene.RESULTS, "%s %s ends in a result" % [type_id, v])
+	# Odds come from the best officer on scene.
+	var opt := {"text": "Talk", "skill": "de_escalation", "success": {"result": "cleared"}, "failure": {"result": "escaped"}}
+	var cs2 := CallScene.new({}, {}, campaign.scene_crew())
+	var a: Dictionary = cs2.attempt_for(opt)
+	var best := 0
+	for m in campaign.scene_crew():
+		best = maxi(best, m.officer.skill_chance("de_escalation"))
+	expect_eq(int(a.chance), Check.display_odds(best), "the best officer on scene attempts it")
+	var call: Dictionary = campaign.spawn_call("415", "pico_union")
+	var notes: Array = campaign.apply_scene_result(int(call.id), {"result": "arrest", "injury": 2, "officer": "ortega", "officer_name": "Ortega", "note": ""})
+	expect(int(campaign.roster.ortega.injured_days) == 3, "an injury on scene means light duty")
+	expect_eq(campaign.car.state, "busy", "an arrest ties the car up with booking")
+	expect(notes.size() >= 2, "the scene result is explained")
+
+
+func test_dispatch_volume_and_false_alarms(_gs, _lib) -> void:
+	_new_campaign()
+	var fa := 0
+	var pranks_real := 0
+	for i in 1000:
+		var c: Dictionary = campaign.spawn_call("415", "pico_union")
+		if c.false_alarm:
+			fa += 1
+		elif c.note != "":
+			pranks_real += 1
+	expect(fa > 180 and fa < 320, "about a quarter of 415s are false alarms (%d/1000)" % fa)
+	expect(pranks_real > 40, "some calls flagged as pranks are real (%d)" % pranks_real)
+	GameState.date = {"year": 2010, "month": 3, "day": 6}
+	var saturday: float = campaign.volume_multiplier()
+	GameState.date = {"year": 2010, "month": 3, "day": 2}
+	var tuesday: float = campaign.volume_multiplier()
+	expect(saturday > tuesday, "Saturday is busier than Tuesday")
+	GameState.date = {"year": 2010, "month": 3, "day": 15}
+	var payday: float = campaign.volume_multiplier()
+	GameState.date = {"year": 2010, "month": 3, "day": 16}
+	expect(payday > campaign.volume_multiplier(), "paydays are busier")
+	GameState.date = {"year": 2010, "month": 9, "day": 16}
+	var deadly_late := 0
+	var deadly_early := 0
+	for i in 1500:
+		if campaign.call_types["245"].truth[int(campaign.spawn_call("245").truth_index)].suspects[0].disposition == "deadly":
+			deadly_late += 1
+	GameState.date = {"year": 2010, "month": 3, "day": 16}
+	for i in 1500:
+		if campaign.call_types["245"].truth[int(campaign.spawn_call("245").truth_index)].suspects[0].disposition == "deadly":
+			deadly_early += 1
+	expect(deadly_late > deadly_early, "calls turn worse as the probation goes on (%d vs %d)" % [deadly_late, deadly_early])
+
+
+func test_personnel(_gs, _lib) -> void:
+	_new_campaign()
+	expect_eq(int(campaign.roster.ortega.energy), 6, "everyone starts rested")
+	campaign._start_shift()
+	campaign._end_shift()
+	expect_eq(int(campaign.roster.ortega.energy), 5, "a watch costs energy")
+	campaign.roster.ortega.energy = 0
+	expect_eq(campaign.energy_label("ortega"), "Exhausted", "energy labels")
+	expect(is_equal_approx(campaign.accident_chance(), campaign.ACCIDENT_EXHAUSTED), "an exhausted crew risks a crash on Code 3")
+	GameState.date = {"year": 2010, "month": 3, "day": 5}
+	GameState.minutes = 10 * 60
+	campaign._new_day()
+	expect_eq(int(campaign.roster.ortega.energy), 3, "a day off restores energy")
+	var hungover := 0
+	for i in 200:
+		campaign.roster.duquette.happiness = 1
+		campaign._start_shift()
+		if campaign.roster.duquette.hungover:
+			hungover += 1
+	expect(hungover > 30, "an unhappy drinker comes in hungover sometimes (%d/200)" % hungover)
+	var u: TacUnit = campaign.tac_unit_for("ortega")
+	campaign.roster.ortega.energy = 6
+	var fresh: TacUnit = campaign.tac_unit_for("ortega")
+	expect(fresh.tu_max > u.tu_max, "an exhausted officer has fewer time units")
+	campaign.answer_day_off("ortega", true, false)
+	expect(not campaign.is_available("ortega"), "an officer on a day off is not on the car")
+	var before := int(campaign.roster.bailey.happiness)
+	campaign.answer_day_off("bailey", false, true)
+	expect_eq(int(campaign.roster.bailey.happiness), before - 4, "refusing a serious request costs happiness")
+
+
+func test_story_schedule(_gs, lib) -> void:
+	_new_campaign("arakawa")
+	for entry in campaign.schedule:
+		expect(lib.events.has(entry.event), "%s is a section 17 event" % entry.event)
+	var fired: Array = []
+	campaign.story_event.connect(func(e): fired.append(e.event))
+	campaign._story_check()
+	expect_eq(fired, ["ST-01"], "the first story beat is graduation")
+	for i in 6:
+		campaign._story_check()
+	expect(not "DC-01" in fired, "Ortega's beats don't fire with another FTO")
+	var choices: Array = campaign.branch_choices("respectful, nervous or cocky with Peg; ask why the division left Temple Street.")
+	expect_eq(choices, ["Respectful", "Nervous", "Cocky with Peg", "Ask why the division left Temple Street"], "branches become choices")
+	var st02: Dictionary = campaign.schedule.filter(func(e): return e.event == "ST-02")[0]
+	campaign.resolve_story(st02, "Ask why the division left Temple Street")
+	expect(GameState.has_flag("asked_temple_st"), "the right branch sets asked_temple_st (needed by MS-17)")
+	expect(GameState.is_event_completed("ST-02"), "the beat is recorded")
+	GameState.date = {"year": 2010, "month": 8, "day": 1}
+	fired.clear()
+	for i in 40:
+		campaign._story_check()
+	expect("MS-17" in fired, "Peg's Story comes once asked_temple_st is set")

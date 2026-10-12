@@ -95,6 +95,11 @@ static func from_officer(o: Officer, unit_key: String, unit_name: String, extra 
 		u.tu_max -= 6
 	if extra.get("hungover", false):
 		u.tu_max -= 4
+		u.reactions -= 10
+	# Fatigue (design 5): a tired officer is slower and starts shakier.
+	var energy: int = int(extra.get("energy", 6))
+	if energy < 4:
+		u.tu_max -= (4 - energy) * 3
 	u.health_max = 20 + f * 3
 	u.reactions = (o.attribute("perception") + n) * 5
 	u.accuracy = o.attribute("perception") * 5 + o.skill("firearms") * 10
@@ -104,6 +109,8 @@ static func from_officer(o: Officer, unit_key: String, unit_name: String, extra 
 	u.tu = u.tu_max
 	u.health = u.health_max
 	u.morale = int(round(100.0 * o.composure / maxf(1.0, o.max_composure())))
+	if energy < 2:
+		u.morale = maxi(10, u.morale - 15)
 	u.apply_loadout(extra.get("loadout", "patrol"))
 	return u
 
